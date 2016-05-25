@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.vikinsoft.wp.RegistrarProducto"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/contenedor_imagenes_registro">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/producto_imagen_1"
+            android:src="@drawable/ic_menu_camera"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="8dp"
+            android:clickable="true" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/producto_imagen_2"
+            android:src="@drawable/ic_menu_camera"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="8dp"
+            android:clickable="true" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/producto_imagen_3"
+            android:src="@drawable/ic_menu_camera"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="5dp"
+            android:clickable="true" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/producto_imagen_4"
+            android:src="@drawable/ic_menu_camera"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="8dp"
+            android:clickable="true" />
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/producto_titulo"
+        android:layout_below="@+id/contenedor_imagenes_registro"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Titulo" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/producto_descripcion"
+        android:layout_below="@+id/producto_titulo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Descipcion: incluye color , tamaños , marcas " />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/contenedor_moneda_registro"
+        android:layout_below="@+id/producto_descripcion"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/producto_precio"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:hint="Precio"
+            android:layout_marginLeft="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="MXN"
+            android:id="@+id/producto_moneda"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/producto_precio"
+            android:layout_toEndOf="@+id/producto_precio" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/drop_moneda"
+            android:src="@drawable/arrowdown"
+            android:background="#FFFFFF"
+            android:layout_alignTop="@+id/producto_moneda"
+            android:layout_toRightOf="@+id/producto_moneda"
+            android:layout_toEndOf="@+id/producto_moneda" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/categoria_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contenedor_moneda_registro"
+        android:clickable="true">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/producto_categoria"
+            android:hint="Elige una categoria"
+            android:visibility="visible"
+            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:enabled="true"
+            android:clickable="true"
+            android:focusable="false"
+            android:textIsSelectable="false" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/arrow_categorias"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/arrowdown"
+            android:background="#FFFFFF" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:id="@+id/contenedor_categorias_producto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/categoria_layout"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/contenedor_opciones_registro"
+        android:layout_below="@+id/categoria_layout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/registrar_check_acepta"
+            android:layout_marginRight="22dp"
+            android:layout_marginEnd="22dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:checked="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Acepta Cambios"
+            android:id="@+id/textView16"
+            android:layout_alignBottom="@+id/registrar_check_acepta"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1.12" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Precio Fijo"
+            android:id="@+id/textView12"
+            android:layout_weight="1.16"
+            android:layout_alignBottom="@+id/registrar_check_precio"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/registrar_check_precio"
+            android:layout_below="@+id/registrar_check_acepta"
+            android:layout_alignLeft="@+id/registrar_check_acepta"
+            android:layout_alignStart="@+id/registrar_check_acepta"
+            android:checked="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Se Envia"
+            android:id="@+id/textView15"
+            android:layout_weight="1.12"
+            android:layout_alignBottom="@+id/registrar_check_envio"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/registrar_check_envio"
+            android:layout_below="@+id/textView12"
+            android:layout_alignLeft="@+id/registrar_check_precio"
+            android:layout_alignStart="@+id/registrar_check_precio"
+            android:checked="false" />
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Publicar"
+        android:id="@+id/producto_boton_guardar"
+        android:textColor="#FFFFFF"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@+id/contenedor_opciones_registro"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:layout_marginTop="36dp" />
+
+</RelativeLayout>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.vikinsoft.wp.EditarPerfil">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:id="@+id/edit_prf_toolbar"
+        android:background="@color/colorPrimary"
+        android:weightSum="1">
+        <include
+            android:id="@+id/toolbar_perfil_editar"
+            layout="@layout/editar_perfil_toolbar" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/edit_prf_toolbar"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_prf_toolbar"
+            android:layout_alignLeft="@+id/edit_prf_toolbar"
+            android:layout_alignStart="@+id/edit_prf_toolbar"
+            android:id="@+id/linearLayout2"
+            android:padding="6dp"
+            android:focusableInTouchMode="true">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_prf_toolbar"
+                android:layout_alignLeft="@+id/edit_prf_toolbar"
+                android:layout_alignStart="@+id/edit_prf_toolbar"
+                android:baselineAligned="true"
+                android:background="@drawable/round_borde">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="71dp"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="171dp"
+                        android:layout_height="52dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Cambiar imagen"
+                        android:id="@+id/textView13"
+                        android:gravity="left|center_vertical"
+                        android:layout_gravity="left"
+                        android:textSize="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginLeft="10dp" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:id="@+id/editar_perfil_foto"
+                        android:src="@drawable/com_facebook_profile_picture_blank_portrait"
+                        android:layout_gravity="center_vertical|right"
+                        android:adjustViewBounds="false"
+                        android:layout_marginRight="45dp"
+                        android:layout_marginEnd="45dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="10dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="71dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Nombre"
+                        android:id="@+id/textView14"
+                        android:textSize="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginLeft="10dp" />
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:inputType="textPersonName"
+                        android:text=""
+                        android:ems="7"
+                        android:textSize="20dp"
+                        android:textColor="#000000"
+                        android:id="@+id/editar_pef_nombre"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="29dp"
+                        android:layout_marginEnd="29dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="71dp"
+                    android:layout_below="@+id/relativeLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="¿Donde vives?"
+                        android:id="@+id/textView20"
+                        android:textSize="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginLeft="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="97135 , Mérida"
+                        android:id="@+id/editar_perf_loc"
+                        android:layout_marginRight="37dp"
+                        android:textSize="20dp"
+                        android:textColor="#000000"
+                        android:layout_marginEnd="37dp"
+                        android:layout_alignTop="@+id/textView20"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/linearLayout2"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_borde"
+                android:id="@+id/editar_perfil_contraseña">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Cambiar contraseña"
+                    android:id="@+id/text_contraseña"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/linearLayout2"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_borde"
+                android:id="@+id/editar_perfil_correo">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Cambiar correo"
+                    android:id="@+id/editar_perfil_correo_texto"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/linearLayout2"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_borde" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Verificacion de identidad"
+                    android:id="@+id/editar_perfil_identidad"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/linearLayout2"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_borde" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Categorias favoritas"
+                    android:id="@+id/editar_perfil_favoritas"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/linearLayout2"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/round_borde" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Notificaciones"
+                    android:id="@+id/editar_perfil_notif"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

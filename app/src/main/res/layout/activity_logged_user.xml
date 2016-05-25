@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        android:fitsSystemWindows="true"
+        tools:context=".PerfilUsuario">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/linearLayout">
+
+                <include
+                    android:id="@+id/toolbar_perfil"
+                    layout="@layout/perfil_toolbar" />
+
+        </LinearLayout>
+
+        <fragment
+        android:layout_width="match_parent"
+        android:layout_height="137dp"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/fragmento_mapa"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@drawable/com_facebook_profile_picture_blank_square"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imagen_perfil"
+            android:adjustViewBounds="false"
+            android:translationZ="50.0dp"
+            android:cropToPadding="false"
+            android:contextClickable="false"
+            android:elevation="15dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="72dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imagen_perfil"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/linearLayout3">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scrollView2" >
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                                <RatingBar
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/ratingBar"
+                                    android:layout_gravity="center_horizontal" />
+
+                                <TextView
+                                    android:layout_width="159dp"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                    android:text="Nombre"
+                                    android:id="@+id/logged_nombre"
+                                    android:layout_gravity="center_horizontal"
+                                    android:gravity="center_horizontal"
+                                    android:textStyle="bold"
+                                    android:textSize="35dp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:textAppearance="?android:attr/textAppearanceSmall"
+                                            android:text="Detalles"
+                                            android:id="@+id/textView"
+                                            android:textStyle="italic"
+                                            android:textSize="15dp"
+                                            android:layout_gravity="center_horizontal" />
+
+                                        <ImageButton
+                                            android:src="@drawable/arrowdown"
+                                            android:layout_width="24dp"
+                                            android:layout_height="match_parent"
+                                            android:id="@+id/expansor"
+                                            android:clickable="true"
+                                            android:layout_marginLeft="10dp"
+                                            android:background="#ffffff" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/lay_verificacion"
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="125dp"
+                                    android:visibility="gone"
+                                    android:background="@drawable/borde">
+
+                                        <LinearLayout
+                                            android:orientation="horizontal"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="45dp"
+                                            android:gravity="center_horizontal">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                                    android:text="Parcialmente verificado"
+                                                    android:id="@+id/texto_verificado"
+                                                    android:layout_gravity="center_vertical" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:orientation="horizontal"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="54dp"
+                                            android:weightSum="1"
+                                            android:gravity="center_horizontal">
+
+                                                <ImageButton
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="match_parent"
+                                                    android:id="@+id/botonemail"
+                                                    android:layout_weight="0.09"
+                                                    android:layout_marginRight="10dp" />
+
+                                                <ImageButton
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="match_parent"
+                                                    android:id="@+id/botontelf"
+                                                    android:layout_weight="0.09"
+                                                    android:layout_marginRight="10dp" />
+
+                                                <ImageButton
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="match_parent"
+                                                    android:id="@+id/botonface"
+                                                    android:layout_weight="0.09"
+                                                    android:layout_marginRight="10dp" />
+
+                                                <ImageButton
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="match_parent"
+                                                    android:id="@+id/botongoogle"
+                                                    android:layout_weight="0.09"
+                                                    android:layout_marginRight="10dp" />
+
+                                        </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="visible"
+                                    android:baselineAligned="false"
+                                    android:clickable="false"
+                                    android:measureWithLargestChild="false"
+                                    android:weightSum="1">
+
+                                        <LinearLayout
+                                            android:orientation="vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="70dp"
+                                            android:background="@drawable/borde"
+                                            android:layout_weight="0.30"
+                                            android:id="@+id/perf_venta"
+                                            android:clickable="true">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                                    android:text="0"
+                                                    android:id="@+id/contador_prod"
+                                                    android:layout_gravity="center_horizontal" />
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                                    android:text="En venta"
+                                                    android:id="@+id/prod_vendiendo"
+                                                    android:layout_gravity="bottom|center_horizontal"
+                                                    android:layout_marginTop="10dp" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:orientation="vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:background="@drawable/borde"
+                                            android:layout_weight="0.25"
+                                            android:id="@+id/perf_vendidos"
+                                            android:clickable="true">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                                    android:text="0"
+                                                    android:id="@+id/textView2"
+                                                    android:layout_gravity="center_horizontal" />
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                                    android:text="Vendidos"
+                                                    android:id="@+id/textView3"
+                                                    android:layout_gravity="bottom|center_horizontal"
+                                                    android:layout_marginTop="10dp" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:orientation="vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:background="@drawable/borde"
+                                            android:layout_weight="0.21"
+                                            android:id="@+id/perf_opiniones"
+                                            android:clickable="true">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                                    android:text="0"
+                                                    android:id="@+id/textView4"
+                                                    android:layout_gravity="center_horizontal" />
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                                    android:text="Opiniones"
+                                                    android:id="@+id/textView5"
+                                                    android:layout_gravity="bottom|center_horizontal"
+                                                    android:layout_marginTop="10dp" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:orientation="vertical"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:background="@drawable/borde"
+                                            android:layout_weight="0.24"
+                                            android:id="@+id/perf_favoritos"
+                                            android:clickable="true">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                                    android:text="0"
+                                                    android:id="@+id/textView6"
+                                                    android:layout_gravity="center_horizontal" />
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                                    android:text="Favoritos"
+                                                    android:id="@+id/textView7"
+                                                    android:layout_gravity="bottom|center_horizontal"
+                                                    android:layout_marginTop="10dp" />
+
+                                        </LinearLayout>
+
+                                </LinearLayout>
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="266dp">
+
+                                        <LinearLayout
+                                            android:id="@+id/lay_perf_enventa"
+                                            android:orientation="vertical"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="left|top"
+                                            android:weightSum="1">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="127dp"
+                                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                                    android:text="PRODUCTOS EN VENTA"
+                                                    android:id="@+id/textView8"
+                                                    android:layout_weight="0.86"
+                                                    android:layout_gravity="center_horizontal"
+                                                    android:gravity="center_vertical" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/lay_perf_vendidos"
+                                            android:orientation="vertical"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="left|top"
+                                            android:weightSum="1"
+                                            android:visibility="invisible">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="127dp"
+                                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                                    android:text="PRODUCTOS VENDIDOS"
+                                                    android:id="@+id/textView9"
+                                                    android:layout_weight="0.86"
+                                                    android:layout_gravity="center_horizontal"
+                                                    android:gravity="center_vertical" />
+
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/lay_perf_opiniones"
+                                            android:orientation="vertical"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="left|top"
+                                            android:weightSum="1"
+                                            android:visibility="invisible">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="127dp"
+                                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                                    android:text="OPIONES"
+                                                    android:id="@+id/textView10"
+                                                    android:layout_weight="0.86"
+                                                    android:layout_gravity="center_horizontal"
+                                                    android:gravity="center_vertical" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/lay_perf_fav"
+                                            android:orientation="vertical"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="left|top"
+                                            android:weightSum="1"
+                                            android:visibility="invisible">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="127dp"
+                                                    android:textAppearance="?android:attr/textAppearanceLarge"
+                                                    android:text="PRODUCTOS FAVORITOS"
+                                                    android:id="@+id/textView11"
+                                                    android:layout_weight="0.86"
+                                                    android:gravity="center_vertical" />
+
+                                        </LinearLayout>
+                                </FrameLayout>
+
+                        </LinearLayout>
+                </ScrollView>
+
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_enlistar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_camera"
+            android:layout_weight="0.86"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp" />
+
+</RelativeLayout>

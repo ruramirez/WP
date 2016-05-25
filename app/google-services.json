@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "263767089709",
+    "project_id": "weplayvikinsoft"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263767089709:android:29d97bef6ffa9fee",
+        "android_client_info": {
+          "package_name": "com.vikinsoft.wp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263767089709-7hao4cb27khu67sevs8f08ngs0v5obou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vikinsoft.wp",
+            "certificate_hash": "55A509D786418AE75A7BF87890179A9B820DC384"
+          }
+        },
+        {
+          "client_id": "263767089709-csas42a5li05cc1s422flp9irlkva8rk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUorYv-G2T1ft0Yc-SCObo4t2ZWxRDtlU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

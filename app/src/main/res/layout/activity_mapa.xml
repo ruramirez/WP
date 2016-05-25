@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.vikinsoft.wp.Mapa">
+
+    <fragment
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/mapa"
+        android:layout_alignParentTop="true"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_alignParentStart="false" />
+
+</RelativeLayout>

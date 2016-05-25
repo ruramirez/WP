@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">WP</string>
+    <string name="title_activity_main">WePlay</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Ajustes</string>
+
+    <string name="action_logout">Cerrar sesión</string>
+
+    <string name="facebook_app_id">781944391931244</string>
+
+    <string name="google_maps_key">AIzaSyA6jN4YbWe3WyUrz0i0GQyG4-u7-HbuPfg</string>
+
+    <string name="action_search">Search</string>
+    <string name="action_editar">Editar perfil</string>
+
+    <string name="action_guardar_perfil">Guardar perfil</string>
+
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_mensajes">Mensajes</string>
+    <string name="nav_item_notificaciones">Notificaciones</string>
+    <string name="nav_item_categorias">Categorías</string>
+    <string name="nav_item_nuevo_zona">Nuevo en tu zona</string>
+    <string name="nav_item_invita">Invita a tus amigos</string>
+    <string name="nav_item_ayuda">Ayuda</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_mensajes</item>
+        <item>@string/nav_item_notificaciones</item>
+        <item>@string/nav_item_categorias</item>
+        <item>@string/nav_item_nuevo_zona</item>
+        <item>@string/nav_item_invita</item>
+        <item>@string/nav_item_ayuda</item>
+
+
+    </string-array>
+
+    <string name="title_mensajes">Mensajes</string>
+    <string name="title_notificaciones">Notificaciones</string>
+    <string name="title_categorias">Categorías</string>
+    <string name="title_nuevo_zona">Nuevo en tu zona</string>
+    <string name="title_invita">Invita a tus amigos</string>
+    <string name="title_ayuda">Ayuda</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_test">TestActi</string>
+
+
+</resources>
