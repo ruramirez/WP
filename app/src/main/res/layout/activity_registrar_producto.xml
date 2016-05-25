@@ -83,7 +83,8 @@
         android:id="@+id/contenedor_moneda_registro"
         android:layout_below="@+id/producto_descripcion"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:clickable="true">
 
         <EditText
             android:layout_width="wrap_content"
@@ -96,7 +97,9 @@
             android:hint="Precio"
             android:layout_marginLeft="0dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="0dp"
+            android:enabled="true"
+            android:clickable="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -106,19 +109,29 @@
             android:id="@+id/producto_moneda"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/producto_precio"
-            android:layout_toEndOf="@+id/producto_precio" />
+            android:layout_toEndOf="@+id/producto_precio"
+            android:clickable="true" />
 
         <ImageButton
             android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:id="@+id/drop_moneda"
+            android:id="@+id/arrow_moneda"
             android:src="@drawable/arrowdown"
             android:background="#FFFFFF"
             android:layout_alignTop="@+id/producto_moneda"
             android:layout_toRightOf="@+id/producto_moneda"
-            android:layout_toEndOf="@+id/producto_moneda" />
+            android:layout_toEndOf="@+id/producto_moneda"
+            android:clickable="true" />
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/contenedor_moneda_registro"
+        android:id="@+id/contenedor_monedas"
+        android:visibility="gone"></LinearLayout>
 
     <RelativeLayout
         android:id="@+id/categoria_layout"

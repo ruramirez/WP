@@ -56,6 +56,11 @@ public class Moneda extends AsyncTask<Integer, Void, Integer> {
         return nombre;
     }
 
+    public String getSimbolo()
+    {
+        return simbolo;
+    }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
