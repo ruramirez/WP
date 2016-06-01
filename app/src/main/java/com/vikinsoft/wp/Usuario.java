@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 //import org.apache.http.util.ByteArrayBuffer;
+import com.facebook.login.LoginManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -176,6 +178,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
         DatabaseHandler db = new DatabaseHandler(this.applicationContext);
         db.deleteUsuaro(this.id);
+        LoginManager.getInstance().logOut();
         this.isLoged=false;
     }
 
@@ -228,6 +231,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         }
 
     }
+
 
     public Bitmap getImagen() {
         return imagen;

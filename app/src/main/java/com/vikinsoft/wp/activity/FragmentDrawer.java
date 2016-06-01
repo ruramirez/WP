@@ -1,6 +1,7 @@
 package com.vikinsoft.wp.activity;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -39,7 +40,7 @@ public class FragmentDrawer extends Fragment {
     private View containerView;
     private static String[] titles = null;
     private FragmentDrawerListener drawerListener;
-
+    private static TypedArray navMenuIcons;
 
     public FragmentDrawer() {
         System.out.println("WEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2222222222222222222222222222");
@@ -58,6 +59,7 @@ public class FragmentDrawer extends Fragment {
         for (int i = 0; i < titles.length; i++) {
             NavDrawerItem navItem = new NavDrawerItem();
             navItem.setTitle(titles[i]);
+            navItem.setIcon(navMenuIcons.getResourceId(i,i));
             data.add(navItem);
         }
         return data;
@@ -69,6 +71,7 @@ public class FragmentDrawer extends Fragment {
 
         // drawer labels
         titles = getActivity().getResources().getStringArray(R.array.nav_drawer_labels);
+        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
     }
 
     @Override

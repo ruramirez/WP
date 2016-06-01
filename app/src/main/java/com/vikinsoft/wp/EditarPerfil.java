@@ -34,7 +34,7 @@ public class EditarPerfil extends AppCompatActivity implements View.OnClickListe
 
     private Toolbar editToolbar;
     TextView campo_nac,direccion;
-    LinearLayout contraseña,correo;
+    LinearLayout contraseña,correo,categoriasfav;
     ImageView foto;
     private static final int REQUEST_CAMERA = 1;
     private static final int SELECT_FILE = 2;
@@ -82,6 +82,11 @@ public class EditarPerfil extends AppCompatActivity implements View.OnClickListe
 
         foto = (ImageView) findViewById(R.id.editar_perfil_foto);
         foto.setOnClickListener(this);
+
+        categoriasfav = (LinearLayout) findViewById(R.id.categorias_favoritas_boton);
+        categoriasfav.setOnClickListener(this);
+
+
 
     }
 
@@ -222,10 +227,6 @@ public class EditarPerfil extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         imageChanged = true;
-
-        System.out.println("Datos del request "+requestCode);
-        System.out.println("Datos del result "+resultCode);
-        System.out.println("Datos del intent "+data);
         if(requestCode == 1)
         {
             Bundle extras = data.getExtras();
@@ -246,15 +247,17 @@ public class EditarPerfil extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v == direccion)
         {
-
+            //Aqui tendremos el metodo a implementar cuando tengamos la parte del GPS
         }else if(v == contraseña){
             modalPass();
         }else if(v == correo){
             modalCorreo();
         }else if(v == foto){
             modalSelecciona();
+        }else if(v == categoriasfav){
+            Intent categorias = new Intent(EditarPerfil.this,CategoriasFavoritas.class);
+            EditarPerfil.this.startActivity(categorias);
         }
-
     }
 
     @Override

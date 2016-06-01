@@ -11,13 +11,13 @@
 
     <string name="facebook_app_id">781944391931244</string>
 
-    <string name="google_maps_key">AIzaSyA6jN4YbWe3WyUrz0i0GQyG4-u7-HbuPfg</string>
+    <string name="google_maps_key">AIzaSyBUorYv-G2T1ft0Yc-SCObo4t2ZWxRDtlU</string>
 
     <string name="action_search">Search</string>
     <string name="action_editar">Editar perfil</string>
 
     <string name="action_guardar_perfil">Guardar perfil</string>
-
+    <string name="action_guardar_categorias">Guardar categorias</string>
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -28,6 +28,24 @@
     <string name="nav_item_nuevo_zona">Nuevo en tu zona</string>
     <string name="nav_item_invita">Invita a tus amigos</string>
     <string name="nav_item_ayuda">Ayuda</string>
+
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="signed_in">Signed in</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="signed_out">Signed out</string>
+    <string name="signed_in_err">"Error: please check logs."</string>
+    <string name="error_null_person">
+        Error: Plus.PeopleApi.getCurrentPerson returned null. Ensure that the Google+ API is
+        enabled for your project, you have a properly configured google-services.json file
+        and that your device has an internet connection.
+    </string>
+    <string name="loading">Loading…</string>
+    <string name="auth_code_fmt">Auth Code: %s</string>
+    <string name="id_token_fmt">ID Token: %s</string>
+
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
@@ -52,5 +70,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_test">TestActi</string>
 
-
+    <integer-array name="nav_drawer_icons" >
+        <item>@android:drawable/ic_menu_edit</item>
+        <item>@android:drawable/ic_menu_info_details</item>
+        <item>@android:drawable/ic_menu_sort_alphabetically</item>
+        <item>@android:drawable/ic_menu_myplaces</item>
+        <item>@android:drawable/ic_menu_set_as</item>
+        <item>@android:drawable/ic_menu_help</item>
+    </integer-array>
 </resources>
