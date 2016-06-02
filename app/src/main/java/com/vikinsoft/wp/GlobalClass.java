@@ -15,11 +15,13 @@ public class GlobalClass extends Application {
     public Usuario usuario;
     public List<Categoria> categorias;
     public List<Moneda> monedas;
+    public List<EstadoProducto> estadoProductos;
 
     public GlobalClass()
     {
         categorias = Categoria.getAllCategorias();
         monedas = Moneda.getAllMonedas();
+        //this.estadoProductos=EstadoProducto.
     }
 
 
