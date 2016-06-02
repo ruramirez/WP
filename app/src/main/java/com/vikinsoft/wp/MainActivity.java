@@ -8,6 +8,7 @@ import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -93,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 LinearLayout linearMoneda = null;
                 linearMoneda = (LinearLayout)dialog.findViewById(R.id.contenedor_monedas);
 
+                Button botonguardar = (Button)dialog.findViewById(R.id.producto_boton_guardar);
+
                 ///////Inicio funciones Moneda//////////
                 dialog.findViewById(R.id.arrow_moneda).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -148,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     }
                 });
 
-                for (Moneda moneda : appstate.monedas) {
+                for (final Moneda moneda : appstate.monedas) {
 
                     final RelativeLayout relativo = new RelativeLayout(dialog.getContext());
                     relativo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -162,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     texto.setLayoutParams(params1);
                     final CheckBox box = new CheckBox(dialog.getContext());
                     final String nombreMoneda = moneda.getSimbolo();
-                    box.setTag(nombreMoneda);
+                    box.setTag(moneda.getId());
                     box.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -177,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             dialog.findViewById(R.id.categoria_layout).setVisibility(View.VISIBLE);
                             dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.GONE);
                             arrow_moneda_num = 0;
+                            Producto producto = new Producto();
+                            producto.setMoneda(moneda);
                         }
                     });
                     box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -262,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     }
                 });
 
-                for (Categoria categoria : appstate.categorias) {
+                for (final Categoria categoria : appstate.categorias) {
 
                     final RelativeLayout relativo = new RelativeLayout(dialog.getContext());
                     relativo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -276,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     texto.setLayoutParams(params1);
                     final CheckBox box = new CheckBox(dialog.getContext());
                     final String nombreCat = categoria.getNombre();
-                    box.setTag(nombreCat);
+                    box.setTag(categoria.getId());
                     box.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -351,7 +357,48 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     }
                 });
                 dialog.show();
+
+                botonguardar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        EditText titulo = (EditText) dialog.findViewById(R.id.producto_titulo);
+                        EditText descripcion = (EditText) dialog.findViewById(R.id.producto_descripcion);
+                        EditText precio = (EditText) dialog.findViewById(R.id.producto_precio);
+                        EditText categoria = (EditText) dialog.findViewById(R.id.producto_categoria);
+                        TextView moneda = (TextView) dialog.findViewById(R.id.producto_moneda);
+                        CheckBox envio = (CheckBox) dialog.findViewById(R.id.registrar_check_envio);
+                        CheckBox precioNegociable = (CheckBox) dialog.findViewById(R.id.registrar_check_precio);
+
+                        int enviar;
+                        if(envio.isChecked())
+                        {
+                            enviar = 1;
+                        }else{
+                            enviar = 0;
+                        }
+
+                        int negociable;
+                        if(precioNegociable.isChecked())
+                        {
+                            negociable = 1;
+                        }else{
+                            negociable = 0;
+                        }
+
+                        float precio_final = Float.parseFloat(precio.getText().toString());
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
+                        //int moneda_final =
+                        //Producto producto = new Producto(titulo.getText().toString(),descripcion.getText().toString(),enviar,negociable,precio_final,categoria.getText().toString(),,getApplicationContext(), dialog);
+                        Toast.makeText(MainActivity.this, "Producto publicado con exito!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
             }
+
+
+
         });
 
 

@@ -7,7 +7,11 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -17,6 +21,7 @@ public class RegistrarProducto extends AppCompatActivity implements View.OnClick
     ImageView productof1,productof2,productof3,productof4;
     private static final int REQUEST_CAMERA = 1;
     private static final int SELECT_FILE = 2;
+    Button botonguardar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +33,15 @@ public class RegistrarProducto extends AppCompatActivity implements View.OnClick
         productof3 = (ImageView) findViewById(R.id.producto_imagen_3);
         productof4 = (ImageView) findViewById(R.id.producto_imagen_4);
 
+
+
         productof1.setOnClickListener(this);
         productof2.setOnClickListener(this);
         productof3.setOnClickListener(this);
         productof4.setOnClickListener(this);
+
+        botonguardar.setOnClickListener(this);
+
     }
 
 
@@ -92,6 +102,36 @@ public class RegistrarProducto extends AppCompatActivity implements View.OnClick
         {
             //modalSelecciona(v);
             Toast.makeText(RegistrarProducto.this, "Seleccione "+v, Toast.LENGTH_SHORT).show();
+        }else if( v== botonguardar) {
+
+            EditText titulo = (EditText) findViewById(R.id.producto_titulo);
+            EditText descripcion = (EditText) findViewById(R.id.producto_descripcion);
+            EditText precio = (EditText) findViewById(R.id.producto_precio);
+            EditText categoria = (EditText) findViewById(R.id.producto_categoria);
+            TextView moneda = (TextView) findViewById(R.id.producto_moneda);
+            CheckBox envio = (CheckBox) findViewById(R.id.registrar_check_envio);
+            CheckBox precioNegociable = (CheckBox) findViewById(R.id.registrar_check_precio);
+
+            int enviar;
+            if(envio.isChecked())
+            {
+                enviar = 1;
+            }else{
+                enviar = 0;
+            }
+
+            int negociable;
+            if(precioNegociable.isChecked())
+            {
+                negociable = 1;
+            }else{
+                negociable = 0;
+            }
+
+            float precio_final = Float.parseFloat(precio.getText().toString());
+
+            //Producto producto = new Producto(titulo.getText().toString(),descripcion.getText().toString(),enviar,negociable,precio_final,categoria.getText().toString(),moneda.getText().toString());
+            //Toast.makeText(RegistrarProducto.this, "Hehe", Toast.LENGTH_SHORT).show();
         }
 
 

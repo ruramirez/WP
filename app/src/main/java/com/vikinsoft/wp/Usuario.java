@@ -132,7 +132,6 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         this.applicationContext = applicationContext;
         this.activity = activity;
         this.startLocationListener(activity);
-
     }
 
     public Usuario(int id, String nombre, String email, String password, int facebook, int emailValido, int google, double longitud, double latitud, int foto, Context applicationContext, Activity activity) {

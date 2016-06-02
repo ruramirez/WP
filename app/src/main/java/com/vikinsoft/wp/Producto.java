@@ -1,7 +1,10 @@
 package com.vikinsoft.wp;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,15 +26,99 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     private String nombre="";
     private String descripcion= "";
     private Usuario usuario;
-    //private EstadoProducto estadoProducto;
     private int envio=0;
     private int precio_negociable = 0;
     private double precio = 0.0;
-    //FALTA MONEDAS
     private int vistas =0;
+    private int favoritos;
+    private Moneda moneda;
+    private EstadoProducto estadoProducto;
     private Categoria categoria;
     private Context applicationContext;
+    private Dialog dialog;
 
+
+
+    public Producto(String nombre, String descripcion, int envio , int precio_negociable , float precio, Context applicationContext, Dialog dialog)
+    {
+
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.envio = envio;
+        this.precio = precio;
+        this.precio_negociable = precio_negociable;
+        this.vistas = 0;
+        this.favoritos = 0;
+        this.applicationContext = applicationContext;
+        this.dialog = dialog;
+        //this.activity = activity;
+        //saveOnWeb();
+
+    }
+
+    public Producto() {
+
+    }
+
+    public int saveOnWeb() {
+
+        try {
+            GlobalClass appstate = (GlobalClass) getApplicationContext();
+            URL url = new URL("http://vikinsoft.com/weplay/index.php?r=productos/create");
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String urlParameters =
+                            "nombre=" + this.nombre +
+                            "&descripcion=" + this.descripcion +
+                            "&id_usuario=" + appstate.usuario.getId() +
+                            "&id_estado=" + this.estadoProducto +
+                            "&envio=" + this.envio +
+                            "&precio_negociable=" + this.precio_negociable +
+                            "&precio=" + this.precio +
+                            "&id_moneda=" + this.moneda +
+                            "&vistas=" + this.vistas +
+                            "&favoritos=" + this.favoritos +
+                            "&id_categoria=" + this.categoria
+                            ;
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
+
+            //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+            connection.setDoOutput(true);
+            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+            dStream.writeBytes(urlParameters);
+            dStream.flush();
+            dStream.close();
+            int responseCode = connection.getResponseCode();
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line = "";
+            StringBuilder responseOutput = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                responseOutput.append(line);
+            }
+            br.close();
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(responseOutput.toString());
+                //JSONObject newJSON = jsonObject.getJSONObject("id");
+                this.id=Integer.parseInt(jsonObject.getString("id"));
+                this.dialog.dismiss();
+                return this.id;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            System.out.println(responseOutput.toString());
+
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return -1;
+    }
 
 
 
@@ -69,7 +156,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                     this.descripcion = jsonObject.getString("descripcion");
                     //this.estadoProducto = new EstadoProducto(Integer.parseInt(jsonObject.getString("id_estado")));
                     this.usuario = new Usuario(Integer.parseInt(jsonObject.getString("id_estado")),this.applicationContext);
-                    this.categoria = new Categoria(Integer.parseInt(jsonObject.getString("id_estado")));
+                    //this.categoria = new Categoria(Integer.parseInt(jsonObject.getString("id_estado")));
 
                     //this.emailValido = Integer.parseInt(jsonObject.getString("emailValido"));
                     //this.facebook = Integer.parseInt(jsonObject.getString("facebook"));
@@ -106,4 +193,90 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     }
 
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public int getEnvio() {
+        return envio;
+    }
+
+    public void setEnvio(int envio) {
+        this.envio = envio;
+    }
+
+    public int getPrecio_negociable() {
+        return precio_negociable;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+
+
+    public int getVistas() {
+        return vistas;
+    }
+
+    public void setVistas(int vistas) {
+        this.vistas = vistas;
+    }
+
+    public int getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(int favoritos) {
+        this.favoritos = favoritos;
+    }
+
+    public void setApplicationContext(Context applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    public Context getApplicationContext() {
+        return applicationContext;
+    }
+
+    public Dialog getDialog() {
+        return dialog;
+    }
+
+    public void setDialog(Dialog dialog) {
+        this.dialog = dialog;
+    }
+
+    public int getMonedaId(Moneda moneda)
+    {
+        return moneda.getId();
+    }
+
+    public void setMoneda(Moneda moneda) {
+        this.moneda = moneda;
+    }
+
+    public void setEstadoProducto(EstadoProducto estadoProducto) {
+        this.estadoProducto = estadoProducto;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 }

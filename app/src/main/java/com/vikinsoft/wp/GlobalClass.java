@@ -20,6 +20,5 @@ public class GlobalClass extends Application {
     {
         categorias = Categoria.getAllCategorias();
         monedas = Moneda.getAllMonedas();
-        
     }
 }
