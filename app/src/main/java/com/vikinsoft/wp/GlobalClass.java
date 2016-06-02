@@ -21,4 +21,25 @@ public class GlobalClass extends Application {
         categorias = Categoria.getAllCategorias();
         monedas = Moneda.getAllMonedas();
     }
+
+
+    public Categoria getCategoriaID(int id)
+    {
+        for (Categoria categoria : this.categorias) {
+            if(categoria.getId()== id)
+                return categoria;
+        }
+        return null;
+    }
+
+
+    public Moneda getMonedabyID(int id)
+    {
+        for (Moneda moneda : this.monedas) {
+            if(moneda.getId()== id)
+                return moneda;
+        }
+        return null;
+
+    }
 }
