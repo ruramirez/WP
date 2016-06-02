@@ -146,6 +146,46 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true" />
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:measureWithLargestChild="false"
+                        android:orientation="horizontal"
+                        android:weightSum="1"
+                        android:gravity="center_horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hombre"
+                            android:id="@+id/perfil_genero_h"
+                            android:checked="false"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/place_autocomplete_prediction_primary_text_highlight"
+                            android:layout_weight="0.56" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mujer"
+                            android:id="@+id/perfil_genero_f"
+                            android:checked="false"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="47dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#757575" />
+                    </RadioGroup>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -211,12 +251,13 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="55dp"
                 android:layout_below="@+id/linearLayout2"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/round_borde" >
+                android:background="@drawable/round_borde"
+                android:id="@+id/categorias_favoritas_boton">
 
                 <TextView
                     android:layout_width="wrap_content"

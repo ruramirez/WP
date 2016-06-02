@@ -53,6 +53,8 @@ public class Registro extends AppCompatActivity {
                         boolean resultG = appstate.usuario.saveUsuario();
                         if(resultG)
                         {
+                            Intent main = new Intent(Registro.this,MainActivity.class);
+                            Registro.this.startActivity(main);
                             finish();
                         }
                     } catch (InterruptedException e) {
@@ -63,9 +65,5 @@ public class Registro extends AppCompatActivity {
                 }
             }
         );
-
     }
-
-
-
 }

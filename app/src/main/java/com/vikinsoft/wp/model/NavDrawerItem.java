@@ -6,6 +6,7 @@ package com.vikinsoft.wp.model;
 public class NavDrawerItem {
     private boolean showNotify;
     private String title;
+    private Integer icon;
 
 
     public NavDrawerItem() {
@@ -15,6 +16,11 @@ public class NavDrawerItem {
     public NavDrawerItem(boolean showNotify, String title) {
         this.showNotify = showNotify;
         this.title = title;
+    }
+
+    public Integer getIcon()
+    {
+        return icon;
     }
 
     public boolean isShowNotify() {
@@ -31,5 +37,9 @@ public class NavDrawerItem {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 }

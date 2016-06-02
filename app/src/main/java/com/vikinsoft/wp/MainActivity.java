@@ -1,6 +1,5 @@
 package com.vikinsoft.wp;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,19 +7,15 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -46,9 +41,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.vikinsoft.wp.activity.FragmentDrawer;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener,GoogleApiClient.ConnectionCallbacks,
