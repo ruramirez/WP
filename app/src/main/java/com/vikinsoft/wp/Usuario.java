@@ -77,12 +77,11 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     private boolean locationUpdated = false;
 
 
-    public Usuario(int id,Context applicationContex)
-    {
-        this.id=id;
+    public Usuario(int id, Context applicationContex) {
+        this.id = id;
         try {
-           int result=  this.execute(2).get();
-            this.applicationContext= applicationContex;
+            int result = this.execute(2).get();
+            this.applicationContext = applicationContex;
             if (result != -1) {
                 if (this.getFoto() == 1) {
                     webUsuarios web = new webUsuarios(this);
@@ -100,6 +99,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         }
 
     }
+
     private Usuario(String Email, String Password, Context applicationContex, Activity activity) {
         try {
             this.activity = activity;
@@ -119,7 +119,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
                 db.saveUsuario(this);
 
             }
-            this.startLocationListener(activity);
+            //this.startLocationListener(activity);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -131,7 +131,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     public Usuario(Context applicationContext, Activity activity) {
         this.applicationContext = applicationContext;
         this.activity = activity;
-        this.startLocationListener(activity);
+        //this.startLocationListener(activity);
     }
 
     public Usuario(int id, String nombre, String email, String password, int facebook, int emailValido, int google, double longitud, double latitud, int foto, Context applicationContext, Activity activity) {
@@ -148,10 +148,10 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         this.applicationContext = applicationContext;
         this.isLoged = true;
         this.activity = activity;
-        this.startLocationListener(activity);
+        //this.startLocationListener(activity);
     }
 
-    private boolean startLocationListener(Activity activity) {
+    public boolean startLocationListener(Activity activity) {
         this.locationManager = (LocationManager) this.applicationContext.getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(this.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -178,7 +178,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         DatabaseHandler db = new DatabaseHandler(this.applicationContext);
         db.deleteUsuaro(this.id);
         LoginManager.getInstance().logOut();
-        this.isLoged=false;
+        this.isLoged = false;
     }
 
     public static Usuario loadUsuario(Context applicationContext, Activity activity) {
@@ -220,12 +220,11 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        if(result != -1)
-        {
+        if (result != -1) {
             DatabaseHandler db = new DatabaseHandler(this.applicationContext);
             db.updateusuario(this);
             return true;
-        }else{
+        } else {
             return false;
         }
 
@@ -320,7 +319,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             int result = 0;
             Geocoder geocoder = new Geocoder(this.applicationContext, Locale.getDefault());
             List<Address> addresses = null;
-            if(!this.locationUpdated) {
+            if (!this.locationUpdated) {
                 webUsuarios web = new webUsuarios(this);
                 try {
                     result = web.execute(3).get();
@@ -335,10 +334,10 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             }
 
             addresses = geocoder.getFromLocation(
-                        this.getLatitud(),
-                        this.getLongitud(),
-                        // In this sample, get just a single address.
-                        1);
+                    this.getLatitud(),
+                    this.getLongitud(),
+                    // In this sample, get just a single address.
+                    1);
             if (addresses == null || addresses.size() == 0) {
 
             } else {
@@ -347,6 +346,8 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             }
 
         }
+        this.updateUsuario();
+
     }
 
     public String getDireccion() {
@@ -517,7 +518,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
     @Override
     public void onLocationChanged(Location loc) {
-       /* if (loc.getAccuracy() < 100) {
+        if (loc.getAccuracy() < 100) {
             System.out.println("Cambie" + loc.getLatitude() + " y la long" + loc.getLongitude());
             try {
                 this.setLocation(loc.getLatitude(), loc.getLongitude());
@@ -536,7 +537,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         } catch (IOException e) {
             e.printStackTrace();
         }
-        }*/
+        }
     }
 
     @Override

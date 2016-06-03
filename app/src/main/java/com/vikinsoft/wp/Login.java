@@ -113,7 +113,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                                 try {
 
-                                    System.out.println("ENTREAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                                     StrictMode.setThreadPolicy(policy);
                                     String name = object.getString("name");
@@ -125,6 +124,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                     appstate.usuario.setEmail(mail);
                                     appstate.usuario.setPassword(id);
                                     appstate.usuario.setFacebook(1);
+                                    appstate.usuario.startLocationListener(appstate.usuario.getActivity());
 
                                     JSONObject pic = object.getJSONObject("picture");
                                     JSONObject data = pic.getJSONObject("data");
@@ -260,6 +260,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             appstate.usuario.setEmail(acct.getEmail());
             appstate.usuario.setPassword(acct.getId());
             appstate.usuario.setGoogle(1);
+            appstate.usuario.startLocationListener(appstate.usuario.getActivity());
+
 
 
             String url = acct.getPhotoUrl().toString();
