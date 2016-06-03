@@ -15,7 +15,8 @@
         android:icon="@drawable/wp_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/MyMaterialTheme">
+        android:theme="@style/MyMaterialTheme"
+        android:largeHeap="true">
         <activity
             android:name=".Login"
             android:configChanges="locale|keyboardHidden|orientation"

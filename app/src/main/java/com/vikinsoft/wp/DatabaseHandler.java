@@ -55,7 +55,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_CATEGORIES_TABLE = "CREATE TABLE \"categorias\" (\n" +
                 "    \"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
                 "    \"id_categoria\" INTEGER NOT NULL,\n" +
-                "    \"id_usuario\" INTEGER NOT NULL,\n" +
+                "    \"id_usuario\" INTEGER NOT NULL\n" +
                 ")";
         db.execSQL(CREATE_CATEGORIES_TABLE);
         //db.close();
