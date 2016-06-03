@@ -202,7 +202,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                             String pass_str = frm_pass.getText().toString();
                                             GlobalClass appstate = (GlobalClass) getApplicationContext();
                                             appstate.usuario = Usuario.logIn(correo_str, pass_str, getApplicationContext(), appstate.usuario.getActivity());
-
+                                            appstate.usuario.startLocationListener(appstate.usuario.getActivity());
                                             //aqui va el login normal
                                             if (appstate.usuario.isLoged()) {
                                                 finish();

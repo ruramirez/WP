@@ -51,6 +51,8 @@ public class Registro extends AppCompatActivity {
                     appstate.usuario.setPassword(contrasena_str);
                     try {
                         boolean resultG = appstate.usuario.saveUsuario();
+                        appstate.usuario.startLocationListener(appstate.usuario.getActivity());
+
                         if(resultG)
                         {
                             Intent main = new Intent(Registro.this,MainActivity.class);
