@@ -26,7 +26,6 @@ public class Moneda extends AsyncTask<Integer, Void, Integer> {
     private String nombre="";
     private String simbolo="";
 
-
     public Moneda(int id) {
         this.id=id;
         try {

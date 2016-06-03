@@ -15,15 +15,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 
 public class CategoriasFavoritas extends AppCompatActivity {
 
     private Toolbar categoriasToolbar;
-
+    List<Categoria> categorias;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        GlobalClass appstate =(GlobalClass) getApplicationContext();
+        final GlobalClass appstate =(GlobalClass) getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categorias_favoritas);
 
@@ -45,7 +47,7 @@ public class CategoriasFavoritas extends AppCompatActivity {
 
         LinearLayout linear = (LinearLayout)findViewById(R.id.categoriasfavoritas_layout);
 
-        for (Categoria categoria : appstate.categorias) {
+        for (final Categoria categoria : appstate.categorias) {
 
             final RelativeLayout relativo = new RelativeLayout(this.getApplicationContext());
             relativo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -60,12 +62,12 @@ public class CategoriasFavoritas extends AppCompatActivity {
             texto.setLayoutParams(params1);
             final CheckBox box = new CheckBox(this.getApplicationContext());
             final String nombreCat = categoria.getNombre();
-            box.setTag(nombreCat);
+            box.setTag(categoria.getId());
             box.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-
+                        categorias.add(appstate.getCategoriaID(Integer.parseInt(box.getTag().toString())));
                 }
             });
             box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -105,10 +107,22 @@ public class CategoriasFavoritas extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_guardar_categorias) {
 
+            GlobalClass appstate = (GlobalClass) getApplicationContext();
+            DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+            if(categorias.size() > 0)
+            {
+                for (Categoria categ : categorias)
+                {
+                    db.saveFavorito(appstate.usuario,categ);
+                }
+            }
+
             Toast.makeText(CategoriasFavoritas.this, "Categorias guardadas", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

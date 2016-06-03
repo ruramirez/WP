@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -16,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Created by ricardo on 23/05/16.
@@ -30,16 +32,18 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     private int precio_negociable = 0;
     private double precio = 0.0;
     private int vistas =0;
-    private int favoritos;
+    private int favoritos =0;
     private Moneda moneda;
-    private EstadoProducto estadoProducto;
+    //private EstadoProducto estadoProducto;
+    private int estadoProducto = 0;
     private Categoria categoria;
     private Context applicationContext;
     private Dialog dialog;
+    private List<FotosProductos> fotos;
 
 
 
-    public Producto(String nombre, String descripcion, int envio , int precio_negociable , float precio, Context applicationContext, Dialog dialog)
+    public Producto(List<FotosProductos> fotosProd, Usuario usuario,Categoria categoria,Moneda moneda, String nombre, String descripcion, int envio , int precio_negociable , float precio, Context applicationContext, Dialog dialog)
     {
 
         this.nombre = nombre;
@@ -51,8 +55,10 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         this.favoritos = 0;
         this.applicationContext = applicationContext;
         this.dialog = dialog;
-        //this.activity = activity;
-        //saveOnWeb();
+        this.categoria = categoria;
+        this.usuario = usuario;
+        this.moneda = moneda;
+        this.fotos = fotosProd;
 
     }
 
@@ -63,22 +69,21 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     public int saveOnWeb() {
 
         try {
-            GlobalClass appstate = (GlobalClass) getApplicationContext();
             URL url = new URL("http://vikinsoft.com/weplay/index.php?r=productos/create");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String urlParameters =
                             "nombre=" + this.nombre +
                             "&descripcion=" + this.descripcion +
-                            "&id_usuario=" + appstate.usuario.getId() +
-                            "&id_estado=" + this.estadoProducto +
+                            "&id_usuario=" + this.usuario.getId() +
+                            "&id_estado=" +this.estadoProducto +
                             "&envio=" + this.envio +
                             "&precio_negociable=" + this.precio_negociable +
                             "&precio=" + this.precio +
-                            "&id_moneda=" + this.moneda +
+                            "&id_moneda=" + this.moneda.getId() +
                             "&vistas=" + this.vistas +
                             "&favoritos=" + this.favoritos +
-                            "&id_categoria=" + this.categoria
+                            "&id_categoria=" + this.categoria.getId()
                             ;
             connection.setRequestMethod("POST");
             connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
@@ -101,9 +106,12 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(responseOutput.toString());
-                //JSONObject newJSON = jsonObject.getJSONObject("id");
                 this.id=Integer.parseInt(jsonObject.getString("id"));
-                this.dialog.dismiss();
+                for (FotosProductos fotosProductos : this.fotos)
+                {
+                    fotosProductos.setId_productp(this.id);
+                    fotosProductos.saveOnWeb();
+                }
                 return this.id;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -119,6 +127,8 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         }
         return -1;
     }
+
+
 
 
 
@@ -188,7 +198,10 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         {
             return this.loadWeb();
         }
-
+        if(integers[0] == 3)
+        {
+            return this.saveOnWeb();
+        }
         return -1;
     }
 
@@ -270,10 +283,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
 
     public void setMoneda(Moneda moneda) {
         this.moneda = moneda;
-    }
-
-    public void setEstadoProducto(EstadoProducto estadoProducto) {
-        this.estadoProducto = estadoProducto;
     }
 
     public void setCategoria(Categoria categoria) {

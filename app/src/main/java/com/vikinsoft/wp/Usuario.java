@@ -478,11 +478,9 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             image.compress(Bitmap.CompressFormat.PNG, 90, fos);
             fos.close();
         } catch (FileNotFoundException e) {
-
             System.out.println(e.toString());
         } catch (IOException e) {
             System.out.println(e.toString());
-
         }
     }
 
@@ -594,7 +592,6 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             }
 
             return 1;
-
         }
 
 

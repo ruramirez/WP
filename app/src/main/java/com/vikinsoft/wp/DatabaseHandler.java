@@ -26,6 +26,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Contacts table name
     private static final String TABLE_usuarios = "usuarios";
 
+    private static final String TABLE_categorias = "categorias";
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context=context;
@@ -48,6 +50,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "    \"foto\" INTEGER NOT NULL\n" +
                 ")";
         db.execSQL(CREATE_LOCATIONS_TABLE);
+
+
+        String CREATE_CATEGORIES_TABLE = "CREATE TABLE \"categorias\" (\n" +
+                "    \"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
+                "    \"id_categoria\" INTEGER NOT NULL,\n" +
+                "    \"id_usuario\" INTEGER NOT NULL,\n" +
+                ")";
+        db.execSQL(CREATE_CATEGORIES_TABLE);
         //db.close();
     }
 
@@ -164,6 +174,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] {String.valueOf(id)});
         db.close();
     }
+
+    boolean saveFavorito(Usuario usuario,Categoria categoria) {
+
+        try
+        {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("id_usuario", usuario.getId());
+            values.put("id_categoria", categoria.getId());
+
+            db.insert(TABLE_categorias, null, values);
+            db.close(); // Closing database connection
+            return  true;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+            //db.insert(TABLE_LOCATIONS, null, values);
+            return false;
+        }
+    }
+
+
+    public int updateCategorias(Usuario usuario , Categoria categoria) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("id", categoria.getId());
+        values.put("id_categoria", usuario.getNombre());
+        values.put("email", usuario.getEmail());
+
+        // updating row
+        return db.update(TABLE_usuarios, values, "id" + " = ?",
+                new String[] { String.valueOf(usuario.getId()) });
+    }
+
+
 
 
     /**

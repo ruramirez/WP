@@ -43,7 +43,10 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.vikinsoft.wp.activity.FragmentDrawer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener,GoogleApiClient.ConnectionCallbacks,
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private static int arrow_moneda_num = 0;
     HashMap<String, CompoundButton> hash = new HashMap<String, CompoundButton>();
     HashMap<String, CompoundButton> hash2 = new HashMap<String, CompoundButton>();
+    List<FotosProductos> fotos = new ArrayList<>();
 
 
     @Override
@@ -365,7 +369,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         EditText titulo = (EditText) dialog.findViewById(R.id.producto_titulo);
                         EditText descripcion = (EditText) dialog.findViewById(R.id.producto_descripcion);
                         EditText precio = (EditText) dialog.findViewById(R.id.producto_precio);
-                        EditText categoria = (EditText) dialog.findViewById(R.id.producto_categoria);
                         TextView moneda = (TextView) dialog.findViewById(R.id.producto_moneda);
                         CheckBox envio = (CheckBox) dialog.findViewById(R.id.registrar_check_envio);
                         CheckBox precioNegociable = (CheckBox) dialog.findViewById(R.id.registrar_check_precio);
@@ -389,9 +392,22 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         float precio_final = Float.parseFloat(precio.getText().toString());
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                         StrictMode.setThreadPolicy(policy);
-                        //int moneda_final =
-                        //Producto producto = new Producto(titulo.getText().toString(),descripcion.getText().toString(),enviar,negociable,precio_final,categoria.getText().toString(),,getApplicationContext(), dialog);
+
+                        Producto producto = new Producto(fotos, appstate.usuario ,appstate.getCategoriaID(Integer.parseInt(hash.get("1").getTag().toString())) ,appstate.getMonedabyID(Integer.parseInt(hash2.get("1").getTag().toString())), titulo.getText().toString(),descripcion.getText().toString(),enviar,negociable,precio_final,getApplicationContext(), dialog);
+                        try {
+                            if(producto.execute(3).get()!= -1)
+                            {
+                                dialog.dismiss();
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+
+
                         Toast.makeText(MainActivity.this, "Producto publicado con exito!", Toast.LENGTH_SHORT).show();
+
 
                     }
                 });
@@ -597,6 +613,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                     productof1 = (ImageView) dialog.findViewById(R.id.producto_imagen_1);
                     productof1.setImageBitmap(bm);
+                    fotos.add(new FotosProductos(bm,getApplicationContext()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -609,6 +626,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                     productof2 = (ImageView) dialog.findViewById(R.id.producto_imagen_2);
                     productof2.setImageBitmap(bm);
+                    fotos.add(new FotosProductos(bm,getApplicationContext()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -622,6 +640,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                     productof3 = (ImageView) dialog.findViewById(R.id.producto_imagen_3);
                     productof3.setImageBitmap(bm);
+                    fotos.add(new FotosProductos(bm,getApplicationContext()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -634,6 +653,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                     productof4 = (ImageView) dialog.findViewById(R.id.producto_imagen_4);
                     productof4.setImageBitmap(bm);
+                    fotos.add(new FotosProductos(bm,getApplicationContext()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -647,6 +667,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 productof1 = (ImageView) dialog.findViewById(R.id.producto_imagen_1);
                 productof1.setImageBitmap(imageBitmap);
+                fotos.add(new FotosProductos(imageBitmap,getApplicationContext()));
                 break;
 
             }
@@ -656,6 +677,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 productof2 = (ImageView) dialog.findViewById(R.id.producto_imagen_2);
                 productof2.setImageBitmap(imageBitmap);
+                fotos.add(new FotosProductos(imageBitmap,getApplicationContext()));
                 break;
 
             }
@@ -665,6 +687,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 productof3 = (ImageView) dialog.findViewById(R.id.producto_imagen_3);
                 productof3.setImageBitmap(imageBitmap);
+                fotos.add(new FotosProductos(imageBitmap,getApplicationContext()));
                 break;
 
             }
@@ -674,6 +697,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 productof4 = (ImageView) dialog.findViewById(R.id.producto_imagen_4);
                 productof4.setImageBitmap(imageBitmap);
+                fotos.add(new FotosProductos(imageBitmap,getApplicationContext()));
                 break;
 
             }
