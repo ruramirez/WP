@@ -236,8 +236,30 @@ public class EditarPerfil extends AppCompatActivity implements View.OnClickListe
         }else if(requestCode == 2){
             try {
                 Bitmap bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                boolean tamañoIncorrecto = true;
+                while (tamañoIncorrecto) {
+                    if (bm.getWidth() >= 2048 || bm.getHeight() >= 2048) {
+                        Double d = new Double((bm.getWidth() * .7));
+
+                        int width = d.intValue();
+
+                        d = new Double((bm.getHeight() * .7));
+
+                        int heigth = d.intValue();
+                        bm=bm.createScaledBitmap(bm, width, heigth, false);
+
+                    }
+                    else
+                    {
+                        tamañoIncorrecto = false;
+                    }
+                }
+
+
                 foto.setImageBitmap(bm);
             } catch (IOException e) {
+
+
                 e.printStackTrace();
             }
         }

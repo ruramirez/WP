@@ -212,6 +212,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
     public boolean updateUsuario() {
         webUsuarios web = new webUsuarios(this);
+        System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         int result = -1;
         try {
             result = web.execute(3).get();
@@ -232,7 +233,9 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
 
     public Bitmap getImagen() {
-        return imagen;
+
+
+        return this.imagen;
     }
 
     public void setImagen(Bitmap imagen) {
@@ -334,8 +337,9 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             }
 
             addresses = geocoder.getFromLocation(
-                    this.getLatitud(),
-                    this.getLongitud(),
+                    this.longitud,
+                    this.latitud,
+
                     // In this sample, get just a single address.
                     1);
             if (addresses == null || addresses.size() == 0) {
@@ -351,6 +355,31 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     }
 
     public String getDireccion() {
+
+        Geocoder geocoder = new Geocoder(this.applicationContext, Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(
+                    this.longitud,
+                    this.latitud,
+
+                    // In this sample, get just a single address.
+                    1);
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            e.printStackTrace();
+        }
+        if (addresses == null || addresses.size() == 0) {
+
+        } else {
+            Address address = addresses.get(0);
+            System.out.println("ADDDDRESSSSSSSSSSSSSS "+ address.toString());
+
+            this.direccion = address.getAddressLine(2);
+        }
+
+        System.out.println("DIRRRRRRRRRRRRRRRRRRRRRRRRR "+ this.direccion);
+
         return direccion;
     }
 
@@ -519,7 +548,6 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     @Override
     public void onLocationChanged(Location loc) {
         if (loc.getAccuracy() < 100) {
-            System.out.println("Cambie" + loc.getLatitude() + " y la long" + loc.getLongitude());
             try {
                 this.setLocation(loc.getLatitude(), loc.getLongitude());
                 if (ActivityCompat.checkSelfPermission(this.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
