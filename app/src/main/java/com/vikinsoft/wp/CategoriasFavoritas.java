@@ -15,13 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class CategoriasFavoritas extends AppCompatActivity {
 
     private Toolbar categoriasToolbar;
-    List<Categoria> categorias;
+    List<Categoria> categorias = new ArrayList<>();
+    List<Categoria> categoriasDel = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +64,27 @@ public class CategoriasFavoritas extends AppCompatActivity {
             texto.setLayoutParams(params1);
             final CheckBox box = new CheckBox(this.getApplicationContext());
             final String nombreCat = categoria.getNombre();
+            DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+            if(db.isFavorito(appstate.usuario,categoria))
+            {
+                box.setChecked(true);
+            }
             box.setTag(categoria.getId());
             box.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                        categorias.add(appstate.getCategoriaID(Integer.parseInt(box.getTag().toString())));
                 }
             });
             box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    if(isChecked)
+                    {
+                        categorias.add(appstate.getCategoriaID(Integer.parseInt(box.getTag().toString())));
+                    }else{
+                        categoriasDel.add(appstate.getCategoriaID(Integer.parseInt(box.getTag().toString())));
+                    }
                 }
             });
             RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -111,13 +122,20 @@ public class CategoriasFavoritas extends AppCompatActivity {
             DatabaseHandler db = new DatabaseHandler(getApplicationContext());
             if(categorias.size() > 0)
             {
+                db.truncateDb();
                 for (Categoria categ : categorias)
                 {
                     db.saveFavorito(appstate.usuario,categ);
                 }
             }
-
+            if(categoriasDel.size() > 0){
+                for (Categoria categDel : categoriasDel)
+                {
+                    db.deleteFavorito(appstate.usuario,categDel);
+                }
+            }
             Toast.makeText(CategoriasFavoritas.this, "Categorias guardadas", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

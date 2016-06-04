@@ -12,6 +12,7 @@ import com.vikinsoft.wp.Usuario;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -28,6 +29,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String TABLE_categorias = "categorias";
 
+    private String CREATE_LOCATIONS_TABLE = "CREATE TABLE \"usuarios\" (\n" +
+            "    \"id\" INTEGER PRIMARY KEY NOT NULL,\n" +
+            "    \"nombre\" TEXT NOT NULL,\n" +
+            "    \"email\" TEXT NOT NULL,\n" +
+            "    \"password\" TEXT NOT NULL,\n" +
+            "    \"facebook\" INTEGER NOT NULL,\n" +
+            "    \"emailValido\" INTEGER NOT NULL,\n" +
+            "    \"google\" INTEGER NOT NULL,\n" +
+            "    \"latitud\" REAL NOT NULL,\n" +
+            "    \"longitud\" REAL NOT NULL,\n" +
+            "    \"foto\" INTEGER NOT NULL\n" +
+            ")";
+
+    private  String CREATE_CATEGORIES_TABLE = "CREATE TABLE \"categorias\" (\n" +
+            "    \"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
+            "    \"id_categoria\" INTEGER NOT NULL,\n" +
+            "    \"id_usuario\" INTEGER NOT NULL\n" +
+            ")";
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context=context;
@@ -36,29 +56,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.w("DB","CREATING");
-        String CREATE_LOCATIONS_TABLE = "CREATE TABLE \"usuarios\" (\n" +
-                "    \"id\" INTEGER PRIMARY KEY NOT NULL,\n" +
-                "    \"nombre\" TEXT NOT NULL,\n" +
-                "    \"email\" TEXT NOT NULL,\n" +
-                "    \"password\" TEXT NOT NULL,\n" +
-                "    \"facebook\" INTEGER NOT NULL,\n" +
-                "    \"emailValido\" INTEGER NOT NULL,\n" +
-                "    \"google\" INTEGER NOT NULL,\n" +
-                "    \"latitud\" REAL NOT NULL,\n" +
-                "    \"longitud\" REAL NOT NULL,\n" +
-                "    \"foto\" INTEGER NOT NULL\n" +
-                ")";
+        Log.w("DB","CREATING Usuarios");
         db.execSQL(CREATE_LOCATIONS_TABLE);
-
-
-        String CREATE_CATEGORIES_TABLE = "CREATE TABLE \"categorias\" (\n" +
-                "    \"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
-                "    \"id_categoria\" INTEGER NOT NULL,\n" +
-                "    \"id_usuario\" INTEGER NOT NULL,\n" +
-                ")";
+        Log.w("DB","CREATING Categorias");
         db.execSQL(CREATE_CATEGORIES_TABLE);
-        //db.close();
     }
 
     // Upgrading database
@@ -177,6 +178,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     boolean saveFavorito(Usuario usuario,Categoria categoria) {
 
+
         try
         {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -197,6 +199,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    boolean isFavorito(Usuario usuario,Categoria categoria)
+    {
+        try
+        {
+            String selectQuery = "SELECT  * FROM " + TABLE_categorias+" WHERE id_usuario="+usuario.getId()
+                    +" AND id_categoria="+categoria.getId();
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.getCount() > 0) {
+                return  true;
+            }
+
+        }catch (Exception e)
+        {
+            return  false;
+        }
+        return false;
+    }
 
     public int updateCategorias(Usuario usuario , Categoria categoria) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -209,6 +232,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // updating row
         return db.update(TABLE_usuarios, values, "id" + " = ?",
                 new String[] { String.valueOf(usuario.getId()) });
+    }
+
+    public void truncateDb()
+    {
+        try
+        {
+            String selectQuery = "TRUNCATE " + TABLE_categorias;
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+
+
+        }catch (Exception e)
+        {
+            System.out.println("Error en el truncado "+e);
+        }
+    }
+
+    public int deleteFavorito(Usuario usuario , Categoria categoria) {
+        try
+        {
+            String selectQuery = "DELETE FROM " + TABLE_categorias+" WHERE id_usuario="+usuario.getId()
+                    +" AND id_categoria="+categoria.getId();
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.getCount() > 0) {
+                return 1;
+            }
+
+        }catch (Exception e)
+        {
+            System.out.println("Error en el borrado "+e);
+            return 0;
+        }
+
+        return 0;
     }
 
 

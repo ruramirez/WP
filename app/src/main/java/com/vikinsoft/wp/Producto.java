@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +63,11 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
 
     }
 
-    public Producto() {
+    public List<Producto> Producto() {
+
+        List<Producto> productos = new ArrayList<>();
+        loadWeb();
+        return productos;
 
     }
 
@@ -128,10 +133,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         return -1;
     }
 
-
-
-
-
     public int loadWeb() {
         try {
             URL url = new URL("http://vikinsoft.com/weplay/index.php?r=productos/load");
@@ -142,7 +143,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
             connection.setRequestProperty("Accept-Charset", "UTF-8");
-            //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
             connection.setDoOutput(true);
             DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
             dStream.writeBytes(urlParameters);
@@ -164,17 +164,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                 if (this.id != -1) {
                     this.nombre = jsonObject.getString("nombre");
                     this.descripcion = jsonObject.getString("descripcion");
-                    //this.estadoProducto = new EstadoProducto(Integer.parseInt(jsonObject.getString("id_estado")));
-                    this.usuario = new Usuario(Integer.parseInt(jsonObject.getString("id_estado")),this.applicationContext);
-                    //this.categoria = new Categoria(Integer.parseInt(jsonObject.getString("id_estado")));
 
-                    //this.emailValido = Integer.parseInt(jsonObject.getString("emailValido"));
-                    //this.facebook = Integer.parseInt(jsonObject.getString("facebook"));
-                    //this.google = Integer.parseInt(jsonObject.getString("google"));
-                    //this.latitud = Double.parseDouble(jsonObject.getString("latitud"));
-                    //this.longitud = Double.parseDouble(jsonObject.getString("longitud"));
-                    //this.foto = Integer.parseInt(jsonObject.getString("foto"));
-                    //this.isLoged = true;
                     return this.id;
 
                 }
