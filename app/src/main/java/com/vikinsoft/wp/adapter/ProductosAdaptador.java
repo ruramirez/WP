@@ -1,6 +1,9 @@
 package com.vikinsoft.wp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
 /**
@@ -19,33 +22,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.vikinsoft.wp.MainActivity;
 import com.vikinsoft.wp.Producto;
+import com.vikinsoft.wp.ProductoDetalle;
 import com.vikinsoft.wp.R;
 
 import java.util.List;
 
 public class ProductosAdaptador extends RecyclerView.Adapter<ProductosAdaptador.MyViewHolder> {
 
-
-    /**
-     * Created by Ravi Tamada on 18/05/16.
-     */
-
         private Context mContext;
         private List<Producto> productos;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
-            public TextView title, count;
+            public TextView title, count,precio;
             public ImageView thumbnail;
 
             public MyViewHolder(View view) {
                 super(view);
                 title = (TextView) view.findViewById(R.id.title);
                 count = (TextView) view.findViewById(R.id.count);
+                precio = (TextView) view.findViewById(R.id.precio_card);
                 thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             }
         }
-
 
         public ProductosAdaptador(Context mContext, List<Producto> productos) {
             this.mContext = mContext;
@@ -62,20 +64,31 @@ public class ProductosAdaptador extends RecyclerView.Adapter<ProductosAdaptador.
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
-            Producto producto = productos.get(position);
+            final Producto producto = productos.get(position);
             holder.title.setText(producto.getNombre());
             holder.count.setText(producto.getDescripcion());
+            holder.precio.setText(producto.getPrecio()+" "+producto.getSimbolo());
+            String imgurl = producto.getImagenURL();
 
-            // loading album cover using Glide library
-            //Glide.with(mContext).load(producto.getImagen()).into(holder.thumbnail);
+
+            this.loadImage(imgurl,holder.thumbnail);
 
             holder.thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Aqui nos vamos a cada uno de los productos en detalle
+                    Intent intent = new Intent(mContext, ProductoDetalle.class);
+                    Bundle b = new Bundle();
+                    b.putInt("id_producto", producto.getId());
+                    intent.putExtras(b);
+                    mContext.startActivity(intent);
                 }
             });
         }
+
+
+    public void loadImage(String url, final ImageView imageView) {
+        Glide.with(mContext).load("http://vikinsoft.com/WP_productos/"+url).into(imageView);
+    }
 
         @Override
         public int getItemCount() {

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.location.Location;
 import android.os.Bundle;
@@ -50,12 +49,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.vikinsoft.wp.activity.FragmentDrawer;
 import com.vikinsoft.wp.adapter.ProductosAdaptador;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     List<FotosProductos> fotos = new ArrayList<>();
     private RecyclerView recyclerView;
     private ProductosAdaptador adaptador;
-    private List<Producto> productolista;
+    private List<Producto> productolista = new ArrayList<>();
 
 
     @Override
@@ -92,9 +86,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_productos);
+        Producto prod = new Producto(appstate.usuario);
+        List<Integer> productosids = prod.getIdsProductos();
+        for(Integer integer : productosids)
+        {
+            productolista.add(new Producto(integer));
+        }
 
-        productolista = new ArrayList<>();
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_productos);
         adaptador = new ProductosAdaptador(this, productolista);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
@@ -102,9 +101,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adaptador);
-
-
-
 
         /// INICIO DECLARACION GPS ///
 
@@ -215,8 +211,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             dialog.findViewById(R.id.categoria_layout).setVisibility(View.VISIBLE);
                             dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.GONE);
                             arrow_moneda_num = 0;
-                            Producto producto = new Producto();
-                            producto.setMoneda(moneda);
+
                         }
                     });
                     box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -793,5 +788,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     public void onLocationChanged(Location location) {
         Toast.makeText(MainActivity.this, "Cambie", Toast.LENGTH_SHORT).show();
     }
+
+
 /////FIN Metodos de la conexion GPS//////
 }

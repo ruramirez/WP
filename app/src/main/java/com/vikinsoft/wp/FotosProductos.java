@@ -3,17 +3,21 @@ package com.vikinsoft.wp;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -34,6 +38,40 @@ public class FotosProductos {
         this.imagen = bitmap;
         this.applicationContext = context;
     }
+
+    public FotosProductos(Integer id_productp)
+    {
+        this.id_productp = id_productp;
+
+
+    }
+    /*private int loadWEBimage(Integer id){
+        try {
+            //set the download URL, a url that points to a file on the internet
+            //this is the file to be downloaded
+            URL url = new URL("http://vikinsoft.com/WP_avatares/"+this.usuario.id+".jpg");
+            InputStream in = new BufferedInputStream(url.openStream());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+            int n = 0;
+            while (-1!=(n=in.read(buf)))
+            {
+                out.write(buf, 0, n);
+            }
+            out.close();
+            in.close();
+            byte[] response = out.toByteArray();
+            FileOutputStream fos = new FileOutputStream(this.usuario.getOutputMediaFile());
+            fos.write(response);
+            fos.close();
+
+//catch some possible errors...
+        }catch (IOException e) {
+            Log.d("DownloadManager", "Error: " + e);
+        }
+
+        return 1;
+    }*/
 
     private File getOutputMediaFile() {
         // To be safe, you should check that the SDCard is mounted
@@ -271,4 +309,7 @@ public class FotosProductos {
     public void setImagen(Bitmap imagen) {
         this.imagen = imagen;
     }
+
+    
+
 }
