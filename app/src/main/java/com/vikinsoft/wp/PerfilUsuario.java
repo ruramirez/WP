@@ -49,6 +49,17 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
     private static int arrow_moneda_num = 0;
     HashMap<String, CompoundButton> hash = new HashMap<String, CompoundButton>();
     HashMap<String, CompoundButton> hash2 = new HashMap<String, CompoundButton>();
+    private Usuario usuario;
+
+    public PerfilUsuario(Usuario usuario)
+    {
+        this.usuario=usuario;
+    }
+
+    public PerfilUsuario()
+    {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

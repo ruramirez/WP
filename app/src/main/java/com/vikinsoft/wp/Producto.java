@@ -49,10 +49,11 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     private Categoria categoria;
     private Context applicationContext;
     private Dialog dialog;
-    private List<FotosProductos> fotos;
+    private List<FotosProductos> fotos = new ArrayList<>();
     private List<Integer> idsProductos = new ArrayList<>();
     private String imagenURL;
     private ImageView imagen;
+    private boolean loaded=false;
 
 
 
@@ -83,12 +84,17 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     public Producto(int id)
     {
         this.id = id;
-        try {
-            this.execute(2).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+
+        this.execute(2);
+
+    }
+
+    public boolean isLoaded() {
+        if(this.moneda.isLoaded()&& this.usuario.isLoaded()) {
+            return true;
+        }else
+        {
+            return false;
         }
     }
 
@@ -154,6 +160,14 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         return -1;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public List<FotosProductos> getFotos() {
+        return fotos;
+    }
+
     public int loadWeb() {
         try {
 
@@ -180,15 +194,24 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
             br.close();
             JSONObject jsonObject = null;
             try {
-
+                System.out.println("LA respuestaaaaaaaaaaaaaaaa"+responseOutput.toString());
                 jsonObject = new JSONObject(responseOutput.toString());
                 //this.id=Integer.parseInt(jsonObject.getString("id"));
                 if (this.id != -1) {
                     this.nombre = jsonObject.getString("nombre");
                     this.descripcion = jsonObject.getString("descripcion");
-                    this.simbolo = jsonObject.getString("moneda");
+                    this.moneda= new Moneda(Integer.parseInt(jsonObject.getString("id_moneda")));
+                    this.usuario= new Usuario(Integer.parseInt(jsonObject.getString("id_usuario")));
+
+
+
+                    JSONArray jsonArray = new JSONArray(jsonObject.getString("fotos"));
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject row = jsonArray.getJSONObject(i);
+                        this.fotos.add(new FotosProductos(this.id, Integer.valueOf(row.getString("id"))));
+                    }
+
                     this.precio = Double.parseDouble(jsonObject.getString("precio"));
-                    this.imagenURL = jsonObject.getString("foto");
                     return this.id;
                 }
             } catch (JSONException e) {
@@ -205,77 +228,9 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         return -1;
     }
 
-    public int loadAllWeb() {
-        try {
-            URL url = new URL("http://vikinsoft.com/weplay/index.php?r=productos/loadAll");
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            String urlParameters =
-                    "id_usuario=" + this.usuario.getId();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-            connection.setRequestProperty("Accept-Charset", "UTF-8");
-            connection.setDoOutput(true);
-            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
-            dStream.writeBytes(urlParameters);
-            dStream.flush();
-            dStream.close();
-            int responseCode = connection.getResponseCode();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line = "";
-            StringBuilder responseOutput = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                responseOutput.append(line);
-            }
-            br.close();
-            JSONArray jsonObject = null;
-            try {
-                System.out.println(responseOutput.toString());
-                jsonObject = new JSONArray(responseOutput.toString());
-                if (responseOutput.toString().isEmpty() == false) {
-                    //
-                    for(int i=0;i<jsonObject.length();i++){
-                        JSONObject obj3=jsonObject.getJSONObject(i);
-                        idsProductos.add(Integer.parseInt(obj3.getString("id")));
-                    }
-                    return 1;
-                }
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return -1;
+    public Moneda getMoneda() {
+        return moneda;
     }
-
-    public int loadImage() {
-        try{
-            Glide.with(getApplicationContext()).load("http://vikinsoft.com/WP_productos/"+imagenURL).asBitmap().into(
-                    new SimpleTarget<Bitmap>(300,300) {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                            imagen.setImageBitmap(resource); // Possibly runOnUiThread()
-                        }
-                    });
-        }
-        catch (Exception e)
-        {
-
-
-        }
-
-
-        return -1;
-    }
-
 
     protected Integer doInBackground(Integer... integers) {
         if(integers[0] == 2)
@@ -286,14 +241,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         {
             return this.saveOnWeb();
         }
-        if(integers[0] == 4)
-        {
-            return this.loadAllWeb();
-        }
-        if(integers[0] == 5)
-        {
-            return this.loadImage();
-        }
+
         return -1;
     }
 
@@ -339,8 +287,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         this.precio = precio;
     }
 
-
-
     public int getVistas() {
         return vistas;
     }
@@ -384,19 +330,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
-    }
-
-    public List<Integer> getIdsProductos() {
-        try {
-            int resultado = this.execute(4).get();
-
-            System.out.println("Resultado de getids"+resultado);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return idsProductos;
     }
 
     public void setIdsProductos(List<Integer> idsProductos) {

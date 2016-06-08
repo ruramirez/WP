@@ -2,6 +2,7 @@ package com.vikinsoft.wp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
@@ -16,10 +17,11 @@ import java.util.HashMap;
 public class ProductoDetalle extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
     private SliderLayout mDemoSlider;
-
+    private Producto producto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        GlobalClass appstate = (GlobalClass) getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_producto_detalle);
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
@@ -29,16 +31,14 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         if(b != null)
         {
             value = b.getInt("id_producto");
-            Toast.makeText(ProductoDetalle.this, "El id del producto es "+value, Toast.LENGTH_SHORT).show();
+            producto = appstate.getProductobyID(value);
         }
 
         HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("a" ,"http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
-        url_maps.put("b", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-        url_maps.put("c", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
-        url_maps.put("d", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
-
-
+        for (FotosProductos fotos : producto.getFotos())
+        {
+            url_maps.put(String.valueOf(fotos.getId()),fotos.getUrl());
+        }
 
         for(String name : url_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(this);
@@ -62,6 +62,13 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         mDemoSlider.setDuration(4000);
         mDemoSlider.addOnPageChangeListener(this);
         mDemoSlider.stopAutoCycle();
+
+        TextView precio = (TextView) findViewById(R.id.precioymoneda_detalle);
+        precio.setText(producto.getMoneda().getSimbolo()+" "+producto.getPrecio());
+        TextView titulo = (TextView) findViewById(R.id.titulo_detalle);
+        titulo.setText(producto.getNombre());
+        TextView descr = (TextView) findViewById(R.id.descripcion_detalle);
+        descr.setText(producto.getDescripcion());
     }
 
     @Override

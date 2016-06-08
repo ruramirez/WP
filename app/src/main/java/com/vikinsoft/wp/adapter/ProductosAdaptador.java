@@ -65,13 +65,17 @@ public class ProductosAdaptador extends RecyclerView.Adapter<ProductosAdaptador.
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
             final Producto producto = productos.get(position);
-            holder.title.setText(producto.getNombre());
-            holder.count.setText(producto.getDescripcion());
-            holder.precio.setText(producto.getPrecio()+" "+producto.getSimbolo());
-            String imgurl = producto.getImagenURL();
-
-
-            this.loadImage(imgurl,holder.thumbnail);
+            boolean printed = false;
+            while(!printed) {
+                if (producto.isLoaded()) {
+                    holder.title.setText(producto.getNombre());
+                    holder.count.setText(producto.getDescripcion());
+                    //holder.precio.setText(producto.getPrecio() + " ");
+                    holder.precio.setText(producto.getPrecio()+" "+producto.getMoneda().getSimbolo());
+                    Glide.with(mContext).load(producto.getFotos().get(0).getUrl()).into(holder.thumbnail);
+                    printed=true;
+                }
+            }
 
             holder.thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,11 +88,6 @@ public class ProductosAdaptador extends RecyclerView.Adapter<ProductosAdaptador.
                 }
             });
         }
-
-
-    public void loadImage(String url, final ImageView imageView) {
-        Glide.with(mContext).load("http://vikinsoft.com/WP_productos/"+url).into(imageView);
-    }
 
         @Override
         public int getItemCount() {

@@ -75,7 +75,31 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     private Activity activity;
     private Bitmap imagen;
     private boolean locationUpdated = false;
+    private boolean imageLoaded = false;
+    private boolean loaded = false;
 
+
+    public Usuario(int id)
+    {
+        this.id=id;
+        this.execute(6);
+        if (this.getFoto() == 1) {
+            webUsuarios web = new webUsuarios(this);
+            web.execute(5);
+            this.loadImage();
+            this.imageLoaded=true;
+            System.out.println("YS CASRGRE USUARIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+
+            //Bitmap img = BitmapFactory.decodeStream(conn1.getInputStream());
+            //this.storeImage(this.getImagen());
+
+        }
+        else
+        {
+            this.imageLoaded=true;
+        }
+
+    }
 
     public Usuario(int id, Context applicationContex) {
         this.id = id;
@@ -149,6 +173,14 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         this.isLoged = true;
         this.activity = activity;
         //this.startLocationListener(activity);
+    }
+    public boolean isLoaded() {
+        if(this.imageLoaded&& this.loaded) {
+            return true;
+        }else
+        {
+            return false;
+        }
     }
 
     public boolean startLocationListener(Activity activity) {
@@ -230,7 +262,6 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         }
 
     }
-
 
     public Bitmap getImagen() {
 
@@ -431,6 +462,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
                     this.longitud = Double.parseDouble(jsonObject.getString("longitud"));
                     this.foto = Integer.parseInt(jsonObject.getString("foto"));
                     this.isLoged = true;
+                    this.loaded=true;
                     return this.id;
 
                 }
@@ -582,6 +614,10 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         if(integers[0] == 2)
         {
             return this.loginWeb();
+        }
+        else if(integers[0]== 6)
+        {
+            return this.loadWeb();
         }
 
         return -1;
@@ -876,6 +912,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             {
                 return this.loadWEBimage();
             }
+
 
             return -1;
         }

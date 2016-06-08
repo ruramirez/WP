@@ -25,22 +25,21 @@ public class Moneda extends AsyncTask<Integer, Void, Integer> {
     private  int id=-1;
     private String nombre="";
     private String simbolo="";
+    private boolean loaded=false;
 
     public Moneda(int id) {
         this.id=id;
-        try {
-            this.execute(2).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        this.execute(2);
     }
 
     public Moneda(int id, String nombre, String simbolo) {
         this.id=id;
         this.nombre=nombre;
         this.simbolo= simbolo;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
     }
 
     public int getId() {
@@ -115,6 +114,9 @@ public class Moneda extends AsyncTask<Integer, Void, Integer> {
                 if (this.id != -1) {
                     this.nombre = jsonObject.getString("nombre");
                     this.simbolo= jsonObject.getString("simbolo");
+
+                    this.loaded=true;
+                    System.out.println("YS CASRGRE MONEDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
                     return this.id;
 
                 }

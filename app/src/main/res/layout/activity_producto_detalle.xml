@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:weightSum="1">
 
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
@@ -11,5 +12,44 @@
         android:layout_height="200dp"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/precioymoneda_detalle"
+        android:layout_weight="0.08"
+        android:layout_below="@+id/slider"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:textSize="30dp" />
 
-</LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/titulo_detalle"
+        android:layout_weight="0.08"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:textSize="20dp"
+        android:layout_below="@+id/precioymoneda_detalle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/descripcion_detalle"
+        android:layout_weight="0.08"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:textSize="15dp"
+        android:layout_below="@+id/titulo_detalle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>

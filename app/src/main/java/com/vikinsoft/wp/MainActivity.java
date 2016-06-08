@@ -77,24 +77,18 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private RecyclerView recyclerView;
     private ProductosAdaptador adaptador;
     private List<Producto> productolista = new ArrayList<>();
+    private listaProductos productos = new listaProductos();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final GlobalClass appstate =(GlobalClass) getApplicationContext();
-        appstate.usuario = Usuario.loadUsuario(this,this);
+        final GlobalClass appstate = (GlobalClass) getApplicationContext();
+        appstate.usuario = Usuario.loadUsuario(this, this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Producto prod = new Producto(appstate.usuario);
-        List<Integer> productosids = prod.getIdsProductos();
-        for(Integer integer : productosids)
-        {
-            productolista.add(new Producto(integer));
-        }
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_productos);
-        adaptador = new ProductosAdaptador(this, productolista);
+        adaptador = new ProductosAdaptador(this, appstate.productos);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);

@@ -262,8 +262,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             appstate.usuario.setGoogle(1);
             appstate.usuario.startLocationListener(appstate.usuario.getActivity());
 
-
-
             String url = acct.getPhotoUrl().toString();
 
             Bitmap foto = new LoadProfileImage().execute(url).get();

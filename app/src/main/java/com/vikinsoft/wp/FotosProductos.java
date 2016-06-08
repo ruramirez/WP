@@ -32,6 +32,7 @@ public class FotosProductos {
     private int id_productp ;
     private Context applicationContext;
     private Bitmap imagen;
+    private String url;
 
 
     public FotosProductos(Bitmap bitmap,Context context){
@@ -39,12 +40,25 @@ public class FotosProductos {
         this.applicationContext = context;
     }
 
-    public FotosProductos(Integer id_productp)
+    public FotosProductos(Integer id_productp, Integer id_foto)
     {
+        this.id = id_foto;
         this.id_productp = id_productp;
-
-
+        this.url="http://vikinsoft.com/WP_productos/"+id_foto+".jpg";
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
     /*private int loadWEBimage(Integer id){
         try {
             //set the download URL, a url that points to a file on the internet
