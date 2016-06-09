@@ -72,7 +72,16 @@ public class ProductosAdaptador extends RecyclerView.Adapter<ProductosAdaptador.
                     holder.count.setText(producto.getDescripcion());
                     //holder.precio.setText(producto.getPrecio() + " ");
                     holder.precio.setText(producto.getPrecio()+" "+producto.getMoneda().getSimbolo());
-                    Glide.with(mContext).load(producto.getFotos().get(0).getUrl()).into(holder.thumbnail);
+                    boolean fotosloaded = false;
+                    while(! fotosloaded)
+                    {
+                        if(producto.getFotos().size()>0)
+                        {
+                            Glide.with(mContext).load(producto.getFotos().get(0).getUrl()).into(holder.thumbnail);
+                            fotosloaded = true;
+                        }
+                    }
+
                     printed=true;
                 }
             }
