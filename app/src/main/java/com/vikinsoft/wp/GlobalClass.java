@@ -8,6 +8,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.vikinsoft.wp.Usuario;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -20,8 +21,8 @@ public class GlobalClass extends MultiDexApplication {
     public List<Categoria> categorias;
     public List<Moneda> monedas;
     public List<EstadoProducto> estadoProductos;
-    public List<Producto> productos;
-    public listaProductos listaProductos = new listaProductos();
+    public listaProductos listaProductos;
+    public List<Usuario> usuarios;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -29,11 +30,15 @@ public class GlobalClass extends MultiDexApplication {
         MultiDex.install(this);
     }
 
-    public GlobalClass()
-    {
-        categorias = Categoria.getAllCategorias();
-        monedas = Moneda.getAllMonedas();
+    public GlobalClass() {
 
+        this.categorias = Categoria.getAllCategorias();
+        this.monedas = Moneda.getAllMonedas();
+    }
+
+    public void loadConfig(){
+        this.usuarios = new ArrayList<>();
+        this.listaProductos = new listaProductos(this);
 
         try {
             listaProductos.execute(2).get();
@@ -42,17 +47,27 @@ public class GlobalClass extends MultiDexApplication {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
-        productos = listaProductos.getProductos();
-
-
-        //this.estadoProductos=EstadoProducto.
     }
 
-
-    public Producto getProductobyID(int id)
+    public Usuario getUsuariobyID(int id)
     {
-        for (Producto producto : this.productos) {
+        for (Usuario usuario : this.usuarios) {
+            if(usuario.getId()== id)
+                if(usuario.isLoaded()) {
+                    return usuario;
+                }
+                else
+                {
+                    return new Usuario(-1,this);
+                }
+        }
+        return   new Usuario(-1,this);
+
+
+    }
+
+    public Producto getProductobyID(int id) {
+        for (Producto producto : listaProductos.getProductos()) {
             if(producto.getId()== id)
                 return producto;
         }
@@ -60,8 +75,7 @@ public class GlobalClass extends MultiDexApplication {
 
     }
 
-    public Categoria getCategoriaID(int id)
-    {
+    public Categoria getCategoriaID(int id) {
         for (Categoria categoria : this.categorias) {
             if(categoria.getId()== id)
                 return categoria;
@@ -69,14 +83,12 @@ public class GlobalClass extends MultiDexApplication {
         return null;
     }
 
-    public Moneda getMonedabyID(int id)
-    {
+    public Moneda getMonedabyID(int id) {
         for (Moneda moneda : this.monedas) {
             if(moneda.getId()== id)
                 return moneda;
         }
-        return null;
-
+        return new Moneda();
     }
 
 }

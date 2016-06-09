@@ -27,6 +27,11 @@ public class Moneda extends AsyncTask<Integer, Void, Integer> {
     private String simbolo="";
     private boolean loaded=false;
 
+    public Moneda()
+    {
+        this.loaded=false;
+    }
+
     public Moneda(int id) {
         this.id=id;
         this.execute(2);
@@ -36,6 +41,7 @@ public class Moneda extends AsyncTask<Integer, Void, Integer> {
         this.id=id;
         this.nombre=nombre;
         this.simbolo= simbolo;
+        this.loaded=true;
     }
 
     public boolean isLoaded() {
@@ -114,9 +120,7 @@ public class Moneda extends AsyncTask<Integer, Void, Integer> {
                 if (this.id != -1) {
                     this.nombre = jsonObject.getString("nombre");
                     this.simbolo= jsonObject.getString("simbolo");
-
                     this.loaded=true;
-                    System.out.println("YS CASRGRE MONEDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
                     return this.id;
 
                 }

@@ -1,5 +1,6 @@
 package com.vikinsoft.wp;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.vikinsoft.wp.Producto;
@@ -23,10 +24,11 @@ import java.util.List;
  */
 public class listaProductos extends AsyncTask<Integer, Void, Integer> {
     List<Producto> productos = new ArrayList<>();
+    private Context applicationContext;
 
-    public listaProductos()
+    public listaProductos(Context applicationContext)
     {
-
+        this.applicationContext=applicationContext;
     }
 
     @Override
@@ -73,13 +75,12 @@ public class listaProductos extends AsyncTask<Integer, Void, Integer> {
                     //
                     for(int i=0;i<jsonObject.length();i++){
                         JSONObject obj3=jsonObject.getJSONObject(i);
-                        this.productos.add(new Producto(Integer.parseInt(obj3.getString("id"))));
+                        this.productos.add(new Producto(Integer.parseInt(obj3.getString("id")),this.applicationContext));
                     }
                     return 1;
                 }
 
             } catch (JSONException e) {
-                System.out.println("TRONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE "+ e.toString());
                 e.printStackTrace();
             }
 

@@ -3,6 +3,7 @@ package com.vikinsoft.wp;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -70,6 +71,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     private int foto = 0;
     private boolean isLoged = false;
     private Context applicationContext;
+    private Application appstate;
     private LocationManager locationManager;
     private String direccion = "";
     private Activity activity;
@@ -79,50 +81,39 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     private boolean loaded = false;
 
 
-    public Usuario(int id)
+    public Usuario(int id, Context applicationContex)
     {
         this.id=id;
-        this.execute(6);
+        this.applicationContext = applicationContex;
+
+
+    }
+
+
+    public void fillValues()
+    {
+
+
+        final GlobalClass appstate = (GlobalClass) this.applicationContext;
+        this.loadWeb();
         if (this.getFoto() == 1) {
             webUsuarios web = new webUsuarios(this);
             web.execute(5);
             this.loadImage();
             this.imageLoaded=true;
             System.out.println("YS CASRGRE USUARIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-
-            //Bitmap img = BitmapFactory.decodeStream(conn1.getInputStream());
-            //this.storeImage(this.getImagen());
-
         }
         else
         {
             this.imageLoaded=true;
         }
+        this.isLoged=false;
+        appstate.usuarios.add(this);
 
     }
 
-    public Usuario(int id, Context applicationContex) {
-        this.id = id;
-        try {
-            int result = this.execute(2).get();
-            this.applicationContext = applicationContex;
-            if (result != -1) {
-                if (this.getFoto() == 1) {
-                    webUsuarios web = new webUsuarios(this);
-                    web.execute(5).get();
-                    this.loadImage();
-                    //Bitmap img = BitmapFactory.decodeStream(conn1.getInputStream());
-                    //this.storeImage(this.getImagen());
-                }
-            }
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
 
-    }
 
     private Usuario(String Email, String Password, Context applicationContex, Activity activity) {
         try {
@@ -174,8 +165,9 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         this.activity = activity;
         //this.startLocationListener(activity);
     }
+
     public boolean isLoaded() {
-        if(this.imageLoaded&& this.loaded) {
+        if(this.imageLoaded && this.loaded) {
             return true;
         }else
         {
@@ -209,7 +201,9 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
         DatabaseHandler db = new DatabaseHandler(this.applicationContext);
         db.deleteUsuaro(this.id);
-        LoginManager.getInstance().logOut();
+        if(this.facebook==1) {
+            LoginManager.getInstance().logOut();
+        }
         this.isLoged = false;
     }
 
@@ -244,7 +238,6 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
     public boolean updateUsuario() {
         webUsuarios web = new webUsuarios(this);
-        System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         int result = -1;
         try {
             result = web.execute(3).get();
@@ -554,23 +547,16 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     }
 
     private File getOutputMediaFile() {
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
                 + "/Android/data/"
                 + this.applicationContext.getPackageName()
                 + "/Files");
 
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 return null;
             }
         }
-        // Create a media file name
 
         String mImageName = this.id + ".jpg";
         File mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);

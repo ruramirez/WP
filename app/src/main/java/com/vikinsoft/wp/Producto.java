@@ -50,7 +50,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     private Context applicationContext;
     private Dialog dialog;
     private List<FotosProductos> fotos = new ArrayList<>();
-    private List<Integer> idsProductos = new ArrayList<>();
     private String imagenURL;
     private ImageView imagen;
     private boolean loaded=false;
@@ -76,20 +75,27 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
 
     }
 
-    public Producto(Usuario usuario) {
+    public Producto(Usuario usuario,Context applicationContext) {
         this.usuario = usuario;
+        this.applicationContext=applicationContext;
     }
 
 
-    public Producto(int id)
+    public Producto(int id,Context applicationContext)
     {
         this.id = id;
-
+        this.applicationContext=applicationContext;
+        this.moneda=new Moneda();
         this.execute(2);
+
 
     }
 
     public boolean isLoaded() {
+        if(this.moneda==null || this.usuario == null)
+        {
+            return false;
+        }
         if(this.moneda.isLoaded()&& this.usuario.isLoaded()) {
             return true;
         }else
@@ -169,8 +175,8 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     }
 
     public int loadWeb() {
+       final GlobalClass appstate = (GlobalClass) this.applicationContext;
         try {
-
             URL url = new URL("http://vikinsoft.com/weplay/index.php?r=productos/load");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -194,23 +200,26 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
             br.close();
             JSONObject jsonObject = null;
             try {
-                System.out.println("LA respuestaaaaaaaaaaaaaaaa"+responseOutput.toString());
                 jsonObject = new JSONObject(responseOutput.toString());
                 //this.id=Integer.parseInt(jsonObject.getString("id"));
                 if (this.id != -1) {
                     this.nombre = jsonObject.getString("nombre");
                     this.descripcion = jsonObject.getString("descripcion");
-                    this.moneda= new Moneda(Integer.parseInt(jsonObject.getString("id_moneda")));
-                    this.usuario= new Usuario(Integer.parseInt(jsonObject.getString("id_usuario")));
+                    while(!this.moneda.isLoaded()) {
+                        this.moneda = appstate.getMonedabyID(Integer.parseInt(jsonObject.getString("id_moneda")));
+                    }
 
-
+                    this.usuario=appstate.getUsuariobyID(Integer.parseInt(jsonObject.getString("id_usuario")));
+                    if(!this.usuario.isLoaded()) {
+                        this.usuario = new Usuario(Integer.parseInt(jsonObject.getString("id_usuario")), this.applicationContext);
+                        this.usuario.fillValues();
+                    }
 
                     JSONArray jsonArray = new JSONArray(jsonObject.getString("fotos"));
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject row = jsonArray.getJSONObject(i);
                         this.fotos.add(new FotosProductos(this.id, Integer.valueOf(row.getString("id"))));
                     }
-
                     this.precio = Double.parseDouble(jsonObject.getString("precio"));
                     return this.id;
                 }
@@ -303,10 +312,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         this.favoritos = favoritos;
     }
 
-    public void setApplicationContext(Context applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
     public Context getApplicationContext() {
         return applicationContext;
     }
@@ -332,10 +337,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         this.categoria = categoria;
     }
 
-    public void setIdsProductos(List<Integer> idsProductos) {
-        this.idsProductos = idsProductos;
-    }
-
     public String getSimbolo() {
         return simbolo;
     }
@@ -359,6 +360,5 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     public void setImagen(ImageView imagen) {
         this.imagen = imagen;
     }
-
 
 }
