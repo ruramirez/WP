@@ -70,8 +70,7 @@ public class ProductosAdaptador extends RecyclerView.Adapter<ProductosAdaptador.
                 if (producto.isLoaded()) {
                     holder.title.setText(producto.getNombre());
                     holder.count.setText(producto.getDescripcion());
-                    //holder.precio.setText(producto.getPrecio() + " ");
-                    holder.precio.setText(producto.getPrecio()+" "+producto.getMoneda().getSimbolo());
+                    holder.precio.setText(producto.getPrecio() + " " + producto.getMoneda().getSimbolo());
                     boolean fotosloaded = false;
                     while(! fotosloaded)
                     {

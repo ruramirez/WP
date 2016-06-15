@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     Dialog dialog;
     private static int arrow_productos = 0;
     private static int arrow_moneda_num = 0;
-    HashMap<String, CompoundButton> hash = new HashMap<String, CompoundButton>();
-    HashMap<String, CompoundButton> hash2 = new HashMap<String, CompoundButton>();
+    HashMap<String, CompoundButton> hash ;
+    HashMap<String, CompoundButton> hash2 ;
     List<FotosProductos> fotos = new ArrayList<>();
     private RecyclerView recyclerView;
     private ProductosAdaptador adaptador;
@@ -110,329 +110,416 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         botonflotante.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog = new Dialog(MainActivity.this);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.activity_registrar_producto);
-                LinearLayout linear = null;
-                linear = (LinearLayout)dialog.findViewById(R.id.contenedor_categorias_producto);
-                LinearLayout linearMoneda = null;
-                linearMoneda = (LinearLayout)dialog.findViewById(R.id.contenedor_monedas);
+                if(appstate.usuario.isLoged() == false)
+                {
+                    Intent inten = new Intent(MainActivity.this,Login.class);
+                    MainActivity.this.startActivity(inten);
+                }else{
+                    hash2  = new HashMap<String, CompoundButton>();
+                    hash = new HashMap<String, CompoundButton>();
+                    dialog = new Dialog(MainActivity.this);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.activity_registrar_producto);
+                    LinearLayout linear = null;
+                    linear = (LinearLayout)dialog.findViewById(R.id.contenedor_categorias_producto);
+                    LinearLayout linearMoneda = null;
+                    linearMoneda = (LinearLayout)dialog.findViewById(R.id.contenedor_monedas);
 
-                Button botonguardar = (Button)dialog.findViewById(R.id.producto_boton_guardar);
+                    Button botonguardar = (Button)dialog.findViewById(R.id.producto_boton_guardar);
 
-                ///////Inicio funciones Moneda//////////
-                dialog.findViewById(R.id.arrow_moneda).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(arrow_moneda_num == 0)
-                        {
-                            ((ImageButton) v).setImageResource(R.drawable.arrowup);
-                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.categoria_layout).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.VISIBLE);
-                            arrow_moneda_num = 1;
-                        }else{
-                            ((ImageButton) v).setImageResource(R.drawable.arrowdown);
-                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.categoria_layout).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.GONE);
-                            arrow_moneda_num = 0;
-                        }
-                    }
-                });
-                dialog.findViewById(R.id.producto_moneda).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(arrow_moneda_num == 0)
-                        {
-                            ((ImageButton) dialog.findViewById(R.id.arrow_moneda)).setImageResource(R.drawable.arrowup);
-                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.categoria_layout).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.VISIBLE);
-                            arrow_moneda_num = 1;
-                        }else{
-                            ((ImageButton) dialog.findViewById(R.id.arrow_moneda)).setImageResource(R.drawable.arrowdown);                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.categoria_layout).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.GONE);
-                            arrow_moneda_num = 0;
-                        }
-                    }
-                });
-
-                for (final Moneda moneda : appstate.monedas) {
-
-                    final RelativeLayout relativo = new RelativeLayout(dialog.getContext());
-                    relativo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-                    TextView texto = new TextView(dialog.getContext());
-                    texto.setText(moneda.getNombre());
-                    texto.setTextSize(18);
-                    RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    params1.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                    params1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                    params1.addRule(RelativeLayout.ALIGN_PARENT_START);
-                    texto.setLayoutParams(params1);
-                    final CheckBox box = new CheckBox(dialog.getContext());
-                    final String nombreMoneda = moneda.getSimbolo();
-                    box.setTag(moneda.getId());
-                    box.setOnClickListener(new View.OnClickListener() {
+                    ///////Inicio funciones Moneda//////////
+                    dialog.findViewById(R.id.arrow_moneda).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-                            ((ImageButton) dialog.findViewById(R.id.arrow_moneda)).setImageResource(R.drawable.arrowdown);
-                            ((TextView) dialog.findViewById(R.id.producto_moneda)).setText(nombreMoneda);
-                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.categoria_layout).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.GONE);
-                            arrow_moneda_num = 0;
-
-                        }
-                    });
-                    box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if(isChecked){
-                                if(hash2.size()>0){
-                                    hash2.get("1").setChecked(false);
-                                }
-                                hash2.put("1", buttonView);
-                            }else{
-                                hash2.clear();
-                            }
-                        }
-                    });
-                    RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    params2.addRule(RelativeLayout.ALIGN_BOTTOM,texto.getId());
-                    params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                    params2.addRule(RelativeLayout.ALIGN_PARENT_END);
-                    box.setLayoutParams(params2);
-                    relativo.addView(texto);
-                    relativo.addView(box);
-                    linearMoneda.addView(relativo);
-
-                }
-
-                /////Fin funciones Moneda/////////////
-
-
-                ///////////Inicio Funciones Categorias///////////////
-                dialog.findViewById(R.id.arrow_categorias).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(arrow_productos == 0)
-                        {
-                            ((ImageButton) v).setImageResource(R.drawable.arrowup);
-                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.VISIBLE);
-                            arrow_productos = 1;
-                        }else{
-                            ((ImageButton) v).setImageResource(R.drawable.arrowdown);
-                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.GONE);
-                            arrow_productos = 0;
-                        }
-                    }
-                });
-                dialog.findViewById(R.id.producto_categoria).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(arrow_productos == 0)
-                        {
-                            ((ImageButton) dialog.findViewById(R.id.arrow_categorias)).setImageResource(R.drawable.arrowup);
-                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.GONE);
-                            dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.VISIBLE);
-                            arrow_productos = 1;
-                        }else{
-                            ((ImageButton) dialog.findViewById(R.id.arrow_categorias)).setImageResource(R.drawable.arrowdown);
-                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.GONE);
-                            arrow_productos = 0;
-                        }
-                    }
-                });
-
-                for (final Categoria categoria : appstate.categorias) {
-
-                    final RelativeLayout relativo = new RelativeLayout(dialog.getContext());
-                    relativo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-                    TextView texto = new TextView(dialog.getContext());
-                    texto.setText(categoria.getNombre());
-                    texto.setTextSize(18);
-                    RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    params1.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                    params1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                    params1.addRule(RelativeLayout.ALIGN_PARENT_START);
-                    texto.setLayoutParams(params1);
-                    final CheckBox box = new CheckBox(dialog.getContext());
-                    final String nombreCat = categoria.getNombre();
-                    box.setTag(categoria.getId());
-                    box.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            ((ImageButton) dialog.findViewById(R.id.arrow_categorias)).setImageResource(R.drawable.arrowdown);
-                            ((EditText) dialog.findViewById(R.id.producto_categoria)).setText(nombreCat);
-                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
-                            dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.GONE);
-                            arrow_productos = 0;
-                        }
-                    });
-                    box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if(isChecked){
-                                if(hash.size()>0){
-                                    hash.get("1").setChecked(false);
-                                }
-                                hash.put("1", buttonView);
-                            }else{
-                                hash.clear();
-                            }
-                        }
-                    });
-                    RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    params2.addRule(RelativeLayout.ALIGN_BOTTOM,texto.getId());
-                    params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                    params2.addRule(RelativeLayout.ALIGN_PARENT_END);
-                    box.setLayoutParams(params2);
-                    relativo.addView(texto);
-                    relativo.addView(box);
-                    linear.addView(relativo);
-
-                }
-                ///////////Fin Funciones Categorias///////////////
-
-                dialog.findViewById(R.id.producto_imagen_1).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                       REQUEST_CAMERA = 5;
-                       SELECT_FILE = 1;
-                       modalSelecciona();
-                    }
-                });
-                dialog.findViewById(R.id.producto_imagen_2).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        REQUEST_CAMERA = 6;
-                        SELECT_FILE = 2;
-                        modalSelecciona();
-                    }
-                });
-                dialog.findViewById(R.id.producto_imagen_3).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        REQUEST_CAMERA = 7;
-                        SELECT_FILE = 3;
-                        modalSelecciona();
-                    }
-                });
-                dialog.findViewById(R.id.producto_imagen_4).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        REQUEST_CAMERA = 8;
-                        SELECT_FILE = 4;
-                        modalSelecciona();
-                    }
-                });
-                dialog.show();
-
-                botonguardar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        EditText titulo = (EditText) dialog.findViewById(R.id.producto_titulo);
-                        EditText descripcion = (EditText) dialog.findViewById(R.id.producto_descripcion);
-                        EditText precio = (EditText) dialog.findViewById(R.id.producto_precio);
-                        TextView moneda = (TextView) dialog.findViewById(R.id.producto_moneda);
-                        CheckBox envio = (CheckBox) dialog.findViewById(R.id.registrar_check_envio);
-                        CheckBox precioNegociable = (CheckBox) dialog.findViewById(R.id.registrar_check_precio);
-
-                        int enviar;
-                        if(envio.isChecked())
-                        {
-                            enviar = 1;
-                        }else{
-                            enviar = 0;
-                        }
-
-                        int negociable;
-                        if(precioNegociable.isChecked())
-                        {
-                            negociable = 1;
-                        }else{
-                            negociable = 0;
-                        }
-
-                        float precio_final = Float.parseFloat(precio.getText().toString());
-                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                        StrictMode.setThreadPolicy(policy);
-
-                        Producto producto = new Producto(fotos, appstate.usuario ,appstate.getCategoriaID(Integer.parseInt(hash.get("1").getTag().toString())) ,appstate.getMonedabyID(Integer.parseInt(hash2.get("1").getTag().toString())), titulo.getText().toString(),descripcion.getText().toString(),enviar,negociable,precio_final,getApplicationContext(), dialog);
-                        try {
-                            if(producto.execute(3).get()!= -1)
+                            if(arrow_moneda_num == 0)
                             {
-                                dialog.dismiss();
+                                ((ImageButton) v).setImageResource(R.drawable.arrowup);
+                                dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.categoria_layout).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.VISIBLE);
+                                arrow_moneda_num = 1;
+                            }else{
+                                ((ImageButton) v).setImageResource(R.drawable.arrowdown);
+                                dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.categoria_layout).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.GONE);
+                                arrow_moneda_num = 0;
                             }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
                         }
+                    });
+                    dialog.findViewById(R.id.producto_moneda).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(arrow_moneda_num == 0)
+                            {
+                                ((ImageButton) dialog.findViewById(R.id.arrow_moneda)).setImageResource(R.drawable.arrowup);
+                                dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.categoria_layout).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.VISIBLE);
+                                arrow_moneda_num = 1;
+                            }else{
+                                ((ImageButton) dialog.findViewById(R.id.arrow_moneda)).setImageResource(R.drawable.arrowdown);                            dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.categoria_layout).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.GONE);
+                                arrow_moneda_num = 0;
+                            }
+                        }
+                    });
 
+                    for (final Moneda moneda : appstate.monedas) {
 
-                        Toast.makeText(MainActivity.this, "Producto publicado con exito!", Toast.LENGTH_SHORT).show();
+                        final RelativeLayout relativo = new RelativeLayout(dialog.getContext());
+                        relativo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                        TextView texto = new TextView(dialog.getContext());
+                        texto.setText(moneda.getNombre());
+                        texto.setTextSize(18);
+                        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        params1.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                        params1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                        params1.addRule(RelativeLayout.ALIGN_PARENT_START);
+                        texto.setLayoutParams(params1);
+                        final CheckBox box = new CheckBox(dialog.getContext());
+                        final String nombreMoneda = moneda.getSimbolo();
+                        box.setTag(moneda.getId());
+                        box.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
+                                ((ImageButton) dialog.findViewById(R.id.arrow_moneda)).setImageResource(R.drawable.arrowdown);
+                                TextView texto = (TextView) dialog.findViewById(R.id.producto_moneda);
+                                texto.setText(nombreMoneda);
+                                texto.setError(null);
+                                dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.categoria_layout).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_monedas).setVisibility(View.GONE);
+                                arrow_moneda_num = 0;
+
+                            }
+                        });
+                        box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if(isChecked){
+                                    if(hash2.size()>0){
+                                        hash2.get("1").setChecked(false);
+                                    }
+                                    hash2.put("1", buttonView);
+                                }else{
+                                    hash2.clear();
+                                }
+                            }
+                        });
+                        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        params2.addRule(RelativeLayout.ALIGN_BOTTOM,texto.getId());
+                        params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                        params2.addRule(RelativeLayout.ALIGN_PARENT_END);
+                        box.setLayoutParams(params2);
+                        relativo.addView(texto);
+                        relativo.addView(box);
+                        linearMoneda.addView(relativo);
 
                     }
-                });
+
+                    /////Fin funciones Moneda/////////////
+
+
+                    ///////////Inicio Funciones Categorias///////////////
+                    dialog.findViewById(R.id.arrow_categorias).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(arrow_productos == 0)
+                            {
+                                ((ImageButton) v).setImageResource(R.drawable.arrowup);
+                                dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.VISIBLE);
+                                arrow_productos = 1;
+                            }else{
+                                ((ImageButton) v).setImageResource(R.drawable.arrowdown);
+                                dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.GONE);
+                                arrow_productos = 0;
+                            }
+                        }
+                    });
+                    dialog.findViewById(R.id.producto_categoria).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(arrow_productos == 0)
+                            {
+                                ((ImageButton) dialog.findViewById(R.id.arrow_categorias)).setImageResource(R.drawable.arrowup);
+                                dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.VISIBLE);
+                                arrow_productos = 1;
+                            }else{
+                                ((ImageButton) dialog.findViewById(R.id.arrow_categorias)).setImageResource(R.drawable.arrowdown);
+                                dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.GONE);
+                                arrow_productos = 0;
+                            }
+                        }
+                    });
+
+                    for (final Categoria categoria : appstate.categorias) {
+
+                        final RelativeLayout relativo = new RelativeLayout(dialog.getContext());
+                        relativo.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                        TextView texto = new TextView(dialog.getContext());
+                        texto.setText(categoria.getNombre());
+                        texto.setTextSize(18);
+                        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        params1.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                        params1.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                        params1.addRule(RelativeLayout.ALIGN_PARENT_START);
+                        texto.setLayoutParams(params1);
+                        final CheckBox box = new CheckBox(dialog.getContext());
+                        final String nombreCat = categoria.getNombre();
+                        box.setTag(categoria.getId());
+                        box.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                ((ImageButton) dialog.findViewById(R.id.arrow_categorias)).setImageResource(R.drawable.arrowdown);
+                                EditText txt = (EditText) dialog.findViewById(R.id.producto_categoria);
+                                txt.setText(nombreCat);
+                                txt.setError(null);
+                                dialog.findViewById(R.id.contenedor_imagenes_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_titulo).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_descripcion).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_moneda_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_opciones_registro).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.producto_boton_guardar).setVisibility(View.VISIBLE);
+                                dialog.findViewById(R.id.contenedor_categorias_producto).setVisibility(View.GONE);
+                                arrow_productos = 0;
+                            }
+                        });
+                        box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if(isChecked){
+                                    if(hash.size()>0){
+                                        hash.get("1").setChecked(false);
+                                    }
+                                    hash.put("1", buttonView);
+                                }else{
+                                    hash.clear();
+                                }
+                            }
+                        });
+                        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        params2.addRule(RelativeLayout.ALIGN_BOTTOM,texto.getId());
+                        params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                        params2.addRule(RelativeLayout.ALIGN_PARENT_END);
+                        box.setLayoutParams(params2);
+                        relativo.addView(texto);
+                        relativo.addView(box);
+                        linear.addView(relativo);
+
+                    }
+                    ///////////Fin Funciones Categorias///////////////
+
+                    dialog.findViewById(R.id.producto_imagen_1).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            REQUEST_CAMERA = 5;
+                            SELECT_FILE = 1;
+                            modalSelecciona();
+                        }
+                    });
+                    dialog.findViewById(R.id.producto_imagen_2).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            REQUEST_CAMERA = 6;
+                            SELECT_FILE = 2;
+                            modalSelecciona();
+                        }
+                    });
+                    dialog.findViewById(R.id.producto_imagen_3).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            REQUEST_CAMERA = 7;
+                            SELECT_FILE = 3;
+                            modalSelecciona();
+                        }
+                    });
+                    dialog.findViewById(R.id.producto_imagen_4).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            REQUEST_CAMERA = 8;
+                            SELECT_FILE = 4;
+                            modalSelecciona();
+                        }
+                    });
+                    dialog.show();
+
+                    botonguardar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            EditText titulo = (EditText) dialog.findViewById(R.id.producto_titulo);
+                            EditText descripcion = (EditText) dialog.findViewById(R.id.producto_descripcion);
+                            EditText precio = (EditText) dialog.findViewById(R.id.producto_precio);
+                            TextView moneda = (TextView) dialog.findViewById(R.id.producto_moneda);
+                            EditText categoria = (EditText) dialog.findViewById(R.id.producto_categoria);
+                            CheckBox envio = (CheckBox) dialog.findViewById(R.id.registrar_check_envio);
+                            CheckBox precioNegociable = (CheckBox) dialog.findViewById(R.id.registrar_check_precio);
+                            CheckBox acepta = (CheckBox) dialog.findViewById(R.id.registrar_check_acepta);
+
+                            int enviar;
+                            if(envio.isChecked())
+                            {
+                                enviar = 1;
+                            }else{
+                                enviar = 0;
+                            }
+
+                            int negociable;
+                            if(precioNegociable.isChecked())
+                            {
+                                negociable = 1;
+                            }else{
+                                negociable = 0;
+                            }
+
+                            int aceptacambios;
+                            if(acepta.isChecked())
+                            {
+                                aceptacambios = 1;
+                            }else{
+                                aceptacambios = 0;
+                            }
+
+                            float precio_final_float = (float) 0.0;
+
+                            String tituloText = titulo.getText().toString();
+                            if (tituloText.matches("")) {
+                                titulo.setError("Ingresa el titulo.");
+                                return;
+                            }
+
+                            String descrText = descripcion.getText().toString();
+                            if (descrText.matches("")) {
+                                descripcion.setError("Ingresa una descripcion.");
+                                return;
+                            }
+
+                            String precio_final = precio.getText().toString();
+                            if (precio_final.matches("")) {
+                                precio.setError("Ingresa el precio.");
+                                return;
+                            }else{
+                                precio_final_float= Float.parseFloat(precio.getText().toString());
+                            }
+
+                            if(hash2.isEmpty())
+                            {
+                                moneda.setError("Seleccione una moneda.");
+                                return;
+                            }else
+                            {
+                                moneda.setError(null);
+
+                            }
+
+                            if (hash.isEmpty())
+                            {
+                                categoria.setError("Seleccione una categoria.");
+                                return;
+                            }else{
+                                categoria.setError(null);
+                            }
+
+                            if(fotos.isEmpty())
+                            {
+                                Toast.makeText(MainActivity.this, "Ingrese al menos una imagen de producto.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                            StrictMode.setThreadPolicy(policy);
+
+
+
+                            EstadoProducto estado = appstate.getElementoByID(0);
+
+                            Producto producto = new Producto(fotos, appstate.usuario ,appstate.getCategoriaID(Integer.parseInt(hash.get("1").getTag().toString())) ,appstate.getMonedabyID(Integer.parseInt(hash2.get("1").getTag().toString())), titulo.getText().toString(),descripcion.getText().toString(),enviar,negociable,precio_final_float,estado,getApplicationContext(), dialog);
+                            try {
+                                if(producto.execute(3).get()!= -1)
+                                {
+                                    dialog.dismiss();
+
+                                    List<Producto> productos=appstate.listaProductos.getProductos();
+                                    System.out.println("Antes de apendear"+productos.size());
+                                    productos.add(producto);
+                                    System.out.println("Despues de apendear"+productos.size());
+
+                                    appstate.listaProductos.setProductos(productos);
+                                    System.out.println("Seteando");
+
+                                    adaptador = new ProductosAdaptador(getApplicationContext(), appstate.listaProductos.getProductos());
+                                    System.out.println("Creando");
+
+                                    recyclerView.setAdapter(adaptador);
+                                    System.out.println("Recicler mas adaptador");
+
+                                    adaptador.notifyDataSetChanged();
+                                    System.out.println("Cambie chif!");
+
+
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (ExecutionException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            Toast.makeText(MainActivity.this, "Producto publicado con exito!", Toast.LENGTH_SHORT).show();
+
+
+                        }
+                    });
+                }
             }
-
-
-
         });
 
 
@@ -540,7 +627,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void onClick(DialogInterface dialog, int item) {
 
-               if (items[item].equals("Tomar foto")) {
+                if (items[item].equals("Tomar foto")) {
                     PROFILE_PIC_COUNT[0] = 1;
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, REQUEST_CAMERA);
@@ -575,6 +662,19 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        GlobalClass appstate = (GlobalClass) this.getApplicationContext();
+
+        if(id ==  R.id.action_search)
+        {
+            appstate.searchByUsuario();
+            System.out.println("Conteo de nuevos productos!"+appstate.listaProductos.getProductos().size());
+            adaptador = new ProductosAdaptador(this, appstate.listaProductos.getProductos());
+            recyclerView.setAdapter(adaptador);
+            recyclerView.scrollToPosition((appstate.listaProductos.getProductos().size() - 1));
+            adaptador.notifyDataSetChanged();
+
+        }
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -591,7 +691,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
     /// FIN METODOS DE MENU ///
 
-  ///INICIO Metodos de la conexion GPS///
+    ///INICIO Metodos de la conexion GPS///
     @Override
     public void onConnected(Bundle bundle) {
         mLocationRequest = LocationRequest.create();

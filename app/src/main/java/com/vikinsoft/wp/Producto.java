@@ -44,8 +44,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     private int favoritos =0;
     private String simbolo;
     private Moneda moneda;
-    //private EstadoProducto estadoProducto;
-    private int estadoProducto = 0;
+    private EstadoProducto estadoProducto;
     private Categoria categoria;
     private Context applicationContext;
     private Dialog dialog;
@@ -56,7 +55,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
 
 
 
-    public Producto(List<FotosProductos> fotosProd, Usuario usuario,Categoria categoria,Moneda moneda, String nombre, String descripcion, int envio , int precio_negociable , float precio, Context applicationContext, Dialog dialog)
+    public Producto(List<FotosProductos> fotosProd, Usuario usuario, Categoria categoria, Moneda moneda, String nombre, String descripcion, int envio, int precio_negociable, float precio, EstadoProducto estadoProducto, Context applicationContext, Dialog dialog)
     {
 
         this.nombre = nombre;
@@ -64,6 +63,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         this.envio = envio;
         this.precio = precio;
         this.precio_negociable = precio_negociable;
+        this.estadoProducto = estadoProducto;
         this.vistas = 0;
         this.favoritos = 0;
         this.applicationContext = applicationContext;
@@ -72,6 +72,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         this.usuario = usuario;
         this.moneda = moneda;
         this.fotos = fotosProd;
+        this.loaded=true;
 
     }
 
@@ -81,14 +82,11 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     }
 
 
-    public Producto(int id,Context applicationContext)
-    {
+    public Producto(int id,Context applicationContext){
         this.id = id;
         this.applicationContext=applicationContext;
         this.moneda=new Moneda();
         this.execute(2);
-
-
     }
 
     public boolean isLoaded() {
@@ -114,7 +112,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                             "nombre=" + this.nombre +
                             "&descripcion=" + this.descripcion +
                             "&id_usuario=" + this.usuario.getId() +
-                            "&id_estado=" +this.estadoProducto +
+                            "&id_estado=" +this.estadoProducto.getId() +
                             "&envio=" + this.envio +
                             "&precio_negociable=" + this.precio_negociable +
                             "&precio=" + this.precio +
@@ -166,6 +164,8 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         return -1;
     }
 
+
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -205,6 +205,10 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                 if (this.id != -1) {
                     this.nombre = jsonObject.getString("nombre");
                     this.descripcion = jsonObject.getString("descripcion");
+                    this.precio = Double.parseDouble(jsonObject.getString("precio"));
+                    this.categoria = appstate.getCategoriaID(Integer.parseInt(jsonObject.getString("id_categoria")));
+                    this.estadoProducto = appstate.getElementoByID(Integer.parseInt(jsonObject.getString("id_estado")));
+
                     while(!this.moneda.isLoaded()) {
                         this.moneda = appstate.getMonedabyID(Integer.parseInt(jsonObject.getString("id_moneda")));
                     }
@@ -220,7 +224,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                         JSONObject row = jsonArray.getJSONObject(i);
                         this.fotos.add(new FotosProductos(this.id, Integer.valueOf(row.getString("id"))));
                     }
-                    this.precio = Double.parseDouble(jsonObject.getString("precio"));
                     return this.id;
                 }
             } catch (JSONException e) {
@@ -246,11 +249,10 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         {
             return this.loadWeb();
         }
-        if(integers[0] == 3)
+        else if(integers[0] == 3)
         {
             return this.saveOnWeb();
         }
-
         return -1;
     }
 
@@ -360,5 +362,105 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     public void setImagen(ImageView imagen) {
         this.imagen = imagen;
     }
+
+    public EstadoProducto getEstadoProducto() {
+        return estadoProducto;
+    }
+
+    public void setEstadoProducto(EstadoProducto estadoProducto) {
+        this.estadoProducto = estadoProducto;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public int update()
+    {
+        webProductos web = new webProductos(this);
+        int ide = -1;
+        web.execute(4);
+        return ide;
+    }
+
+
+    private class webProductos  extends AsyncTask<Integer, Void, Integer> {
+        private Producto producto;
+
+        public webProductos(Producto producto) {
+            this.producto = producto;
+        }
+        public int updateOnWeb() {
+
+            try {
+                URL url = new URL("http://vikinsoft.com/weplay/index.php?r=productos/update");
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                String urlParameters =
+                        "id="+ this.producto.id +
+                                "&nombre=" + this.producto.nombre +
+                                "&descripcion=" + this.producto.descripcion +
+                                "&id_usuario=" + this.producto.usuario.getId() +
+                                "&id_estado=" +this.producto.estadoProducto.getId() +
+                                "&envio=" + this.producto.envio +
+                                "&precio_negociable=" + this.producto.precio_negociable +
+                                "&precio=" + this.producto.precio +
+                                "&id_moneda=" + this.producto.moneda.getId() +
+                                "&vistas=" + this.producto.vistas +
+                                "&favoritos=" + this.producto.favoritos +
+                                "&id_categoria=" + this.producto.categoria.getId();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+                connection.setRequestProperty("Accept-Charset", "UTF-8");
+
+                //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+                int responseCode = connection.getResponseCode();
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+                StringBuilder responseOutput = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    responseOutput.append(line);
+                }
+                br.close();
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(responseOutput.toString());
+                    this.producto.id=Integer.parseInt(jsonObject.getString("id"));
+                    /*for (FotosProductos fotosProductos : this.producto.fotos)
+                    {
+                        fotosProductos.setId_productp(this.producto.id);
+                        fotosProductos.saveOnWeb();
+                    }*/
+                    return this.producto.id;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(responseOutput.toString());
+
+            } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return -1;
+        }
+
+        @Override
+        protected Integer doInBackground(Integer... integers) {
+            if(integers[0] == 4)
+            {
+                return this.updateOnWeb();
+            }
+            return -1;
+        }
+    }
+
 
 }

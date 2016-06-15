@@ -1,19 +1,25 @@
 package com.vikinsoft.wp;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -25,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +38,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.vikinsoft.wp.adapter.ProductosAdaptador;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -50,6 +56,10 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
     HashMap<String, CompoundButton> hash = new HashMap<String, CompoundButton>();
     HashMap<String, CompoundButton> hash2 = new HashMap<String, CompoundButton>();
     private Usuario usuario;
+    private boolean editPerfil = false;
+    private RecyclerView recyclerView;
+    private ProductosAdaptador adaptador;
+
 
     public PerfilUsuario(Usuario usuario)
     {
@@ -66,8 +76,34 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
 
         final GlobalClass appstate =(GlobalClass) getApplicationContext();
 
+        Bundle b = getIntent().getExtras();
+        int value = -1;
+        if(b != null)
+        {
+            value = b.getInt("id_usuario");
+            usuario = appstate.getUsuariobyID(value);
+            this.editPerfil = true;
+        }else{
+            usuario = appstate.usuario;
+            this.editPerfil = false;
+        }
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_user);
+
+        usuario.getProductosVendiendo();
+        if(!usuario.getProductos().isEmpty())
+        {
+            recyclerView = (RecyclerView) findViewById(R.id.recycler_view_productos_vendiendo);
+            adaptador = new ProductosAdaptador(this, usuario.getProductos());
+
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adaptador);
+
+        }
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_perfil);
 
@@ -84,9 +120,9 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
-        if(appstate.usuario.getFoto()==1) {
-            ImageView perfil = (ImageView) findViewById(R.id.imagen_perfil);
-            perfil.setImageBitmap(appstate.usuario.getImagen());
+        if(usuario.getFoto()==1) {
+            ImageView perfil = (ImageView) findViewById(R.id.imagen_perfil_detalle);
+            perfil.setImageBitmap(usuario.getImagen());
         }
 
         SupportMapFragment mapFragment =
@@ -95,7 +131,7 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
         mapFragment.getView().setClickable(true);
 
         TextView nombre_perfil = (TextView)findViewById(R.id.logged_nombre);
-        nombre_perfil.setText(appstate.usuario.getNombre());
+        nombre_perfil.setText(usuario.getNombre());
 
         final LinearLayout verifi = (LinearLayout)findViewById(R.id.lay_verificacion);
 
@@ -128,6 +164,14 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
         final LinearLayout vista_favoritos = (LinearLayout) findViewById(R.id.lay_perf_fav);
 
 
+
+        /////////////INICIO DECLARACION MODAL REGISTRO////////////////////
+        final FloatingActionButton botonflotante = (FloatingActionButton) findViewById(R.id.fab_enlistar);
+        if(this.editPerfil)
+        {
+            botonflotante.setVisibility(View.GONE);
+        }
+
         boton_enventa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +180,12 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
                 vista_vendidos.setVisibility(View.INVISIBLE);
                 vista_opiniones.setVisibility(View.INVISIBLE);
                 vista_favoritos.setVisibility(View.INVISIBLE);
+                if(editPerfil)
+                {
+                    botonflotante.setVisibility(View.GONE);
+                }else{
+                    botonflotante.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -146,6 +196,8 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
                 vista_vendidos.setVisibility(View.VISIBLE);
                 vista_opiniones.setVisibility(View.INVISIBLE);
                 vista_favoritos.setVisibility(View.INVISIBLE);
+                botonflotante.setVisibility(View.GONE);
+
             }
         });
 
@@ -156,6 +208,8 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
                 vista_vendidos.setVisibility(View.INVISIBLE);
                 vista_opiniones.setVisibility(View.VISIBLE);
                 vista_favoritos.setVisibility(View.INVISIBLE);
+                botonflotante.setVisibility(View.GONE);
+
             }
         });
 
@@ -166,11 +220,12 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
                 vista_vendidos.setVisibility(View.INVISIBLE);
                 vista_opiniones.setVisibility(View.INVISIBLE);
                 vista_favoritos.setVisibility(View.VISIBLE);
+                botonflotante.setVisibility(View.GONE);
+
             }
         });
 
-        /////////////INICIO DECLARACION MODAL REGISTRO////////////////////
-        final FloatingActionButton botonflotante = (FloatingActionButton) findViewById(R.id.fab_enlistar);
+
         botonflotante.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -478,8 +533,21 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_perfil, menu);
+        //getMenuInflater().inflate(R.menu.menu_perfil, menu);
+        //return true;
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_perfil, menu);
+        MenuItem fav = menu.findItem(R.id.action_editar);
+        MenuItem share = menu.findItem(R.id.action_perfil_logout);
+        if (this.editPerfil) {
+            fav.setVisible(false);
+            share.setVisible(false);
+        } else {
+            fav.setVisible(true);
+            share.setVisible(true);        }
         return true;
+
     }
 
     @Override
@@ -496,7 +564,7 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
             Intent editarPerfil = new Intent(PerfilUsuario.this, EditarPerfil.class);
             PerfilUsuario.this.startActivity(editarPerfil);
         }else if (id == R.id.action_perfil_logout){
-            appstate.usuario.logOut();
+            usuario.logOut();
             Intent main = new Intent(PerfilUsuario.this,MainActivity.class);
             PerfilUsuario.this.startActivity(main);
             finish();
@@ -527,11 +595,11 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
                 PerfilUsuario.this.startActivity(myIntent);
             }
         });
-        System.out.println("Latitud "+appstate.usuario.getLatitud());
-        System.out.println("Longitud "+appstate.usuario.getLongitud());
+        System.out.println("Latitud "+usuario.getLatitud());
+        System.out.println("Longitud "+usuario.getLongitud());
 
-        Double latitud = appstate.usuario.getLatitud();
-        Double longitud = appstate.usuario.getLongitud();
+        Double latitud = usuario.getLatitud();
+        Double longitud = usuario.getLongitud();
 
         CameraUpdate center=
                 CameraUpdateFactory.newLatLng(new LatLng(longitud,latitud));
@@ -543,6 +611,50 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
 
 
     }
+
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)

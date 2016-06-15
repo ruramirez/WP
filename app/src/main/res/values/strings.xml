@@ -29,6 +29,12 @@
     <string name="nav_item_invita">Invita a tus amigos</string>
     <string name="nav_item_ayuda">Ayuda</string>
 
+
+    <string name="action_favorito">Agregar a favorito</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_report">Reporta esta publicacion</string>
+
+
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="signed_in">Signed in</string>
     <string name="signing_in">Signing in…</string>

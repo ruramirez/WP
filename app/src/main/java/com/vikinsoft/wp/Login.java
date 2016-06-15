@@ -9,6 +9,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -144,9 +146,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                     }
 
                                     try {
+
+
                                         boolean result = appstate.usuario.saveUsuario();
                                         if (result) {
-                                            finish();
+                                            Intent intent  = new Intent(Login.this,MainActivity.class);
+                                            Login.this.startActivity(intent);
                                         }
 
                                     } catch (InterruptedException e) {
@@ -269,7 +274,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             if(foto != null) {
                 appstate.usuario.setImagen(foto);
                 appstate.usuario.setFoto(1);
-
             }
 
             try {
@@ -277,7 +281,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 boolean resultG = appstate.usuario.saveUsuario();
                 if(resultG)
                 {
-                    finish();
+                    Intent intent  = new Intent(Login.this,MainActivity.class);
+                    Login.this.startActivity(intent);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

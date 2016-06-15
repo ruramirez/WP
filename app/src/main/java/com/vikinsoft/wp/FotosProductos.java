@@ -270,6 +270,7 @@ public class FotosProductos {
             dStream.flush();
             dStream.close();
             int responseCode = connection.getResponseCode();
+            System.out.println("Codigo fotos"+responseCode);
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line = "";
             StringBuilder responseOutput = new StringBuilder();
@@ -278,6 +279,7 @@ public class FotosProductos {
             }
             br.close();
             JSONObject jsonObject = null;
+
             try {
                 jsonObject = new JSONObject(responseOutput.toString());
                 this.id=Integer.parseInt(jsonObject.getString("id"));

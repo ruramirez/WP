@@ -79,7 +79,7 @@
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:id="@+id/contenedor_moneda_registro"
         android:layout_below="@+id/producto_descripcion"
         android:layout_alignParentLeft="true"
@@ -118,10 +118,10 @@
             android:id="@+id/arrow_moneda"
             android:src="@drawable/arrowdown"
             android:background="#FFFFFF"
-            android:layout_alignTop="@+id/producto_moneda"
+            android:clickable="true"
+            android:layout_alignBottom="@+id/producto_moneda"
             android:layout_toRightOf="@+id/producto_moneda"
-            android:layout_toEndOf="@+id/producto_moneda"
-            android:clickable="true" />
+            android:layout_toEndOf="@+id/producto_moneda" />
 
     </RelativeLayout>
 
@@ -162,11 +162,13 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:id="@+id/arrow_categorias"
+            android:src="@drawable/arrowdown"
+            android:background="#FFFFFF"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/arrowdown"
-            android:background="#FFFFFF" />
+            android:layout_marginRight="55dp"
+            android:layout_marginEnd="55dp" />
     </RelativeLayout>
 
     <LinearLayout

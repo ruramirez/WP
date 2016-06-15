@@ -20,7 +20,7 @@ public class GlobalClass extends MultiDexApplication {
     public Usuario usuario;
     public List<Categoria> categorias;
     public List<Moneda> monedas;
-    public List<EstadoProducto> estadoProductos;
+    public List<EstadoProducto> estados;
     public listaProductos listaProductos;
     public List<Usuario> usuarios;
 
@@ -34,6 +34,7 @@ public class GlobalClass extends MultiDexApplication {
 
         this.categorias = Categoria.getAllCategorias();
         this.monedas = Moneda.getAllMonedas();
+        this.estados = EstadoProducto.getAllEstados();
     }
 
     public void loadConfig(){
@@ -42,6 +43,18 @@ public class GlobalClass extends MultiDexApplication {
 
         try {
             listaProductos.execute(2).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void searchByUsuario(){
+        this.listaProductos = new listaProductos(this);
+
+        try {
+            listaProductos.execute(3).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -89,6 +102,16 @@ public class GlobalClass extends MultiDexApplication {
                 return moneda;
         }
         return new Moneda();
+    }
+
+    public EstadoProducto getElementoByID(int id)
+    {
+        for (EstadoProducto estadoProducto : this.estados) {
+            System.out.println("Estadooo "+estadoProducto.getId());
+            if(estadoProducto.getId()== id)
+                return estadoProducto;
+        }
+        return null;
     }
 
 }

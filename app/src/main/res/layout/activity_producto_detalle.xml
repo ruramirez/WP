@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:gravity="center_horizontal"
@@ -6,50 +7,302 @@
     android:layout_height="fill_parent"
     android:weightSum="1">
 
-    <com.daimajia.slider.library.SliderLayout
-        android:id="@+id/slider"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        />
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollView3"
+        android:layout_below="@+id/toolbar_detalle_producto"
+        android:layout_above="@+id/detalle_chatea_layout">
 
-    <TextView
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <com.daimajia.slider.library.SliderLayout
+                    android:id="@+id/slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:id="@+id/reservar_vender_layout"
+                android:visibility="gone">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reservar"
+                    android:id="@+id/boton_reservar"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="56dp"
+                    android:layout_marginStart="56dp"
+                    android:background="@drawable/botonreservar"
+                    android:visibility="visible" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vendido"
+                    android:id="@+id/boton_vendido"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="48dp"
+                    android:layout_marginEnd="48dp"
+                    android:background="@drawable/botonreservar" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Remover reserva"
+                    android:id="@+id/boton_removerreserva"
+                    android:background="@drawable/botonreservarazul"
+                    android:layout_marginLeft="56dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/boton_reservar"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/precioymoneda_detalle"
+                    android:layout_weight="0.08"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:textSize="30dp"
+                    android:text="PRECIO Y MONEDA"
+                    android:visibility="visible"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/titulo_detalle"
+                    android:layout_weight="0.08"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:textSize="20dp"
+                    android:text="Titulo"
+                    android:visibility="visible"
+                    android:layout_below="@+id/precioymoneda_detalle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/descripcion_detalle"
+                    android:layout_weight="0.08"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:textSize="15dp"
+                    android:text="Descripcion"
+                    android:visibility="visible"
+                    android:layout_below="@+id/titulo_detalle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/detalle_direccion"
+                    android:layout_weight="0.08"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:textSize="20dp"
+                    android:text="Direccion"
+                    android:visibility="visible"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:id="@+id/fragmento_mapa_detalle"
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_below="@+id/detalle_direccion"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:src="@drawable/com_facebook_profile_picture_blank_square"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:id="@+id/imagen_perfil_detalle"
+                    android:adjustViewBounds="false"
+                    android:translationZ="50.0dp"
+                    android:cropToPadding="false"
+                    android:contextClickable="false"
+                    android:elevation="15dp"
+                    android:layout_below="@+id/detalle_direccion"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="54dp" />
+
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ratingBar"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@+id/detalle_usuario_nombre"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Nombre PrimerApellido S."
+                    android:id="@+id/detalle_usuario_nombre"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@+id/imagen_perfil_detalle"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="384dp"
+                android:layout_height="85dp"
+                android:layout_gravity="bottom">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detalle_cambios"
+                    android:layout_marginRight="35dp"
+                    android:layout_marginEnd="35dp"
+                    android:src="@android:drawable/ic_menu_revert"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toLeftOf="@+id/detalle_preciofijo"
+                    android:layout_toStartOf="@+id/detalle_preciofijo" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detalle_preciofijo"
+                    android:src="@android:drawable/ic_lock_idle_lock"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignTop="@+id/detalle_cambios" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detalle_envios"
+                    android:layout_alignWithParentIfMissing="false"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginStart="36dp"
+                    android:src="@android:drawable/ic_menu_mapmode"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@+id/detalle_preciofijo"
+                    android:layout_toEndOf="@+id/detalle_preciofijo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Opciones adicionales"
+                    android:id="@+id/textView17"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="384dp"
+                android:layout_height="85dp"
+                android:layout_gravity="bottom"
+                android:layout_alignTop="@+id/scrollView3"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/compartir_fb"
+                    android:src="@drawable/com_facebook_button_icon_blue"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/textView18" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Compatir esta publicacion"
+                    android:id="@+id/textView18"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/precioymoneda_detalle"
-        android:layout_weight="0.08"
-        android:layout_below="@+id/slider"
+        android:background="#f58e07"
+        android:id="@+id/toolbar_detalle_producto">
+
+        <include
+            android:id="@+id/toolbar_detalle_final"
+            layout="@layout/detalle_toolbar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#f58e07"
+        android:id="@+id/detalle_chatea_layout"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:textSize="30dp" />
+        android:gravity="center_horizontal">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/titulo_detalle"
-        android:layout_weight="0.08"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:textSize="20dp"
-        android:layout_below="@+id/precioymoneda_detalle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/descripcion_detalle"
-        android:layout_weight="0.08"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:textSize="15dp"
-        android:layout_below="@+id/titulo_detalle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Chatea"
+            android:id="@+id/detalle_chatea"
+            android:layout_gravity="center_vertical"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
 
 
 </RelativeLayout>
