@@ -92,6 +92,8 @@ public class ProductosAdaptador extends RecyclerView.Adapter<ProductosAdaptador.
                     Bundle b = new Bundle();
                     b.putInt("id_producto", producto.getId());
                     intent.putExtras(b);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     mContext.startActivity(intent);
                 }
             });

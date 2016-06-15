@@ -480,6 +480,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 
                             EstadoProducto estado = appstate.getElementoByID(0);
+                            //appstate.usuario.setLoaded(true);
+                            //appstate.usuario.setImageLoaded(true);
 
                             Producto producto = new Producto(fotos, appstate.usuario ,appstate.getCategoriaID(Integer.parseInt(hash.get("1").getTag().toString())) ,appstate.getMonedabyID(Integer.parseInt(hash2.get("1").getTag().toString())), titulo.getText().toString(),descripcion.getText().toString(),enviar,negociable,precio_final_float,estado,getApplicationContext(), dialog);
                             try {
@@ -487,23 +489,17 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 {
                                     dialog.dismiss();
 
+                                    Producto temp = new Producto(producto.getId(),getApplicationContext());
                                     List<Producto> productos=appstate.listaProductos.getProductos();
-                                    System.out.println("Antes de apendear"+productos.size());
-                                    productos.add(producto);
-                                    System.out.println("Despues de apendear"+productos.size());
+                                    productos.add(0,temp);
 
                                     appstate.listaProductos.setProductos(productos);
-                                    System.out.println("Seteando");
 
                                     adaptador = new ProductosAdaptador(getApplicationContext(), appstate.listaProductos.getProductos());
-                                    System.out.println("Creando");
 
                                     recyclerView.setAdapter(adaptador);
-                                    System.out.println("Recicler mas adaptador");
 
                                     adaptador.notifyDataSetChanged();
-                                    System.out.println("Cambie chif!");
-
 
                                 }
                             } catch (InterruptedException e) {

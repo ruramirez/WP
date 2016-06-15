@@ -116,6 +116,14 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
     }
 
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
+    public void setImageLoaded(boolean imageLoaded) {
+        this.imageLoaded = imageLoaded;
+    }
+
     private Usuario(String Email, String Password, Context applicationContex, Activity activity) {
         try {
             this.activity = activity;
