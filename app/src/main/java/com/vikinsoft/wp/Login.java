@@ -145,6 +145,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                         //appstate.usuario.storeImage(fb_img);
                                     }
 
+                                    appstate.usuario.loadProductosVendiendo(appstate);
+                                    appstate.usuario.loadProductosVendidos(appstate);
+
                                     try {
 
 
@@ -208,8 +211,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                             GlobalClass appstate = (GlobalClass) getApplicationContext();
                                             appstate.usuario = Usuario.logIn(correo_str, pass_str, getApplicationContext(), appstate.usuario.getActivity());
                                             appstate.usuario.startLocationListener(appstate.usuario.getActivity());
+
                                             //aqui va el login normal
                                             if (appstate.usuario.isLoged()) {
+                                                appstate.usuario.loadProductosVendiendo(appstate);
+                                                appstate.usuario.loadProductosVendidos(appstate);
                                                 finish();
                                             } else {
                                                 Toast.makeText(Login.this, "Credenciales incorrectas , intenta de nuevo.", Toast.LENGTH_SHORT).show();
@@ -266,6 +272,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             appstate.usuario.setPassword(acct.getId());
             appstate.usuario.setGoogle(1);
             appstate.usuario.startLocationListener(appstate.usuario.getActivity());
+            appstate.usuario.loadProductosVendiendo(appstate);
+            appstate.usuario.loadProductosVendidos(appstate);
 
             String url = acct.getPhotoUrl().toString();
 

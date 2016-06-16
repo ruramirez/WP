@@ -192,6 +192,9 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
                 botones.setVisibility(View.GONE);
                 producto.setEstadoProducto(appstate.getElementoByID(1));
                 producto.update();
+                appstate.usuario.ChangeProductoVendiendoAvendido(producto);
+
+
             }
         });
 

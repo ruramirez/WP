@@ -43,7 +43,6 @@ public class FragmentDrawer extends Fragment {
     private static TypedArray navMenuIcons;
 
     public FragmentDrawer() {
-        System.out.println("WEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2222222222222222222222222222");
 
     }
 
@@ -87,11 +86,13 @@ public class FragmentDrawer extends Fragment {
 
         GlobalClass appstate =(GlobalClass) getActivity().getApplicationContext();
 
-        appstate.usuario =Usuario.loadUsuario(getContext(),appstate.usuario.getActivity());
+        //appstate.usuario =Usuario.loadUsuario(getContext(),appstate.usuario.getActivity());
         if(appstate.usuario.isLoged())
         {
             layout.findViewById(R.id.profile_logged).setVisibility(View.VISIBLE);
             ((TextView)layout.findViewById(R.id.header_nombre)).setText(appstate.usuario.getNombre());
+            ((TextView)layout.findViewById(R.id.header_prod)).setText(appstate.usuario.getCountAllProductos()+ " Productos");
+
             layout.findViewById(R.id.profile_nologged).setVisibility(View.INVISIBLE);
             if(appstate.usuario.getFoto()==1)
             {
@@ -142,8 +143,8 @@ public class FragmentDrawer extends Fragment {
                 super.onDrawerSlide(drawerView, slideOffset);
                 toolbar.setAlpha(1 - slideOffset / 2);
                 GlobalClass appstate = (GlobalClass) getContext().getApplicationContext();
-                appstate.usuario = new Usuario(getContext(),appstate.usuario.getActivity());
-                appstate.usuario = appstate.usuario.loadUsuario(getContext(),appstate.usuario.getActivity());
+                //appstate.usuario = new Usuario(getContext(),appstate.usuario.getActivity());
+                //appstate.usuario = appstate.usuario.loadUsuario(getContext(),appstate.usuario.getActivity());
 
                 if(appstate.usuario.isLoged())
                 {

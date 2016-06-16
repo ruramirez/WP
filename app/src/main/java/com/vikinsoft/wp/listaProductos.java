@@ -32,26 +32,13 @@ public class listaProductos extends AsyncTask<Integer, Void, Integer> {
         this.applicationContext=applicationContext;
     }
 
-    public listaProductos(Usuario usuario,Context applicationContext)
-    {
-
-    }
-    //getnextpage , hacemos execute enviando parametros de la paginacion
-
     @Override
     protected Integer doInBackground(Integer... integers) {
         if(integers[0] == 2)
         {
             return this.loadAllWeb();
-        }else if (integers[0] == 3)
-        {
+        }else if (integers[0] == 3) {
             return this.loadByUsuario();
-        }else if (integers[0] == 4)
-        {
-            return this.loadUsuariosProductos();
-        }else if (integers[0] == 5)
-        {
-            return this.loadUsuariosProductosVendidos();
         }
         return -1;
     }
@@ -95,7 +82,7 @@ public class listaProductos extends AsyncTask<Integer, Void, Integer> {
                     //
                     for(int i=0;i<jsonObject.length();i++){
                         JSONObject obj3=jsonObject.getJSONObject(i);
-                        this.productos.add(new Producto(Integer.parseInt(obj3.getString("id")),this.applicationContext));
+                        this.productos.add(new Producto(Integer.parseInt(obj3.getString("id")),this.applicationContext,(GlobalClass) this.applicationContext));
                     }
                     return 1;
                 }
@@ -145,7 +132,7 @@ public class listaProductos extends AsyncTask<Integer, Void, Integer> {
                     //
                     for(int i=0;i<jsonObject.length();i++){
                         JSONObject obj3=jsonObject.getJSONObject(i);
-                        this.productos.add(new Producto(Integer.parseInt(obj3.getString("id")),this.applicationContext));
+                        this.productos.add(new Producto(Integer.parseInt(obj3.getString("id")),this.applicationContext,(GlobalClass)this.applicationContext));
                     }
                     return 1;
                 }
@@ -164,108 +151,6 @@ public class listaProductos extends AsyncTask<Integer, Void, Integer> {
         return -1;
     }
 
-    public int loadUsuariosProductos() {
-        try {
 
-            URL url = new URL("http://vikinsoft.com/weplay/index.php?r=usuarios/getProductos");
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            String urlParameters =
-                    "usuario=" + this.usuario.getId();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-            connection.setRequestProperty("Accept-Charset", "UTF-8");
-            //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-            connection.setDoOutput(true);
-            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
-            dStream.writeBytes(urlParameters);
-            dStream.flush();
-            dStream.close();
-            int responseCode = connection.getResponseCode();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line = "";
-            StringBuilder responseOutput = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                responseOutput.append(line);
-            }
-            br.close();
-            JSONArray jsonObject = null;
-            System.out.println("LA trazaaaaaaaaaaaaaaa"+responseOutput.toString());
-
-            try {
-                jsonObject = new JSONArray(responseOutput.toString());
-                for (int i = 0; i < jsonObject.length(); i++) {
-                    JSONObject row = jsonObject.getJSONObject(i);
-                    this.productos.add(new Producto(Integer.valueOf(row.getString("id")),this.applicationContext));
-                }
-            } catch (JSONException e) {
-
-                e.printStackTrace();
-            }
-
-        } catch (MalformedURLException e) {
-
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return -1;
-
-    }
-
-    public int loadUsuariosProductosVendidos() {
-        try {
-
-            URL url = new URL("http://vikinsoft.com/weplay/index.php?r=usuarios/getProductosVendidos");
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            String urlParameters =
-                    "usuario=" + this.usuario.getId() ;
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-            connection.setRequestProperty("Accept-Charset", "UTF-8");
-            //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-            connection.setDoOutput(true);
-            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
-            dStream.writeBytes(urlParameters);
-            dStream.flush();
-            dStream.close();
-            int responseCode = connection.getResponseCode();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line = "";
-            StringBuilder responseOutput = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                responseOutput.append(line);
-            }
-            br.close();
-            JSONArray jsonObject = null;
-            System.out.println("LA trazaaaaaaaaaaaaaaa"+responseOutput.toString());
-
-            try {
-                jsonObject = new JSONArray(responseOutput.toString());
-                for (int i = 0; i < jsonObject.length(); i++) {
-                    JSONObject row = jsonObject.getJSONObject(i);
-                    this.productos.add(new Producto(Integer.valueOf(row.getString("id")),this.applicationContext));
-                }
-            } catch (JSONException e) {
-
-                e.printStackTrace();
-            }
-
-        } catch (MalformedURLException e) {
-
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return -1;
-
-    }
 
 }

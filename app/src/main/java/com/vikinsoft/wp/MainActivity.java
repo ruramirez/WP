@@ -83,8 +83,20 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         final GlobalClass appstate = (GlobalClass) getApplicationContext();
         appstate.loadConfig();
         appstate.usuario = Usuario.loadUsuario(this, this);
+        appstate.usuario.setApplicationContext(getApplicationContext());
+        appstate.usuario.setAppstate((GlobalClass) getApplicationContext());
+        if (appstate.usuario.isLoged())
+        {
+            if(appstate.usuario.getCountPoductosVendidos()==0) {
+                appstate.usuario.loadProductosVendidos(appstate);
+            }
+            if(appstate.usuario.getCountProductosVendiendo()==0) {
+                appstate.usuario.loadProductosVendiendo(appstate);
+            }
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_productos);
         adaptador = new ProductosAdaptador(this, appstate.listaProductos.getProductos());
@@ -489,8 +501,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 {
                                     dialog.dismiss();
 
-                                    Producto temp = new Producto(producto.getId(),getApplicationContext());
+                                    Producto temp = new Producto(producto.getId(),getApplicationContext(),appstate);
                                     List<Producto> productos=appstate.listaProductos.getProductos();
+                                    appstate.usuario.addProductoVendiendo(temp);
                                     productos.add(0,temp);
 
                                     appstate.listaProductos.setProductos(productos);

@@ -63,11 +63,6 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
     private ProductosAdaptador adaptador;
 
 
-    public PerfilUsuario(Usuario usuario)
-    {
-        this.usuario=usuario;
-    }
-
     public PerfilUsuario()
     {
 
@@ -84,11 +79,12 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
         {
             value = b.getInt("id_usuario");
             usuario = appstate.getUsuariobyID(value);
+            usuario.loadProductosVendidos(appstate);
+            usuario.loadProductosVendiendo(appstate);
             this.editPerfil = true;
         }else{
             usuario = appstate.usuario;
             this.editPerfil = false;
-            System.out.println("siawebo");
         }
         
         super.onCreate(savedInstanceState);
@@ -105,14 +101,10 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
         final LinearLayout vista_favoritos = (LinearLayout) findViewById(R.id.lay_perf_fav);
 
         TextView textoenventa = (TextView) findViewById(R.id.contador_prod);
+        textoenventa.setText(""+usuario.getCountProductosVendiendo());
         TextView textovendido = (TextView) findViewById(R.id.contador_vendido);
         TextView textoopinion = (TextView) findViewById(R.id.contador_opinion);
         TextView textofavoritos = (TextView) findViewById(R.id.contador_prod);
-
-
-        //usuario.getProductosVendiendo(this.getApplicationContext());
-        System.out.println("Creados con exito!");
-        System.out.println("Creados con exito!"+appstate.usuario.getProductosVendidos().size());
 
         if(!usuario.getProductosVendiendo().isEmpty())
         {

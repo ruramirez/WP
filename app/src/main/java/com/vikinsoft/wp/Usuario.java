@@ -85,17 +85,18 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     public List<Producto> productosVendidos = new ArrayList<>();
 
 
-    public Usuario(int id, Context applicationContex)
-    {
+    public void setAppstate(Application appstate) {
+        this.appstate = appstate;
+    }
+
+    public Usuario(int id, Context applicationContex) {
         this.id=id;
         this.applicationContext = applicationContex;
 
 
     }
 
-
-    public void fillValues()
-    {
+    public void fillValues() {
 
 
         final GlobalClass appstate = (GlobalClass) this.applicationContext;
@@ -105,7 +106,6 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             web.execute(5);
             this.loadImage();
             this.imageLoaded=true;
-            System.out.println("YS CASRGRE USUARIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         }
         else
         {
@@ -220,21 +220,18 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     }
 
     public static Usuario loadUsuario(Context applicationContext, Activity activity) {
-        GlobalClass appstate = (GlobalClass) applicationContext;
-
         DatabaseHandler db = new DatabaseHandler(applicationContext);
 
         Usuario usuario = db.getUsuario(activity);
         if (usuario.getFoto() == 1) {
             usuario.loadImage();
         }
-        appstate.searchByVendiendo();
-        usuario.productosVendiendo = appstate.listaProductos.getProductos();
-
-        appstate.searchByVendidos();
-        usuario.productosVendidos = appstate.listaProductos.getProductos();
 
         return usuario;
+    }
+
+    public void setApplicationContext(Context applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
     public boolean saveUsuario() throws InterruptedException, ExecutionException {
@@ -276,11 +273,89 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
     }
 
-
     public Bitmap getImagen() {
 
 
         return this.imagen;
+    }
+
+    public void addProductoVendiendo(Producto producto)
+    {
+        this.productosVendiendo.add(0,producto);
+    }
+
+
+    public void loadProductosVendidos(GlobalClass appstate){
+        webUsuarios web = new webUsuarios(this);
+        web.usuario.setAppstate(appstate);
+        try {
+            int result = web.execute(6).get();
+            this.productosVendidos=web.usuario.getProductosVendidos();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    public void ChangeProductoVendiendoAvendido(Producto productovendido)
+    {
+
+        int contador=0;
+        for (Producto producto : this.productosVendiendo) {
+            if(producto.getId()== productovendido.getId()) {
+                contador++;
+                this.productosVendiendo.remove(contador);
+                this.productosVendidos.add(0,producto);
+                break;
+            }
+        }
+
+
+    }
+
+
+
+    public void loadProductosVendiendo(GlobalClass appstate){
+
+        webUsuarios web = new webUsuarios(this);
+        web.usuario.setAppstate(appstate);
+
+        try {
+            int result = web.execute(7).get();
+            this.productosVendiendo=web.usuario.getProductosVendiendo();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    public void addProductoVendido(Producto producto)
+    {
+        this.productosVendidos.add(0,producto);
+    }
+
+
+    public int getCountPoductosVendidos()
+    {
+        return this.productosVendidos.size();
+    }
+
+    public int getCountAllProductos()
+    {
+        return this.getCountProductosVendiendo()+this.getCountPoductosVendidos();
+    }
+
+    public int getCountProductosVendiendo()
+    {
+        return this.productosVendiendo.size();
     }
 
     public List<Producto> getProductosVendiendo() {
@@ -422,13 +497,8 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
         } else {
             Address address = addresses.get(0);
-            System.out.println("ADDDDRESSSSSSSSSSSSSS "+ address.toString());
-
             this.direccion = address.getAddressLine(2);
         }
-
-        System.out.println("DIRRRRRRRRRRRRRRRRRRRRRRRRR "+ this.direccion);
-
         return direccion;
     }
 
@@ -651,8 +721,6 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
         private int loadWEBimage(){
             try {
-                //set the download URL, a url that points to a file on the internet
-                //this is the file to be downloaded
                 URL url = new URL("http://vikinsoft.com/WP_avatares/"+this.usuario.id+".jpg");
                 InputStream in = new BufferedInputStream(url.openStream());
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -858,9 +926,6 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
         }
 
-
-
-
         public int saveOnWeb() {
             try {
                 URL url = new URL("http://vikinsoft.com/weplay/index.php?r=usuarios/create");
@@ -915,6 +980,110 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             return -1;
         }
 
+        public int loadProductosVendiendo() {
+            try {
+
+                URL url = new URL("http://vikinsoft.com/weplay/index.php?r=usuarios/getProductos");
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                String urlParameters =
+                        "usuario=" + this.usuario.getId();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+                connection.setRequestProperty("Accept-Charset", "UTF-8");
+                //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+                int responseCode = connection.getResponseCode();
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+                StringBuilder responseOutput = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    responseOutput.append(line);
+                }
+                br.close();
+                JSONArray jsonObject = null;
+
+                try {
+                    jsonObject = new JSONArray(responseOutput.toString());
+                    for (int i = 0; i < jsonObject.length(); i++) {
+                        JSONObject row = jsonObject.getJSONObject(i);
+                        this.usuario.productosVendiendo=new ArrayList<>();
+
+                        this.usuario.addProductoVendiendo(new Producto(Integer.valueOf(row.getString("id")),this.usuario.appstate,(GlobalClass)this.usuario.appstate));
+                    }
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+
+            } catch (MalformedURLException e) {
+
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return -1;
+
+        }
+
+        public int loadProductosVendidos() {
+            try {
+
+                URL url = new URL("http://vikinsoft.com/weplay/index.php?r=usuarios/getProductosVendidos");
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                String urlParameters =
+                        "usuario=" + this.usuario.getId() ;
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+                connection.setRequestProperty("Accept-Charset", "UTF-8");
+                //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+                int responseCode = connection.getResponseCode();
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+                StringBuilder responseOutput = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    responseOutput.append(line);
+                }
+                br.close();
+                JSONArray jsonObject = null;
+
+                try {
+                    jsonObject = new JSONArray(responseOutput.toString());
+                    for (int i = 0; i < jsonObject.length(); i++) {
+                        JSONObject row = jsonObject.getJSONObject(i);
+                        this.usuario.productosVendidos=new ArrayList<>();
+                        this.usuario.addProductoVendido(new Producto(Integer.valueOf(row.getString("id")),this.usuario.applicationContext,(GlobalClass)this.usuario.appstate));
+                    }
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+
+            } catch (MalformedURLException e) {
+
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return -1;
+
+        }
 
         @Override
         protected Integer doInBackground(Integer... integers) {
@@ -932,6 +1101,14 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             else if(integers[0]== 5)
             {
                 return this.loadWEBimage();
+            }
+            else if(integers[0]== 6)
+            {
+                return this.loadProductosVendidos();
+            }
+            else if(integers[0]== 7)
+            {
+                return this.loadProductosVendiendo();
             }
             return -1;
         }

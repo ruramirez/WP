@@ -1,6 +1,7 @@
 package com.vikinsoft.wp;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -52,6 +53,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     private String imagenURL;
     private ImageView imagen;
     private boolean loaded=false;
+    private GlobalClass appstate;
 
 
 
@@ -76,18 +78,27 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
 
     }
 
-    public Producto(Usuario usuario,Context applicationContext) {
+    public Producto(Usuario usuario,Context applicationContext,GlobalClass appstate) {
         this.usuario = usuario;
         this.applicationContext=applicationContext;
+        this.appstate=appstate;
     }
 
 
-    public Producto(int id,Context applicationContext){
+
+
+
+    public Producto(int id,Context applicationContext, GlobalClass appstate){
         this.id = id;
         this.applicationContext=applicationContext;
         this.moneda=new Moneda();
+        this.appstate=appstate;
         this.execute(2);
     }
+
+
+
+
 
     public boolean isLoaded() {
         if(this.moneda==null || this.usuario == null)
@@ -175,7 +186,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     }
 
     public int loadWeb() {
-       final GlobalClass appstate = (GlobalClass) this.applicationContext;
         try {
             URL url = new URL("http://vikinsoft.com/weplay/index.php?r=productos/load");
 
@@ -206,14 +216,14 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                     this.nombre = jsonObject.getString("nombre");
                     this.descripcion = jsonObject.getString("descripcion");
                     this.precio = Double.parseDouble(jsonObject.getString("precio"));
-                    this.categoria = appstate.getCategoriaID(Integer.parseInt(jsonObject.getString("id_categoria")));
-                    this.estadoProducto = appstate.getElementoByID(Integer.parseInt(jsonObject.getString("id_estado")));
+                    this.categoria = this.appstate.getCategoriaID(Integer.parseInt(jsonObject.getString("id_categoria")));
+                    this.estadoProducto = this.appstate.getElementoByID(Integer.parseInt(jsonObject.getString("id_estado")));
 
                     while(!this.moneda.isLoaded()) {
-                        this.moneda = appstate.getMonedabyID(Integer.parseInt(jsonObject.getString("id_moneda")));
+                        this.moneda = this.appstate.getMonedabyID(Integer.parseInt(jsonObject.getString("id_moneda")));
                     }
 
-                    this.usuario=appstate.getUsuariobyID(Integer.parseInt(jsonObject.getString("id_usuario")));
+                    this.usuario=this.appstate.getUsuariobyID(Integer.parseInt(jsonObject.getString("id_usuario")));
                     if(!this.usuario.isLoaded()) {
                         this.usuario = new Usuario(Integer.parseInt(jsonObject.getString("id_usuario")), this.applicationContext);
                         this.usuario.fillValues();

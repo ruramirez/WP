@@ -133,7 +133,6 @@ public class GlobalClass extends MultiDexApplication {
     public EstadoProducto getElementoByID(int id)
     {
         for (EstadoProducto estadoProducto : this.estados) {
-            System.out.println("Estadooo "+estadoProducto.getId());
             if(estadoProducto.getId()== id)
                 return estadoProducto;
         }
