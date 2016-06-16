@@ -216,7 +216,7 @@
                                                     android:layout_height="wrap_content"
                                                     android:textAppearance="?android:attr/textAppearanceLarge"
                                                     android:text="0"
-                                                    android:id="@+id/textView2"
+                                                    android:id="@+id/contador_vendido"
                                                     android:layout_gravity="center_horizontal" />
 
                                                 <TextView
@@ -243,7 +243,7 @@
                                                     android:layout_height="wrap_content"
                                                     android:textAppearance="?android:attr/textAppearanceLarge"
                                                     android:text="0"
-                                                    android:id="@+id/textView4"
+                                                    android:id="@+id/contador_opinion"
                                                     android:layout_gravity="center_horizontal" />
 
                                                 <TextView
@@ -270,7 +270,7 @@
                                                     android:layout_height="wrap_content"
                                                     android:textAppearance="?android:attr/textAppearanceLarge"
                                                     android:text="0"
-                                                    android:id="@+id/textView6"
+                                                    android:id="@+id/contador_fav"
                                                     android:layout_gravity="center_horizontal" />
 
                                                 <TextView
@@ -315,15 +315,12 @@
                                             android:weightSum="1"
                                             android:visibility="invisible">
 
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="127dp"
-                                                    android:textAppearance="?android:attr/textAppearanceLarge"
-                                                    android:text="PRODUCTOS VENDIDOS"
-                                                    android:id="@+id/textView9"
-                                                    android:layout_weight="0.86"
-                                                    android:layout_gravity="center_horizontal"
-                                                    android:gravity="center_vertical" />
+                                                <android.support.v7.widget.RecyclerView
+                                                    android:id="@+id/recycler_view_productos_vendidos"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:clipToPadding="false"
+                                                    android:scrollbars="vertical" />
 
                                         </LinearLayout>
 

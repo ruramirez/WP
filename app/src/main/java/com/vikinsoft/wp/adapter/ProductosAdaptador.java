@@ -38,13 +38,14 @@ public class ProductosAdaptador extends RecyclerView.Adapter<ProductosAdaptador.
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView title, count,precio;
-            public ImageView thumbnail;
+            public ImageView thumbnail,estado;
 
             public MyViewHolder(View view) {
                 super(view);
                 title = (TextView) view.findViewById(R.id.title);
                 count = (TextView) view.findViewById(R.id.count);
                 precio = (TextView) view.findViewById(R.id.precio_card);
+                estado = (ImageView) view.findViewById(R.id.card_estado_detalle);
                 thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             }
         }
@@ -78,6 +79,13 @@ public class ProductosAdaptador extends RecyclerView.Adapter<ProductosAdaptador.
                         {
                             Glide.with(mContext).load(producto.getFotos().get(0).getUrl()).into(holder.thumbnail);
                             fotosloaded = true;
+                        }
+
+                        if(producto.getEstadoProducto().getId() == 2)
+                        {
+                            holder.estado.setImageResource(R.drawable.apartar);
+                        }else if(producto.getEstadoProducto().getId() == 1){
+                            holder.estado.setImageResource(R.drawable.sold);
                         }
                     }
 

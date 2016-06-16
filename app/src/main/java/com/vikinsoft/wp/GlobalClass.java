@@ -35,6 +35,7 @@ public class GlobalClass extends MultiDexApplication {
         this.categorias = Categoria.getAllCategorias();
         this.monedas = Moneda.getAllMonedas();
         this.estados = EstadoProducto.getAllEstados();
+
     }
 
     public void loadConfig(){
@@ -61,6 +62,31 @@ public class GlobalClass extends MultiDexApplication {
             e.printStackTrace();
         }
     }
+
+    public void searchByVendiendo(){
+        this.listaProductos = new listaProductos(this);
+
+        try {
+            listaProductos.execute(3).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void searchByVendidos(){
+        this.listaProductos = new listaProductos(this);
+
+        try {
+            listaProductos.execute(3).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Usuario getUsuariobyID(int id)
     {

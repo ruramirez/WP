@@ -40,6 +40,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.vikinsoft.wp.adapter.ProductosAdaptador;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -86,24 +88,62 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
         }else{
             usuario = appstate.usuario;
             this.editPerfil = false;
+            System.out.println("siawebo");
         }
         
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_user);
 
-        usuario.getProductosVendiendo();
-        if(!usuario.getProductos().isEmpty())
+        LinearLayout boton_enventa = (LinearLayout) findViewById(R.id.perf_venta);
+        LinearLayout boton_vendidos = (LinearLayout) findViewById(R.id.perf_vendidos);
+        LinearLayout boton_opinion = (LinearLayout) findViewById(R.id.perf_opiniones);
+        LinearLayout boton_fav = (LinearLayout) findViewById(R.id.perf_favoritos);
+
+        final LinearLayout vista_enventa = (LinearLayout) findViewById(R.id.lay_perf_enventa);
+        final LinearLayout vista_vendidos = (LinearLayout) findViewById(R.id.lay_perf_vendidos);
+        final LinearLayout vista_opiniones = (LinearLayout) findViewById(R.id.lay_perf_opiniones);
+        final LinearLayout vista_favoritos = (LinearLayout) findViewById(R.id.lay_perf_fav);
+
+        TextView textoenventa = (TextView) findViewById(R.id.contador_prod);
+        TextView textovendido = (TextView) findViewById(R.id.contador_vendido);
+        TextView textoopinion = (TextView) findViewById(R.id.contador_opinion);
+        TextView textofavoritos = (TextView) findViewById(R.id.contador_prod);
+
+
+        //usuario.getProductosVendiendo(this.getApplicationContext());
+        System.out.println("Creados con exito!");
+        System.out.println("Creados con exito!"+appstate.usuario.getProductosVendidos().size());
+
+        if(!usuario.getProductosVendiendo().isEmpty())
         {
             recyclerView = (RecyclerView) findViewById(R.id.recycler_view_productos_vendiendo);
-            adaptador = new ProductosAdaptador(this, usuario.getProductos());
+            adaptador = new ProductosAdaptador(this, usuario.getProductosVendiendo());
 
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(adaptador);
-
+            textoenventa.setText(""+adaptador.getItemCount());
         }
+
+
+        //usuario.getProductosVendidos(this.getApplicationContext());
+        if(!usuario.getProductosVendidos().isEmpty())
+        {
+            recyclerView = (RecyclerView) findViewById(R.id.recycler_view_productos_vendidos);
+            adaptador = new ProductosAdaptador(this, usuario.getProductosVendidos());
+
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adaptador);
+            textovendido.setText(""+adaptador.getItemCount());
+        }
+
+
+
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_perfil);
 
@@ -153,15 +193,7 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
-        LinearLayout boton_enventa = (LinearLayout) findViewById(R.id.perf_venta);
-        LinearLayout boton_vendidos = (LinearLayout) findViewById(R.id.perf_vendidos);
-        LinearLayout boton_opinion = (LinearLayout) findViewById(R.id.perf_opiniones);
-        LinearLayout boton_fav = (LinearLayout) findViewById(R.id.perf_favoritos);
 
-        final LinearLayout vista_enventa = (LinearLayout) findViewById(R.id.lay_perf_enventa);
-        final LinearLayout vista_vendidos = (LinearLayout) findViewById(R.id.lay_perf_vendidos);
-        final LinearLayout vista_opiniones = (LinearLayout) findViewById(R.id.lay_perf_opiniones);
-        final LinearLayout vista_favoritos = (LinearLayout) findViewById(R.id.lay_perf_fav);
 
 
 

@@ -89,12 +89,11 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
             System.out.println("el id"+value);
             producto = appstate.getProductobyID(value);
         }
-
+        final RelativeLayout botones = (RelativeLayout) findViewById(R.id.reservar_vender_layout);
 
         usuario = producto.getUsuario();
         if(usuario.getId() == appstate.usuario.getId())
         {
-            RelativeLayout botones = (RelativeLayout) findViewById(R.id.reservar_vender_layout);
             botones.setVisibility(View.VISIBLE);
         }
 
@@ -150,6 +149,7 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         }
 
 
+
         imagen.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -164,12 +164,14 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
 
         final Button botonDesreservar = (Button) findViewById(R.id.boton_removerreserva);
         final Button botonReservar = (Button) findViewById(R.id.boton_reservar);
+        final Button botonVender = (Button) findViewById(R.id.boton_vendido);
+
         botonReservar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.setVisibility(View.GONE);
                 botonDesreservar.setVisibility(View.VISIBLE);
-                producto.setEstadoProducto(appstate.getElementoByID(3));
+                producto.setEstadoProducto(appstate.getElementoByID(2));
                 producto.update();
             }
         });
@@ -179,8 +181,20 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
             public void onClick(View v) {
                 v.setVisibility(View.GONE);
                 botonReservar.setVisibility(View.VISIBLE);
+                producto.setEstadoProducto(appstate.getElementoByID(0));
+                producto.update();
             }
         });
+
+        botonVender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                botones.setVisibility(View.GONE);
+                producto.setEstadoProducto(appstate.getElementoByID(1));
+                producto.update();
+            }
+        });
+
 
     }
 
