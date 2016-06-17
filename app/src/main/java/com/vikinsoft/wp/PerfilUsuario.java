@@ -121,7 +121,7 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
 
 
         //usuario.getProductosVendidos(this.getApplicationContext());
-      /*  if(!usuario.getProductosVendidos().isEmpty())
+        if(!usuario.getProductosVendidos().isEmpty())
         {
             recyclerView = (RecyclerView) findViewById(R.id.recycler_view_productos_vendidos);
             adaptador = new ProductosAdaptador(this, usuario.getProductosVendidos());
@@ -132,7 +132,7 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(adaptador);
             textovendido.setText(""+adaptador.getItemCount());
-        }*/
+        }
 
 
 
@@ -626,7 +626,7 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
         Double longitud = usuario.getLongitud();
 
         CameraUpdate center=
-                CameraUpdateFactory.newLatLng(new LatLng(longitud,latitud));
+                CameraUpdateFactory.newLatLng(new LatLng(latitud,longitud));
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
 
         googleMap.moveCamera(center);

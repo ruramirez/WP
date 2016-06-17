@@ -93,14 +93,29 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         }
         final RelativeLayout botones = (RelativeLayout) findViewById(R.id.reservar_vender_layout);
 
-        usuario = producto.getUsuario();
-        if(usuario != null)
+        boolean esperarProducto=true;
+        while( esperarProducto)
         {
-            if(usuario.getId() == appstate.usuario.getId())
+            if(producto.isLoaded())
+            {
+                esperarProducto=false;
+            }
+        }
+        boolean esperarUsuario=true;
+
+
+            while(esperarUsuario) {
+
+                if (producto.getUsuario().isLoaded()) {
+                    esperarUsuario=false;
+                    appstate.usuarios.add(usuario);
+                }
+            }
+            if(producto.getUsuario().getId() == appstate.usuario.getId())
             {
                 botones.setVisibility(View.VISIBLE);
             }
-        }
+
 
 
         HashMap<String,String> url_maps = new HashMap<String, String>();
@@ -263,12 +278,12 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         System.out.println("longitutu "+longitud);
 
 
-      /*  CameraUpdate center=
-                CameraUpdateFactory.newLatLng(new LatLng(longitud,latitud));
-        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);*/
-/*
+        CameraUpdate center=
+                CameraUpdateFactory.newLatLng(new LatLng(latitud,longitud));
+        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+
         googleMap.moveCamera(center);
-        googleMap.animateCamera(zoom);*/
+        googleMap.animateCamera(zoom);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -54,6 +54,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     private ImageView imagen;
     private boolean loaded=false;
     private GlobalClass appstate;
+    private boolean imagesLoades=false;
 
 
 
@@ -105,7 +106,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         {
             return false;
         }
-        if(this.moneda.isLoaded()&& this.usuario.isLoaded()) {
+        if(this.moneda.isLoaded()&& this.usuario.isLoaded()&& this.imagesLoades) {
             return true;
         }else
         {
@@ -234,6 +235,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                         JSONObject row = jsonArray.getJSONObject(i);
                         this.fotos.add(new FotosProductos(this.id, Integer.valueOf(row.getString("id"))));
                     }
+                    this.imagesLoades=true;
                     return this.id;
                 }
             } catch (JSONException e) {

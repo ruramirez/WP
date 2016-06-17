@@ -82,7 +82,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     protected void onCreate(Bundle savedInstanceState) {
         final GlobalClass appstate = (GlobalClass) getApplicationContext();
         appstate.loadConfig();
-        appstate.usuario = Usuario.loadUsuario(this, this);
+        if(appstate.usuario==null) {
+            appstate.usuario = Usuario.loadUsuario(this, this);
+        }
         appstate.usuario.setApplicationContext(getApplicationContext());
         appstate.usuario.setAppstate((GlobalClass) getApplicationContext());
         if (appstate.usuario.isLoged())

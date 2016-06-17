@@ -44,7 +44,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
         Double latitud = usuario.getLatitud();
         Double longitud = usuario.getLongitud();
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(longitud,latitud)).title(usuario.getDireccion()));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(latitud,longitud)).title(usuario.getDireccion()));
 
         LatLng pos=new LatLng(longitud,latitud);
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 18.0f));
