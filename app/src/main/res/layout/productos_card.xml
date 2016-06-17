@@ -38,7 +38,6 @@
                     android:id="@+id/card_estado_detalle"
                     android:visibility="visible"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/apartar"
                     android:layout_gravity="left|bottom"
                     android:layout_marginBottom="10dp" />
 

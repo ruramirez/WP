@@ -307,9 +307,11 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         int contador=0;
         for (Producto producto : this.productosVendiendo) {
             if(producto.getId()== productovendido.getId()) {
-                contador++;
+
                 this.productosVendiendo.remove(contador);
                 this.productosVendidos.add(0,producto);
+                contador++;
+
                 break;
             }
         }
