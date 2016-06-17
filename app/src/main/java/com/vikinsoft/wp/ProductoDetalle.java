@@ -84,10 +84,23 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         int value = -1;
         if(b != null)
         {
+            if(c != null) {
 
-            value = b.getInt("id_producto");
-            System.out.println("el id"+value);
-            producto = appstate.getProductobyID(value);
+                if (c == 1) // lista general
+                {
+                    value = b.getInt("id_producto");
+                    producto = appstate.getProductobyID(value);
+                }
+                else if(c == 2) // es vendiendo
+                {
+                    producto = appstate.usuario.getProductoVendiendoByID(value);
+                }
+                else if(c == 3)
+                {
+                 producto =    appstate.usuario.getProductoVendiendoByID(value);
+                }
+            }
+
         }
         final RelativeLayout botones = (RelativeLayout) findViewById(R.id.reservar_vender_layout);
 

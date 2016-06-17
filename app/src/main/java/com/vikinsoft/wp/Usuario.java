@@ -219,6 +219,25 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
         this.isLoged = false;
     }
 
+    public Producto getProductoVendiendoByID(int id){
+        for (Producto producto : this.productosVendiendo) {
+            if(producto.getId()== id)
+                return producto;
+        }
+        return  null;
+
+    }
+
+
+    public Producto getProductoVendidoByID(int id){
+        for (Producto producto : this.productosVendidos) {
+            if(producto.getId()== id)
+                return producto;
+        }
+        return  null;
+
+    }
+
     public static Usuario loadUsuario(Context applicationContext, Activity activity) {
         DatabaseHandler db = new DatabaseHandler(applicationContext);
 
