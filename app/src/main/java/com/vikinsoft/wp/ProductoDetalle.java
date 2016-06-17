@@ -84,30 +84,22 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         int value = -1;
         if(b != null)
         {
-            if(c != null) {
-
-                if (c == 1) // lista general
-                {
                     value = b.getInt("id_producto");
                     producto = appstate.getProductobyID(value);
-                }
-                else if(c == 2) // es vendiendo
-                {
-                    producto = appstate.usuario.getProductoVendiendoByID(value);
-                }
-                else if(c == 3)
-                {
-                 producto =    appstate.usuario.getProductoVendiendoByID(value);
-                }
-            }
-
+                    if(producto == null)
+                    {
+                        producto = new Producto(value,getApplicationContext(),appstate);
+                    }
         }
         final RelativeLayout botones = (RelativeLayout) findViewById(R.id.reservar_vender_layout);
 
         usuario = producto.getUsuario();
-        if(usuario.getId() == appstate.usuario.getId())
+        if(usuario != null)
         {
-            botones.setVisibility(View.VISIBLE);
+            if(usuario.getId() == appstate.usuario.getId())
+            {
+                botones.setVisibility(View.VISIBLE);
+            }
         }
 
 
