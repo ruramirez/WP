@@ -153,6 +153,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                                         boolean result = appstate.usuario.saveUsuario();
                                         if (result) {
+                                            appstate.usuario.setLoged(true);
                                             Intent intent  = new Intent(Login.this,MainActivity.class);
                                             Login.this.startActivity(intent);
                                         }
@@ -289,6 +290,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 boolean resultG = appstate.usuario.saveUsuario();
                 if(resultG)
                 {
+                    appstate.usuario.setLoged(true);
+                    appstate.usuario.setLoged(true);
                     Intent intent  = new Intent(Login.this,MainActivity.class);
                     Login.this.startActivity(intent);
                 }
