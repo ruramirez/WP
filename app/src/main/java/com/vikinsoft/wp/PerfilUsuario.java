@@ -210,7 +210,6 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
             botongoogle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(PerfilUsuario.this, "Vamo a validar google", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(PerfilUsuario.this,VerificarGoogle.class);
                     PerfilUsuario.this.startActivity(intent);
 
@@ -226,7 +225,6 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
             botonemail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(PerfilUsuario.this, "Vamo a validar email", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(PerfilUsuario.this,VerificarMail.class);
                     PerfilUsuario.this.startActivity(intent);
                 }

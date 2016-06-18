@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,6 +77,7 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
 
 
 
+        LinearLayout chat = (LinearLayout) findViewById(R.id.detalle_chatea_layout);
 
         Bundle b = getIntent().getExtras();
         int value = -1;
@@ -108,12 +110,17 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
                     appstate.usuarios.add(usuario);
                 }
             }
+
             if(producto.getUsuario().getId() == appstate.usuario.getId())
             {
-                botones.setVisibility(View.VISIBLE);
+                if(producto.getEstadoProducto().getId() == 1)
+                {
+                    botones.setVisibility(View.GONE);
+                }else{
+                    botones.setVisibility(View.VISIBLE);
+                }
+                chat.setVisibility(View.GONE);
             }
-
-
 
         HashMap<String,String> url_maps = new HashMap<String, String>();
         for (FotosProductos fotos : producto.getFotos())
