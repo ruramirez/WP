@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,8 +40,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.vikinsoft.wp.adapter.ProductosAdaptador;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -86,7 +85,7 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
             usuario = appstate.usuario;
             this.editPerfil = false;
         }
-        
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_user);
 
@@ -185,9 +184,54 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
+        ImageView botonface = (ImageView) findViewById(R.id.botonface);
+        ImageView botongoogle = (ImageView) findViewById(R.id.botongoogle);
+        ImageView botonemail = (ImageView) findViewById(R.id.botonemail);
 
+        if(this.usuario.getFacebook() == 1)
+        {
+            botonface.setImageResource(R.drawable.fb_color);
+        }else{
+            botonface.setImageResource(R.drawable.fb_gris);
+            botonface.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PerfilUsuario.this,VerificarFacebook.class);
+                    PerfilUsuario.this.startActivity(intent);
+                }
+            });
+        }
 
+        if(this.usuario.getGoogle() == 1)
+        {
+            botongoogle.setImageResource(R.drawable.g_color);
+        }else{
+            botongoogle.setImageResource(R.drawable.g_gris);
+            botongoogle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(PerfilUsuario.this, "Vamo a validar google", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PerfilUsuario.this,VerificarGoogle.class);
+                    PerfilUsuario.this.startActivity(intent);
 
+                }
+            });
+        }
+
+        if(this.usuario.getEmailValido() == 1)
+        {
+            botonemail.setImageResource(R.drawable.correo_color);
+        }else{
+            botonemail.setImageResource(R.drawable.correo_gris);
+            botonemail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(PerfilUsuario.this, "Vamo a validar email", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PerfilUsuario.this,VerificarMail.class);
+                    PerfilUsuario.this.startActivity(intent);
+                }
+            });
+        }
 
         /////////////INICIO DECLARACION MODAL REGISTRO////////////////////
         final FloatingActionButton botonflotante = (FloatingActionButton) findViewById(R.id.fab_enlistar);

@@ -139,11 +139,12 @@
 
                                                 <de.hdodenhof.circleimageview.CircleImageView
                                                     android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
+                                                    android:layout_height="match_parent"
                                                     android:id="@+id/botonface"
                                                     android:layout_weight="0.16"
                                                     android:layout_marginRight="10dp"
-                                                    android:src="@drawable/fb_gris" />
+                                                    android:src="@drawable/fb_gris"
+                                                    android:adjustViewBounds="false" />
 
                                                 <de.hdodenhof.circleimageview.CircleImageView
                                                     android:layout_width="wrap_content"
@@ -151,7 +152,8 @@
                                                     android:id="@+id/botongoogle"
                                                     android:layout_weight="0.09"
                                                     android:layout_marginRight="10dp"
-                                                    android:src="@drawable/g_gris" />
+                                                    android:src="@drawable/g_gris"
+                                                    android:adjustViewBounds="false" />
 
                                                 <de.hdodenhof.circleimageview.CircleImageView
                                                     android:layout_width="wrap_content"

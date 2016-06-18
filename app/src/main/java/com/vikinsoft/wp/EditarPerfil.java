@@ -86,7 +86,14 @@ public class EditarPerfil extends AppCompatActivity implements View.OnClickListe
         categoriasfav = (LinearLayout) findViewById(R.id.categorias_favoritas_boton);
         categoriasfav.setOnClickListener(this);
 
-
+        LinearLayout verificacion = (LinearLayout) findViewById(R.id.verificacion_perfil);
+        verificacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditarPerfil.this,VerificacionEditarPerfil.class);
+                EditarPerfil.this.startActivity(intent);
+            }
+        });
 
     }
 

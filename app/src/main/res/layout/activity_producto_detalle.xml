@@ -130,7 +130,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -193,39 +194,39 @@
             <RelativeLayout
                 android:layout_width="384dp"
                 android:layout_height="85dp"
-                android:layout_gravity="bottom">
+                android:layout_gravity="bottom"
+                android:gravity="center_horizontal">
 
-                <ImageButton
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:id="@+id/detalle_cambios"
-                    android:layout_marginRight="35dp"
-                    android:layout_marginEnd="35dp"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/cambio_gris"
                     android:layout_alignParentBottom="true"
                     android:layout_toLeftOf="@+id/detalle_preciofijo"
-                    android:layout_toStartOf="@+id/detalle_preciofijo" />
+                    android:layout_toStartOf="@+id/detalle_preciofijo"
+                    android:layout_below="@+id/textView17" />
 
-                <ImageButton
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/detalle_preciofijo"
-                    android:src="@android:drawable/ic_lock_idle_lock"
+                    android:src="@drawable/fijo_gris"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_alignTop="@+id/detalle_cambios" />
+                    android:layout_below="@+id/textView17"
+                    android:adjustViewBounds="false" />
 
-                <ImageButton
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/detalle_envios"
                     android:layout_alignWithParentIfMissing="false"
-                    android:layout_marginLeft="36dp"
-                    android:layout_marginStart="36dp"
-                    android:src="@android:drawable/ic_menu_mapmode"
+                    android:src="@drawable/envio_gris"
                     android:layout_alignParentBottom="true"
                     android:layout_toRightOf="@+id/detalle_preciofijo"
-                    android:layout_toEndOf="@+id/detalle_preciofijo" />
+                    android:layout_toEndOf="@+id/detalle_preciofijo"
+                    android:layout_below="@+id/textView17" />
 
                 <TextView
                     android:layout_width="wrap_content"

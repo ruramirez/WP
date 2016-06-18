@@ -139,7 +139,7 @@
                         android:text="97135 , Mérida"
                         android:id="@+id/editar_perf_loc"
                         android:layout_marginRight="37dp"
-                        android:textSize="20dp"
+                        android:textSize="12dp"
                         android:textColor="#000000"
                         android:layout_marginEnd="37dp"
                         android:layout_alignTop="@+id/textView20"
@@ -237,7 +237,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/round_borde" >
+                android:background="@drawable/round_borde"
+                android:id="@+id/verificacion_perfil">
 
                 <TextView
                     android:layout_width="wrap_content"

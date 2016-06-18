@@ -163,12 +163,17 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         TextView nombre = (TextView) findViewById(R.id.detalle_usuario_nombre);
         nombre.setText(producto.getUsuario().getNombre());
 
-        if(producto.getEnvio() == 0)
-        {
-           //ImageButton botonenvio =  (ImageButton) findViewById(R.id.detalle)
+        ImageView cambios =  (ImageView) findViewById(R.id.detalle_cambios);
+        ImageView preciofijo = (ImageView) findViewById(R.id.detalle_preciofijo);
+        ImageView envios = (ImageView) findViewById(R.id.detalle_envios);
+
+        if(producto.getEnvio() == 1){
+            envios.setImageResource(R.drawable.envio_color);
         }
 
-
+        if (producto.getPrecio_negociable() == 1){
+            preciofijo.setImageResource(R.drawable.fijo_color);
+        }
 
         imagen.setOnClickListener(new View.OnClickListener() {
 

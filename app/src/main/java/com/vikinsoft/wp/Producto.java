@@ -40,6 +40,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     private Usuario usuario;
     private int envio=0;
     private int precio_negociable = 0;
+    private int acepta_cambios = 0;
     private double precio = 0.0;
     private int vistas =0;
     private int favoritos =0;
@@ -176,7 +177,9 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         return -1;
     }
 
-
+    public void setPrecio_negociable(int precio_negociable) {
+        this.precio_negociable = precio_negociable;
+    }
 
     public Usuario getUsuario() {
         return usuario;
@@ -219,7 +222,8 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                     this.precio = Double.parseDouble(jsonObject.getString("precio"));
                     this.categoria = this.appstate.getCategoriaID(Integer.parseInt(jsonObject.getString("id_categoria")));
                     this.estadoProducto = this.appstate.getElementoByID(Integer.parseInt(jsonObject.getString("id_estado")));
-
+                    this.envio= Integer.parseInt(jsonObject.getString("envio"));
+                    this.precio_negociable = Integer.parseInt(jsonObject.getString("precio_negociable"));
                     while(!this.moneda.isLoaded()) {
                         this.moneda = this.appstate.getMonedabyID(Integer.parseInt(jsonObject.getString("id_moneda")));
                     }
@@ -393,6 +397,14 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         int ide = -1;
         web.execute(4);
         return ide;
+    }
+
+    public int getAcepta_cambios() {
+        return acepta_cambios;
+    }
+
+    public void setAcepta_cambios(int acepta_cambios) {
+        this.acepta_cambios = acepta_cambios;
     }
 
 
