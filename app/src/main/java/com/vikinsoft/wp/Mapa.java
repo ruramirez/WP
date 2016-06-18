@@ -24,7 +24,7 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa);
         mapFragment.getMapAsync(this);
-        mapFragment.getView().setClickable(true);
+        mapFragment.getView().setClickable(false);
 
     }
 
@@ -43,10 +43,20 @@ public class Mapa extends AppCompatActivity implements OnMapReadyCallback {
 
         Double latitud = usuario.getLatitud();
         Double longitud = usuario.getLongitud();
+        if( usuario.getLatitud()>0) {
+            latitud = usuario.getLatitud();
+            longitud = usuario.getLongitud();
+        }
+        else
+        {
+            latitud = usuario.getLongitud();
+            longitud = usuario.getLatitud();
+        }
+
 
         googleMap.addMarker(new MarkerOptions().position(new LatLng(latitud,longitud)).title(usuario.getDireccion()));
 
-        LatLng pos=new LatLng(longitud,latitud);
+        LatLng pos=new LatLng(latitud,longitud);
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, 18.0f));
 
     }

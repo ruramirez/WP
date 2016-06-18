@@ -74,10 +74,7 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
             }
         });
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmento_mapa_detalle);
-        mapFragment.getMapAsync(this);
-        mapFragment.getView().setClickable(true);
+
 
 
         Bundle b = getIntent().getExtras();
@@ -224,6 +221,13 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         });
 
 
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmento_mapa_detalle);
+
+        mapFragment.getMapAsync(this);
+        mapFragment.getView().setClickable(false);
+
     }
 
     @Override
@@ -278,17 +282,23 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
 
         Double latitud = producto.getUsuario().getLatitud();
         Double longitud = producto.getUsuario().getLongitud();
+        if( producto.getUsuario().getLatitud()>0) {
+            latitud = producto.getUsuario().getLatitud();
+            longitud = producto.getUsuario().getLongitud();
+        }
+        else
+        {
+            latitud = producto.getUsuario().getLongitud();
+            longitud = producto.getUsuario().getLatitud();
+        }
 
-        System.out.println("latituti "+latitud);
-        System.out.println("longitutu "+longitud);
 
-
-        CameraUpdate center=
-                CameraUpdateFactory.newLatLng(new LatLng(latitud,longitud));
-        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+        CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(latitud,longitud));
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
 
         googleMap.moveCamera(center);
         googleMap.animateCamera(zoom);
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

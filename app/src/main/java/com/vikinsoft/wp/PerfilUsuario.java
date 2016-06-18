@@ -159,7 +159,7 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmento_mapa);
         mapFragment.getMapAsync(this);
-        mapFragment.getView().setClickable(true);
+        mapFragment.getView().setClickable(false);
 
         TextView nombre_perfil = (TextView)findViewById(R.id.logged_nombre);
         nombre_perfil.setText(usuario.getNombre());
@@ -668,6 +668,15 @@ public class PerfilUsuario extends AppCompatActivity implements OnMapReadyCallba
 
         Double latitud = usuario.getLatitud();
         Double longitud = usuario.getLongitud();
+        if( usuario.getLatitud()>0) {
+             latitud = usuario.getLatitud();
+             longitud = usuario.getLongitud();
+        }
+        else
+        {
+             latitud = usuario.getLongitud();
+             longitud = usuario.getLatitud();
+        }
 
         CameraUpdate center=
                 CameraUpdateFactory.newLatLng(new LatLng(latitud,longitud));

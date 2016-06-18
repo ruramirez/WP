@@ -486,8 +486,8 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             }
 
             addresses = geocoder.getFromLocation(
-                    this.longitud,
                     this.latitud,
+                    this.longitud,
 
                     // In this sample, get just a single address.
                     1);
