@@ -241,6 +241,24 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         mapFragment.getMapAsync(this);
         mapFragment.getView().setClickable(false);
 
+
+        //LinearLayout chat = (LinearLayout) findViewById( R.id.detalle_chatea_layout);
+
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Quiero Chateaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar");
+                final GlobalClass appstate = (GlobalClass) getApplicationContext();
+
+                producto.getChat(appstate.usuario);
+
+
+            }
+        });
+
+
+
+
     }
 
     @Override
