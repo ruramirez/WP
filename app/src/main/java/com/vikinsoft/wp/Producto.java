@@ -56,8 +56,23 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
     private boolean loaded=false;
     private GlobalClass appstate;
     private boolean imagesLoades=false;
+    private List<Chat> chats = new ArrayList<>();
 
 
+
+
+
+    public Chat getChat(Usuario comprador) {
+        for (Chat chat : this.chats) {
+            if (chat.getComprador().getId() == comprador.getId()) {
+                return chat;
+            }
+        }
+        Chat chat = new Chat(this, comprador);
+        this.chats.add(chat);
+
+        return chat;
+    }
 
     public Producto(int aceptacambios, List<FotosProductos> fotosProd, Usuario usuario, Categoria categoria, Moneda moneda, String nombre, String descripcion, int envio, int precio_negociable, float precio, EstadoProducto estadoProducto, Context applicationContext, Dialog dialog)
     {

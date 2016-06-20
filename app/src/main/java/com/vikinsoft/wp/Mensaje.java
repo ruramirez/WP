@@ -12,45 +12,53 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Created by ricardo on 20/06/16.
  */
-public class Chat extends AsyncTask<Integer, Void, Integer> {
-
-    private int id=-1;
+public class Mensaje extends AsyncTask<Integer, Void, Integer> {
+    private int id= -1;
     private Producto producto;
-    private Usuario comprador;
     private Usuario vendedor;
-    private List<Mensaje> mensajes = new ArrayList<>();
+    private Usuario comprador;
+    private String mensaje;
+    private int estado;
+    private int timestamp;
 
 
-    public Chat( Producto producto, Usuario comprador)
+    public Mensaje (int id, Usuario vendedor,Usuario Comrador,Producto producto,String mensaje,int estado, int timestamp)
     {
+        this.id=id;
         this.producto=producto;
+        this.vendedor=vendedor;
         this.comprador=comprador;
-        this.vendedor=producto.getUsuario();
+        this.mensaje=mensaje;
+        this.estado= estado;
+        this.timestamp=timestamp;
+    }
+    public void doSave()
+    {
         try {
-            this.id=this.execute(1).get();
+            this.execute(2).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
     }
-
-
     private int save(){
         try {
-            URL url = new URL("http://vikinsoft.com/weplay/index.php?r=chats/save");
+            URL url = new URL("http://vikinsoft.com/weplay/index.php?r=mensajes/save");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String urlParameters =
-                            "id_producto=" + this.producto.getId() +
-                            "&id_comprador=" + this.comprador.getId();
+                    "id_producto=" + this.producto.getId() +
+                            "&id_comprador=" + this.comprador.getId()+
+                            "&id_vendedor=" + this.vendedor.getId()+
+                            "&timestamp=" + this.timestamp+
+                            "&estado=" + this.estado+
+                            "&mensaje=" + this.mensaje;
             connection.setRequestMethod("POST");
             connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
             connection.setRequestProperty("Accept-Charset", "UTF-8");
@@ -101,18 +109,5 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
 
 
         return -1;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public Usuario getComprador() {
-        return comprador;
     }
 }
