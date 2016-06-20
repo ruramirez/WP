@@ -27,7 +27,7 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
     private Long timestamp;
 
 
-    public Mensaje (int id, Usuario vendedor,Usuario Comrador,Producto producto,String mensaje,int estado, Long timestamp)
+    public Mensaje (int id, Usuario vendedor,Usuario comprador,Producto producto,String mensaje,int estado, Long timestamp)
     {
         this.id=id;
         this.producto=producto;
@@ -38,7 +38,7 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
         this.timestamp=timestamp;
     }
 
-    public Mensaje (Usuario vendedor,Usuario Comrador,Producto producto,String mensaje,int estado, Long timestamp)
+    public Mensaje (Usuario vendedor,Usuario comprador,Producto producto,String mensaje,int estado, Long timestamp)
     {
         //this.id=id;
         this.producto=producto;

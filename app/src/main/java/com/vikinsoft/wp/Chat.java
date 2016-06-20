@@ -57,7 +57,7 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String urlParameters =
-                    "id_producto=" + this.producto.getId() +
+                            "id_producto=" + this.producto.getId() +
                             "&id_comprador=" + this.comprador.getId();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
