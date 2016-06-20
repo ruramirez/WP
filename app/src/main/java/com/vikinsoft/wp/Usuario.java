@@ -96,6 +96,7 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
     }
 
+
     public void fillValues() {
 
 
