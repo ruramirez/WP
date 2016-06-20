@@ -62,7 +62,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
 
 
 
-    public Chat getChat(Usuario comprador) {
+    public Chat getChatByComprador(Usuario comprador) {
         for (Chat chat : this.chats) {
             if (chat.getComprador().getId() == comprador.getId()) {
                 return chat;

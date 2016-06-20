@@ -24,10 +24,10 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
     private Usuario comprador;
     private String mensaje;
     private int estado;
-    private int timestamp;
+    private Long timestamp;
 
 
-    public Mensaje (int id, Usuario vendedor,Usuario Comrador,Producto producto,String mensaje,int estado, int timestamp)
+    public Mensaje (int id, Usuario vendedor,Usuario Comrador,Producto producto,String mensaje,int estado, Long timestamp)
     {
         this.id=id;
         this.producto=producto;
@@ -37,16 +37,21 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
         this.estado= estado;
         this.timestamp=timestamp;
     }
-    public void doSave()
+
+    public Mensaje (Usuario vendedor,Usuario Comrador,Producto producto,String mensaje,int estado, Long timestamp)
     {
-        try {
-            this.execute(2).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        //this.id=id;
+        this.producto=producto;
+        this.vendedor=vendedor;
+        this.comprador=comprador;
+        this.mensaje=mensaje;
+        this.estado= estado;
+        this.timestamp=timestamp;
+
+        this.execute(1);
+
     }
+
     private int save(){
         try {
             URL url = new URL("http://vikinsoft.com/weplay/index.php?r=mensajes/save");

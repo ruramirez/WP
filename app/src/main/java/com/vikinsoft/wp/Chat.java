@@ -43,6 +43,14 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
     }
 
 
+    public void addMensaje(String texto)
+    {
+        long unixTime = System.currentTimeMillis() / 1000L;
+        Mensaje mensaje = new Mensaje(this.vendedor,this.comprador,this.producto,texto,1,unixTime);
+        this.mensajes.add(mensaje);
+    }
+
+
     private int save(){
         try {
             URL url = new URL("http://vikinsoft.com/weplay/index.php?r=chats/save");
