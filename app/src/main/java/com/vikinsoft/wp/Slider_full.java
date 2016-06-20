@@ -15,7 +15,6 @@ public class Slider_full extends AppCompatActivity implements ViewPagerEx.OnPage
     private SliderLayout mDemoSlider;
     Producto producto;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         GlobalClass appstate = (GlobalClass) getApplicationContext();

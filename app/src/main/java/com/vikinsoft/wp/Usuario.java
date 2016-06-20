@@ -1034,10 +1034,9 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
                 try {
                     jsonObject = new JSONArray(responseOutput.toString());
+                    this.usuario.productosVendiendo=new ArrayList<>();
                     for (int i = 0; i < jsonObject.length(); i++) {
                         JSONObject row = jsonObject.getJSONObject(i);
-                        this.usuario.productosVendiendo=new ArrayList<>();
-
                         this.usuario.addProductoVendiendo(new Producto(Integer.valueOf(row.getString("id")),this.usuario.appstate,(GlobalClass)this.usuario.appstate));
                     }
                 } catch (JSONException e) {
@@ -1087,9 +1086,9 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
 
                 try {
                     jsonObject = new JSONArray(responseOutput.toString());
+                    this.usuario.productosVendidos=new ArrayList<>();
                     for (int i = 0; i < jsonObject.length(); i++) {
                         JSONObject row = jsonObject.getJSONObject(i);
-                        this.usuario.productosVendidos=new ArrayList<>();
                         this.usuario.addProductoVendido(new Producto(Integer.valueOf(row.getString("id")),this.usuario.applicationContext,(GlobalClass)this.usuario.appstate));
                     }
                 } catch (JSONException e) {

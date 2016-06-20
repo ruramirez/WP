@@ -75,8 +75,6 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
             }
         });
 
-
-
         LinearLayout chat = (LinearLayout) findViewById(R.id.detalle_chatea_layout);
 
         Bundle b = getIntent().getExtras();
@@ -175,6 +173,10 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
             envios.setImageResource(R.drawable.envio_color);
         }
 
+        if(producto.getAcepta_cambios() == 1){
+            cambios.setImageResource(R.drawable.cambio_color);
+        }
+
         if (producto.getPrecio_negociable() == 1){
             preciofijo.setImageResource(R.drawable.fijo_color);
         }
@@ -194,6 +196,12 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         final Button botonDesreservar = (Button) findViewById(R.id.boton_removerreserva);
         final Button botonReservar = (Button) findViewById(R.id.boton_reservar);
         final Button botonVender = (Button) findViewById(R.id.boton_vendido);
+
+        if(producto.getEstadoProducto().getId() == 2)
+        {
+            botonReservar.setVisibility(View.GONE);
+            botonDesreservar.setVisibility(View.VISIBLE);
+        }
 
         botonReservar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,8 +234,6 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
 
             }
         });
-
-
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmento_mapa_detalle);

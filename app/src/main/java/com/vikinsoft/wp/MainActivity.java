@@ -497,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             //appstate.usuario.setLoaded(true);
                             //appstate.usuario.setImageLoaded(true);
 
-                            Producto producto = new Producto(fotos, appstate.usuario ,appstate.getCategoriaID(Integer.parseInt(hash.get("1").getTag().toString())) ,appstate.getMonedabyID(Integer.parseInt(hash2.get("1").getTag().toString())), titulo.getText().toString(),descripcion.getText().toString(),enviar,negociable,precio_final_float,estado,getApplicationContext(), dialog);
+                            Producto producto = new Producto(aceptacambios,fotos, appstate.usuario ,appstate.getCategoriaID(Integer.parseInt(hash.get("1").getTag().toString())) ,appstate.getMonedabyID(Integer.parseInt(hash2.get("1").getTag().toString())), titulo.getText().toString(),descripcion.getText().toString(),enviar,negociable,precio_final_float,estado,getApplicationContext(), dialog);
                             try {
                                 if(producto.execute(3).get()!= -1)
                                 {

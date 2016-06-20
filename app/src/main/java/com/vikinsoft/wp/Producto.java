@@ -59,7 +59,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
 
 
 
-    public Producto(List<FotosProductos> fotosProd, Usuario usuario, Categoria categoria, Moneda moneda, String nombre, String descripcion, int envio, int precio_negociable, float precio, EstadoProducto estadoProducto, Context applicationContext, Dialog dialog)
+    public Producto(int aceptacambios, List<FotosProductos> fotosProd, Usuario usuario, Categoria categoria, Moneda moneda, String nombre, String descripcion, int envio, int precio_negociable, float precio, EstadoProducto estadoProducto, Context applicationContext, Dialog dialog)
     {
 
         this.nombre = nombre;
@@ -76,6 +76,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         this.usuario = usuario;
         this.moneda = moneda;
         this.fotos = fotosProd;
+        this.acepta_cambios = aceptacambios;
         this.loaded=true;
 
     }
@@ -86,10 +87,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         this.appstate=appstate;
     }
 
-
-
-
-
     public Producto(int id,Context applicationContext, GlobalClass appstate){
         this.id = id;
         this.applicationContext=applicationContext;
@@ -97,9 +94,6 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
         this.appstate=appstate;
         this.execute(2);
     }
-
-
-
 
 
     public boolean isLoaded() {
@@ -132,6 +126,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                             "&id_moneda=" + this.moneda.getId() +
                             "&vistas=" + this.vistas +
                             "&favoritos=" + this.favoritos +
+                            "&acepta_cambios=" + this.acepta_cambios +
                             "&id_categoria=" + this.categoria.getId()
                             ;
             connection.setRequestMethod("POST");
@@ -153,9 +148,11 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
             }
             br.close();
             JSONObject jsonObject = null;
+            System.out.println("Salve "+responseOutput.toString());
             try {
                 jsonObject = new JSONObject(responseOutput.toString());
                 this.id=Integer.parseInt(jsonObject.getString("id"));
+                System.out.println("El IDDDDDDDDDDDDDDD "+this.id);
                 for (FotosProductos fotosProductos : this.fotos)
                 {
                     fotosProductos.setId_productp(this.id);
@@ -224,6 +221,7 @@ public class Producto extends AsyncTask<Integer, Void, Integer> {
                     this.estadoProducto = this.appstate.getElementoByID(Integer.parseInt(jsonObject.getString("id_estado")));
                     this.envio= Integer.parseInt(jsonObject.getString("envio"));
                     this.precio_negociable = Integer.parseInt(jsonObject.getString("precio_negociable"));
+                    this.acepta_cambios = Integer.parseInt(jsonObject.getString("acepta_cambios"));
                     while(!this.moneda.isLoaded()) {
                         this.moneda = this.appstate.getMonedabyID(Integer.parseInt(jsonObject.getString("id_moneda")));
                     }
