@@ -247,7 +247,10 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
             @Override
             public void onClick(View view) {
                 System.out.println("Quiero Chateaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaar");
-                Intent chatear = new Intent(ProductoDetalle.this,Chat.class);
+                Intent chatear = new Intent(ProductoDetalle.this,Chatear.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putInt("id_producto", producto.getId());
+                chatear.putExtras(mBundle);
                 ProductoDetalle.this.startActivity(chatear);
             }
         });
