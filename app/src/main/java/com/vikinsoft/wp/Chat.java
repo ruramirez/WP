@@ -47,7 +47,6 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
         this.vendedor=producto.getUsuario();
         this.contexto = applicationContext;
         try {
-            System.out.println("vamo a salvar");
             this.id=this.execute(1).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
