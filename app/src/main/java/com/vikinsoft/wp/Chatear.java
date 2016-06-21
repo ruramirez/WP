@@ -66,8 +66,6 @@ public class Chatear extends AppCompatActivity {
             }
         });
 
-        ListaMensajes listaMensajes = new ListaMensajes(producto,chat.getComprador(),this.getApplicationContext());
-
         System.out.println("Antes del adaptadorrrrrrrrrrr");
         int conteo = chat.getMensajes().size();
         System.out.println("Conteo es "+conteo);

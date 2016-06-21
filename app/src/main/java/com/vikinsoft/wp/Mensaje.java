@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by ricardo on 20/06/16.
  */
-public class Mensaje extends AsyncTask<Integer, Void, Integer> {
+public class Mensaje extends AsyncTask<Integer, Void, Integer>   {
     private int id= -1;
     private Producto producto;
     private Usuario vendedor;
@@ -29,7 +29,7 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
     private Chat chat;
 
 
-    public Mensaje (int id, Usuario vendedor,Usuario comprador,Producto producto,String mensaje,int estado, Long timestamp)
+    public Mensaje  (int id, Usuario vendedor,Usuario comprador,Producto producto,String mensaje,int estado, Long timestamp)
     {
         this.id=id;
         this.producto=producto;
@@ -52,21 +52,17 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
         this.chat = chat;
         this.execute(3);
 
-
     }
 
-    public Mensaje(int id)
-    {
-        this.id = id;
-        try {
-            this.execute(2).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+
+
+    @Override
+    protected Integer doInBackground(Integer... integers) {
+        if(integers[0] == 3)
+        {
+            return this.save();
         }
-
-
+        return -1;
     }
 
     private int save(){
@@ -75,14 +71,14 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String urlParameters =
-                            "id_producto=" + this.producto.getId() +
+                    "id_producto=" + this.producto.getId() +
                             "&id_comprador=" + this.comprador.getId()+
                             "&id_vendedor=" + this.vendedor.getId()+
                             "&timestamp=" + this.timestamp+
                             "&estado=" + this.estado+
                             "&mensaje=" + this.mensaje+
-                            "&id_chat" +this.chat.getId()
-                            ;
+                            "&id_chat=" +this.chat.getId()
+                    ;
             connection.setRequestMethod("POST");
             connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
             connection.setRequestProperty("Accept-Charset", "UTF-8");
@@ -123,71 +119,9 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
         return this.id;
     }
 
-    private int load(){
-        try {
-            URL url = new URL("http://vikinsoft.com/weplay/index.php?r=mensajes/load");
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            String urlParameters =
-                            "id=" + this.id;
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-            connection.setRequestProperty("Accept-Charset", "UTF-8");
-            //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-            connection.setDoOutput(true);
-            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
-            dStream.writeBytes(urlParameters);
-            dStream.flush();
-            dStream.close();
-            int responseCode = connection.getResponseCode();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line = "";
-            StringBuilder responseOutput = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                responseOutput.append(line);
-            }
-            br.close();
-            JSONObject jsonObject = null;
-            System.out.println("Le respawnse "+responseOutput.toString());
-
-            try {
-                jsonObject = new JSONObject(responseOutput.toString());
-
-
-                return Integer.parseInt(jsonObject.getString("id"));
-
-            } catch (JSONException e) {
-
-                e.printStackTrace();
-            }
-
-        } catch (MalformedURLException e) {
-
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return this.id;
-    }
 
 
 
-    @Override
-    protected Integer doInBackground(Integer... integers) {
-        if(integers[0] == 3)
-        {
-            return this.save();
-        }else if(integers[0] == 2)
-        {
-            return this.load();
-        }
-
-
-        return -1;
-    }
 
     public Producto getProducto() {
         return producto;
@@ -220,4 +154,6 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
+
 }
