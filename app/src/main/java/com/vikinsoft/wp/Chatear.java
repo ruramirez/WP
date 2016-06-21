@@ -1,6 +1,7 @@
 package com.vikinsoft.wp;
 
 import android.content.Intent;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,9 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.vikinsoft.wp.adapter.ChatAdapter;
 
 public class Chatear extends AppCompatActivity {
 
@@ -21,6 +24,7 @@ public class Chatear extends AppCompatActivity {
     ImageView productofoto,botonmensaje;
     TextView productotexto;
     EditText textomensaje;
+    ChatAdapter chatAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,6 @@ public class Chatear extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
 
         Bundle b = getIntent().getExtras();
         System.out.println("el producto"+b.getInt("id_producto"));
@@ -46,18 +49,6 @@ public class Chatear extends AppCompatActivity {
 
         botonmensaje = (ImageView) findViewById(R.id.chat_boton_mensaje);
         textomensaje = (EditText) findViewById(R.id.chat_texto_mensaje);
-        botonmensaje.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(textomensaje.getText() != null || !textomensaje.getText().toString().equals(""))
-                {
-                    chat.addMensaje(textomensaje.getText().toString());
-                }
-            }
-        });
-
-
 
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_chat_final);
@@ -74,6 +65,30 @@ public class Chatear extends AppCompatActivity {
                 //Chatear.this.startActivity(gotomain);
             }
         });
+
+        ListaMensajes listaMensajes = new ListaMensajes(producto,chat.getComprador(),this.getApplicationContext());
+
+        System.out.println("Antes del adaptadorrrrrrrrrrr");
+        int conteo = chat.getMensajes().size();
+        System.out.println("Conteo es "+conteo);
+        chatAdapter = new ChatAdapter(this, chat.getMensajes());
+        final ListView messagesView = (ListView) findViewById(R.id.vista_mensajes);
+        messagesView.setAdapter(chatAdapter);
+        System.out.println("Despues del adaptador");
+        botonmensaje.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(textomensaje.getText() != null || !textomensaje.getText().toString().equals(""))
+                {
+                    chat.addMensaje(textomensaje.getText().toString());
+                    textomensaje.setText("");
+                    chatAdapter.notifyDataSetChanged();
+                    messagesView.smoothScrollToPosition(messagesView.getCount());
+                }
+            }
+        });
+
     }
 
 
@@ -82,8 +97,6 @@ public class Chatear extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_chat, menu);
         return true;
-
-
 
     }
 

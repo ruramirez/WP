@@ -1,7 +1,9 @@
 package com.vikinsoft.wp;
 
+        import android.content.Context;
         import android.os.AsyncTask;
 
+        import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
 
@@ -25,15 +27,27 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
     private Producto producto;
     private Usuario comprador;
     private Usuario vendedor;
+
+    public List<Mensaje> getMensajes() {
+        return mensajes;
+    }
+
+    public void setMensajes(List<Mensaje> mensajes) {
+        this.mensajes = mensajes;
+    }
+
     private List<Mensaje> mensajes = new ArrayList<>();
+    private Context contexto;
 
 
-    public Chat( Producto producto, Usuario comprador)
+    public Chat(Producto producto, Usuario comprador, Context applicationContext)
     {
         this.producto=producto;
         this.comprador=comprador;
         this.vendedor=producto.getUsuario();
+        this.contexto = applicationContext;
         try {
+            System.out.println("vamo a salvar");
             this.id=this.execute(1).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -46,8 +60,9 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
     public void addMensaje(String texto)
     {
         long unixTime = System.currentTimeMillis() / 1000L;
-        Mensaje mensaje = new Mensaje(this.vendedor,this.comprador,this.producto,texto,1,unixTime);
+        Mensaje mensaje = new Mensaje(this,this.vendedor,this.comprador,this.producto,texto,1,unixTime);
         this.mensajes.add(mensaje);
+
     }
 
 
@@ -77,9 +92,24 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
             }
             br.close();
             JSONObject jsonObject = null;
+
             try {
                 jsonObject = new JSONObject(responseOutput.toString());
+                //System.out.println("Respuesta de chat salvado " +responseOutput.toString());
                 this.id=Integer.parseInt(jsonObject.getString("id"));
+                JSONArray msjs = jsonObject.getJSONArray("mensajes");
+                for (int j = 0; j < msjs.length(); j++) {
+
+                    mensajes.add(new Mensaje(Integer.parseInt(msjs.getJSONObject(j).getString("id")),
+                            this.vendedor,
+                            this.comprador,
+                            this.producto,
+                            msjs.getJSONObject(j).getString("mensaje"),
+                            Integer.parseInt(msjs.getJSONObject(j).getString("estado")),
+                            Long.parseLong(msjs.getJSONObject(j).getString("timestamp")) ));
+                }
+                //areglo de jsons
+
                 return Integer.parseInt(jsonObject.getString("id"));
 
             } catch (JSONException e) {

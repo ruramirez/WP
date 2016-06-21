@@ -1,5 +1,6 @@
 package com.vikinsoft.wp;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import org.json.JSONException;
@@ -25,6 +26,7 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
     private String mensaje;
     private int estado;
     private Long timestamp;
+    private Chat chat;
 
 
     public Mensaje (int id, Usuario vendedor,Usuario comprador,Producto producto,String mensaje,int estado, Long timestamp)
@@ -38,7 +40,7 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
         this.timestamp=timestamp;
     }
 
-    public Mensaje (Usuario vendedor,Usuario comprador,Producto producto,String mensaje,int estado, Long timestamp)
+    public Mensaje (Chat chat,Usuario vendedor,Usuario comprador,Producto producto,String mensaje,int estado, Long timestamp)
     {
         //this.id=id;
         this.producto=producto;
@@ -47,8 +49,23 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
         this.mensaje=mensaje;
         this.estado= estado;
         this.timestamp=timestamp;
+        this.chat = chat;
+        this.execute(3);
 
-        this.execute(1);
+
+    }
+
+    public Mensaje(int id)
+    {
+        this.id = id;
+        try {
+            this.execute(2).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -58,12 +75,14 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String urlParameters =
-                    "id_producto=" + this.producto.getId() +
+                            "id_producto=" + this.producto.getId() +
                             "&id_comprador=" + this.comprador.getId()+
                             "&id_vendedor=" + this.vendedor.getId()+
                             "&timestamp=" + this.timestamp+
                             "&estado=" + this.estado+
-                            "&mensaje=" + this.mensaje;
+                            "&mensaje=" + this.mensaje+
+                            "&id_chat" +this.chat.getId()
+                            ;
             connection.setRequestMethod("POST");
             connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
             connection.setRequestProperty("Accept-Charset", "UTF-8");
@@ -104,15 +123,101 @@ public class Mensaje extends AsyncTask<Integer, Void, Integer> {
         return this.id;
     }
 
+    private int load(){
+        try {
+            URL url = new URL("http://vikinsoft.com/weplay/index.php?r=mensajes/load");
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String urlParameters =
+                            "id=" + this.id;
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
+            //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+            connection.setDoOutput(true);
+            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+            dStream.writeBytes(urlParameters);
+            dStream.flush();
+            dStream.close();
+            int responseCode = connection.getResponseCode();
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line = "";
+            StringBuilder responseOutput = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                responseOutput.append(line);
+            }
+            br.close();
+            JSONObject jsonObject = null;
+            System.out.println("Le respawnse "+responseOutput.toString());
+
+            try {
+                jsonObject = new JSONObject(responseOutput.toString());
+
+
+                return Integer.parseInt(jsonObject.getString("id"));
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+
+        } catch (MalformedURLException e) {
+
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return this.id;
+    }
+
+
 
     @Override
     protected Integer doInBackground(Integer... integers) {
-        if(integers[0] == 1)
+        if(integers[0] == 3)
         {
             return this.save();
+        }else if(integers[0] == 2)
+        {
+            return this.load();
         }
 
 
         return -1;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public Usuario getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Usuario vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    public Usuario getComprador() {
+        return comprador;
+    }
+
+    public void setComprador(Usuario comprador) {
+        this.comprador = comprador;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 }
