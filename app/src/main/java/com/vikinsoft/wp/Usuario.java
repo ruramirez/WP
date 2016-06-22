@@ -1006,6 +1006,8 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             return -1;
         }
 
+
+
         public int loadProductosVendiendo() {
             try {
 
@@ -1057,6 +1059,8 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             return -1;
 
         }
+
+
 
         public int loadProductosVendidos() {
             try {

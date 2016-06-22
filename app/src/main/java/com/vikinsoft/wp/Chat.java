@@ -27,18 +27,21 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
     private Producto producto;
     private Usuario comprador;
     private Usuario vendedor;
+    private  int nuevos =0;
+
+
+
+    private List<Mensaje> mensajes = new ArrayList<>();
+    private Context contexto;
+
 
     public List<Mensaje> getMensajes() {
-        return mensajes;
+        return this.mensajes;
     }
 
     public void setMensajes(List<Mensaje> mensajes) {
         this.mensajes = mensajes;
     }
-
-    private List<Mensaje> mensajes = new ArrayList<>();
-    private Context contexto;
-
 
     public Chat(Producto producto, Usuario comprador, Context applicationContext)
     {
@@ -56,6 +59,25 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
     }
 
 
+    public int getNuevos() {
+        return nuevos;
+    }
+
+    public void setNuevos(int nuevos) {
+        this.nuevos = nuevos;
+    }
+
+    public void update()
+    {
+        ChatUpdater chatUpdater = new ChatUpdater(this);
+        if(this.mensajes.size()!= chatUpdater.getUpdaterMensajes().size() )
+        {
+            this.mensajes= chatUpdater.getUpdaterMensajes();
+            this.nuevos=1;
+        }
+
+    }
+
     public void addMensaje(String texto)
     {
         long unixTime = System.currentTimeMillis() / 1000L;
@@ -63,7 +85,6 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
         this.mensajes.add(mensaje);
 
     }
-
 
     private int save(){
         try {
@@ -99,7 +120,7 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
                 JSONArray msjs = jsonObject.getJSONArray("mensajes");
                 for (int j = 0; j < msjs.length(); j++) {
 
-                    mensajes.add(new Mensaje(Integer.parseInt(msjs.getJSONObject(j).getString("id")),
+                    this.mensajes.add(new Mensaje(Integer.parseInt(msjs.getJSONObject(j).getString("id")),
                             this.vendedor,
                             this.comprador,
                             this.producto,
@@ -128,7 +149,6 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
         return this.id;
     }
 
-
     @Override
     protected Integer doInBackground(Integer... integers) {
         if(integers[0] == 1)
@@ -139,7 +159,6 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
 
         return -1;
     }
-
 
     public int getId() {
         return id;
@@ -152,4 +171,100 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
     public Usuario getComprador() {
         return comprador;
     }
+
+    private class ChatUpdater extends AsyncTask<Integer, Void, Integer>
+    {
+        private Chat chat;
+        private List<Mensaje> updaterMensajes = new ArrayList<>();
+        public ChatUpdater (Chat chat)
+        {
+            this.chat= chat
+            ;
+            try {
+                this.execute(1).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        private int update(){
+            try {
+                URL url = new URL("http://vikinsoft.com/weplay/index.php?r=chats/getMensajes");
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                String urlParameters =
+                        "id_chat=" + this.chat.getId() +
+                                "&cantidad=" + this.chat.mensajes.size();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+                connection.setRequestProperty("Accept-Charset", "UTF-8");
+                //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+                int responseCode = connection.getResponseCode();
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+                StringBuilder responseOutput = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    responseOutput.append(line);
+                }
+                br.close();
+                JSONObject jsonObject = null;
+
+                try {
+                    jsonObject = new JSONObject(responseOutput.toString());
+                    //System.out.println("Respuesta de chat salvado " +responseOutput.toString());
+                    if(Integer.parseInt(jsonObject.getString("update"))==1) {
+                        JSONArray msjs = jsonObject.getJSONArray("mensajes");
+                        updaterMensajes = new ArrayList<>();
+                        for (int j = 0; j < msjs.length(); j++) {
+                            updaterMensajes.add(new Mensaje(Integer.parseInt(msjs.getJSONObject(j).getString("id")),
+                                    this.chat.vendedor,
+                                    this.chat.comprador,
+                                    this.chat.producto,
+                                    msjs.getJSONObject(j).getString("mensaje"),
+                                    Integer.parseInt(msjs.getJSONObject(j).getString("estado")),
+                                    Long.parseLong(msjs.getJSONObject(j).getString("timestamp"))));
+                        }
+                    }
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+
+            } catch (MalformedURLException e) {
+
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return this.chat.id;
+        }
+
+        public List<Mensaje> getUpdaterMensajes() {
+            return updaterMensajes;
+        }
+
+        @Override
+        protected Integer doInBackground(Integer... integers) {
+            if(integers[0] == 1)
+            {
+                return this.update();
+            }
+
+
+            return -1;
+        }
+    }
+
 }

@@ -23,6 +23,7 @@ public class GlobalClass extends MultiDexApplication {
     public List<EstadoProducto> estados;
     public listaProductos listaProductos;
     public List<Usuario> usuarios;
+    public List<Chat> chats = new ArrayList<>();
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -35,7 +36,43 @@ public class GlobalClass extends MultiDexApplication {
         this.categorias = Categoria.getAllCategorias();
         this.monedas = Moneda.getAllMonedas();
         this.estados = EstadoProducto.getAllEstados();
+        this.chats=new ArrayList<>();
 
+
+    }
+
+    Thread chatUpdateTread = new Thread()
+    {
+        @Override
+        public void run() {
+            while(true) {
+                try {
+                    sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                GlobalClass appstate = (GlobalClass) getApplicationContext();
+                for (Chat chat : appstate.chats) {
+                    chat.update();
+                }
+            }
+
+        }
+    };
+
+
+
+
+    public Chat getChatByComprador(Usuario comprador,Producto producto) {
+        for (Chat chat : this.chats) {
+            if (chat.getComprador().getId() == comprador.getId() && producto.getId()== chat.getProducto().getId()) {
+                return chat;
+            }
+        }
+        Chat chat = new Chat(producto, comprador,getApplicationContext());
+        this.chats.add(chat);
+
+        return chat;
     }
 
     public void loadConfig(){
@@ -49,6 +86,7 @@ public class GlobalClass extends MultiDexApplication {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        chatUpdateTread.start();
     }
 
     public void searchByUsuario(){

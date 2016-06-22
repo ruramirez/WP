@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -16,15 +17,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.vikinsoft.wp.adapter.ChatAdapter;
 
+import java.util.concurrent.ExecutionException;
+
 public class Chatear extends AppCompatActivity {
 
     Toolbar mToolbar;
     Producto producto;
-    Chat chat;
     ImageView productofoto,botonmensaje;
     TextView productotexto;
     EditText textomensaje;
     ChatAdapter chatAdapter;
+    ListView messagesView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,8 @@ public class Chatear extends AppCompatActivity {
 
         producto = appstate.getProductobyID(b.getInt("id_producto"));
 
-        chat = producto.getChatByComprador(appstate.usuario);
+        appstate.getChatByComprador(appstate.usuario,producto);
+        //chat = producto.getChatByComprador(appstate.usuario);
 
         productofoto = (ImageView) findViewById(R.id.producto_chat_imagen);
         productotexto = (TextView) findViewById(R.id.producto_chat_texto);
@@ -67,10 +71,10 @@ public class Chatear extends AppCompatActivity {
         });
 
         System.out.println("Antes del adaptadorrrrrrrrrrr");
-        int conteo = chat.getMensajes().size();
+        int conteo = appstate.getChatByComprador(appstate.usuario,producto).getMensajes().size();
         System.out.println("Conteo es "+conteo);
-        chatAdapter = new ChatAdapter(this, chat.getMensajes());
-        final ListView messagesView = (ListView) findViewById(R.id.vista_mensajes);
+        chatAdapter = new ChatAdapter(this, appstate.getChatByComprador(appstate.usuario,producto).getMensajes());
+        messagesView = (ListView) findViewById(R.id.vista_mensajes);
         messagesView.setAdapter(chatAdapter);
         System.out.println("Despues del adaptador");
         botonmensaje.setOnClickListener(new View.OnClickListener() {
@@ -79,15 +83,47 @@ public class Chatear extends AppCompatActivity {
 
                 if(textomensaje.getText() != null || !textomensaje.getText().toString().equals(""))
                 {
-                    chat.addMensaje(textomensaje.getText().toString());
+                    GlobalClass appstate = (GlobalClass) getApplicationContext();
+                    appstate.getChatByComprador(appstate.usuario,producto).addMensaje(textomensaje.getText().toString());
                     textomensaje.setText("");
                     chatAdapter.notifyDataSetChanged();
                     messagesView.smoothScrollToPosition(messagesView.getCount());
                 }
             }
         });
+        loop.start();
 
     }
+
+
+    Thread loop = new Thread()
+    {
+        @Override
+        public void run() {
+            try {
+                while(true) {
+                    sleep(2000);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            GlobalClass appstate = (GlobalClass) getApplicationContext();
+                            if(appstate.getChatByComprador(appstate.usuario,producto).getNuevos()==1)
+                            {
+                                chatAdapter = new ChatAdapter(getApplicationContext(), appstate.getChatByComprador(appstate.usuario,producto).getMensajes());
+                                messagesView.setAdapter(chatAdapter);
+                                chatAdapter.notifyDataSetChanged();
+                                messagesView.smoothScrollToPosition(messagesView.getCount());
+                                appstate.getChatByComprador(appstate.usuario,producto).setNuevos(0);
+                            }
+
+                        }
+                    });
+                }
+            } catch (InterruptedException e) {
+            }
+        }
+    };
 
 
     @Override
