@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.vikinsoft.wp.Calificar">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:id="@+id/linearLayout9">
+
+        <include
+            android:id="@+id/toolbar_calificar"
+            layout="@layout/toolbar_calificar" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Como fue tu experiencia con Usuario"
+        android:id="@+id/experiencia_usuario"
+        android:layout_below="@+id/linearLayout9"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:padding="10dp"
+        android:textSize="18dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Le darias 5 estrellas?"
+        android:id="@+id/texto_5stars"
+        android:layout_below="@+id/experiencia_usuario"
+        android:layout_centerHorizontal="true" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/calificar_rating"
+        android:layout_below="@+id/texto_5stars"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Vendi este producto por:"
+        android:id="@+id/textView22"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="5"
+        android:id="@+id/calificar_cantidad"
+        android:layout_marginTop="45dp"
+        android:layout_below="@+id/textView22"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="$"
+        android:id="@+id/calificar_moneda"
+        android:layout_alignBottom="@+id/calificar_cantidad"
+        android:layout_toRightOf="@+id/calificar_cantidad"
+        android:layout_toEndOf="@+id/calificar_cantidad" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Regalanos una breve reseña de Usuario"
+        android:id="@+id/textView24"
+        android:layout_marginTop="43dp"
+        android:layout_below="@+id/calificar_cantidad"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="15dp"
+        android:padding="10dp" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/calificar_reseña"
+        android:layout_below="@+id/textView24"
+        android:layout_alignRight="@+id/experiencia_usuario"
+        android:layout_alignEnd="@+id/experiencia_usuario"
+        android:layout_margin="5dp" />
+
+</RelativeLayout>

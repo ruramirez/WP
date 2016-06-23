@@ -54,8 +54,6 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
     protected void onCreate(Bundle savedInstanceState) {
         final GlobalClass appstate = (GlobalClass) getApplicationContext();
 
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_producto_detalle);
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
@@ -89,6 +87,10 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
                     }
         }
         final RelativeLayout botones = (RelativeLayout) findViewById(R.id.reservar_vender_layout);
+        final Button botonDesreservar = (Button) findViewById(R.id.boton_removerreserva);
+        final Button botonReservar = (Button) findViewById(R.id.boton_reservar);
+        final Button botonVender = (Button) findViewById(R.id.boton_vendido);
+        final TextView textoVendido = (TextView) findViewById(R.id.ups_detalle);
 
         boolean esperarProducto=true;
         while( esperarProducto)
@@ -113,11 +115,16 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
             {
                 if(producto.getEstadoProducto().getId() == 1)
                 {
-                    botones.setVisibility(View.GONE);
+                    botonDesreservar.setVisibility(View.GONE);
+                    botonReservar.setVisibility(View.GONE);
+                    botonVender.setVisibility(View.GONE);
+                    textoVendido.setVisibility(View.VISIBLE);
                 }else{
                     botones.setVisibility(View.VISIBLE);
                 }
                 chat.setVisibility(View.GONE);
+            }else{
+                botones.setVisibility(View.GONE);
             }
 
         HashMap<String,String> url_maps = new HashMap<String, String>();
@@ -193,9 +200,7 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
             }
         });
 
-        final Button botonDesreservar = (Button) findViewById(R.id.boton_removerreserva);
-        final Button botonReservar = (Button) findViewById(R.id.boton_reservar);
-        final Button botonVender = (Button) findViewById(R.id.boton_vendido);
+
 
         if(producto.getEstadoProducto().getId() == 2)
         {
@@ -226,11 +231,18 @@ public class ProductoDetalle extends AppCompatActivity implements BaseSliderView
         botonVender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                botones.setVisibility(View.GONE);
+                botonDesreservar.setVisibility(View.GONE);
+                botonReservar.setVisibility(View.GONE);
+                botonVender.setVisibility(View.GONE);
+                textoVendido.setVisibility(View.VISIBLE);
                 producto.setEstadoProducto(appstate.getElementoByID(1));
                 producto.update();
                 appstate.usuario.ChangeProductoVendiendoAvendido(producto);
-
+                Intent intent = new Intent(ProductoDetalle.this,Vendido.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putInt("id_producto", producto.getId());
+                intent.putExtras(mBundle);
+                ProductoDetalle.this.startActivity(intent);
 
             }
         });

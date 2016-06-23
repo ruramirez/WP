@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             if(appstate.usuario.getCountProductosVendiendo()==0) {
                 appstate.usuario.loadProductosVendiendo(appstate);
             }
+            appstate.usuario.loadAllChats();
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

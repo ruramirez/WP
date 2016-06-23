@@ -58,6 +58,20 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
         }
     }
 
+    public Chat(int id,Producto producto,Usuario comprador)
+    {
+        this.id=id;
+        this.producto = producto;
+        this.vendedor = producto.getUsuario();
+        this.comprador = comprador;
+    }
+
+
+    public Chat(int id)
+    {
+        this.id = id;
+        //hacer el metodo load
+    }
 
     public int getNuevos() {
         return nuevos;
@@ -148,6 +162,10 @@ public class Chat extends AsyncTask<Integer, Void, Integer> {
         }
         return this.id;
     }
+
+
+
+
 
     @Override
     protected Integer doInBackground(Integer... integers) {

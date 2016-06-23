@@ -37,7 +37,7 @@ public class GlobalClass extends MultiDexApplication {
         this.monedas = Moneda.getAllMonedas();
         this.estados = EstadoProducto.getAllEstados();
         this.chats=new ArrayList<>();
-
+        chatUpdateTread.start();
 
     }
 
@@ -60,7 +60,26 @@ public class GlobalClass extends MultiDexApplication {
         }
     };
 
+    public Chat getChatByID(int id)
+    {
+        for (Chat chat : this.chats) {
+            if (chat.getId() ==id) {
+                return chat;
+            }
+        }
+        return new Chat(id);
+    }
 
+    public ArrayList<Chat> getChatByProducto(Producto producto) {
+
+        ArrayList<Chat> selectedChats = new ArrayList<>();
+        for (Chat chat : this.chats) {
+            if (producto.getId()== chat.getProducto().getId()) {
+                selectedChats.add(chat);
+            }
+        }
+        return selectedChats;
+    }
 
 
     public Chat getChatByComprador(Usuario comprador,Producto producto) {
@@ -71,7 +90,6 @@ public class GlobalClass extends MultiDexApplication {
         }
         Chat chat = new Chat(producto, comprador,getApplicationContext());
         this.chats.add(chat);
-
         return chat;
     }
 
@@ -86,7 +104,6 @@ public class GlobalClass extends MultiDexApplication {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        chatUpdateTread.start();
     }
 
     public void searchByUsuario(){
@@ -148,7 +165,7 @@ public class GlobalClass extends MultiDexApplication {
             if(producto.getId()== id)
                 return producto;
         }
-        return  null;
+        return  new Producto(id,getApplicationContext(),this);
 
     }
 

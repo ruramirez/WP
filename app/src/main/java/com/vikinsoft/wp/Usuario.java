@@ -645,6 +645,13 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
     }
 
 
+    public void loadAllChats()
+    {
+        webUsuarios webUsuarios = new webUsuarios(this);
+        webUsuarios.execute(8);
+
+    }
+
 
 
     public void storeImage(Bitmap image) {
@@ -768,6 +775,71 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
                 Log.d("DownloadManager", "Error: " + e);
             }
 
+            return 1;
+        }
+
+        private int loadAllChats(){
+            try {
+                URL url = new URL("http://vikinsoft.com/weplay/index.php?r=chats/loadAll");
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                String urlParameters =
+                        "id_usuario=" + this.usuario.id;
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+                connection.setRequestProperty("Accept-Charset", "UTF-8");
+                //connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+                connection.setDoOutput(true);
+                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+                dStream.writeBytes(urlParameters);
+                dStream.flush();
+                dStream.close();
+                int responseCode = connection.getResponseCode();
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = "";
+                StringBuilder responseOutput = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    responseOutput.append(line);
+                }
+                br.close();
+                JSONArray arreglo = null;
+
+                System.out.println("Respuesta de chat loaded " +responseOutput.toString());
+                GlobalClass appstate = (GlobalClass) this.usuario.applicationContext;
+                arreglo = new JSONArray(responseOutput.toString());
+
+                //this.id=Integer.parseInt(jsonObject.getString("id"));
+                //JSONArray msjs = jsonObject.getJSONArray("mensajes");
+                for (int j = 0; j < arreglo.length(); j++) {
+
+                    Usuario comprador;
+                    comprador=appstate.getUsuariobyID(Integer.parseInt(arreglo.getJSONObject(j).getString("id_comprador")));
+                    if(!comprador.isLoaded()) {
+                        comprador = new Usuario(Integer.parseInt(arreglo.getJSONObject(j).getString("id_comprador")), this.usuario.applicationContext);
+                        comprador.fillValues();
+                    }
+
+                    appstate.chats.add(new Chat(
+                            Integer.parseInt(arreglo.getJSONObject(j).getString("id")),
+                            appstate.getProductobyID(Integer.parseInt(
+                                    arreglo.getJSONObject(j).getString("id_producto"))),comprador));
+
+
+                }
+
+                return 1;
+
+            } catch (MalformedURLException e) {
+
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             return 1;
         }
 
@@ -1138,6 +1210,9 @@ public class Usuario extends AsyncTask<Integer, Void, Integer> implements Locati
             else if(integers[0]== 7)
             {
                 return this.loadProductosVendiendo();
+            }else if(integers[0]== 8)
+            {
+                return this.loadAllChats();
             }
             return -1;
         }

@@ -38,7 +38,7 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:id="@+id/reservar_vender_layout"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <Button
                     android:layout_width="wrap_content"
@@ -74,6 +74,16 @@
                     android:layout_marginLeft="56dp"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/boton_reservar"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Ups! Alguien se te adelantó y compro este articulo."
+                    android:id="@+id/ups_detalle"
+                    android:gravity="center_horizontal"
+                    android:textColor="#f90606"
                     android:visibility="gone" />
             </RelativeLayout>
 

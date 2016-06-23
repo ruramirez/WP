@@ -68,7 +68,9 @@
         <activity android:name=".VerificarMail" />
         <activity android:name=".VerificacionEditarPerfil" />
         <activity android:name=".Chat" />
-        <activity android:name=".Chatear"></activity>
+        <activity android:name=".Chatear" />
+        <activity android:name=".Vendido" />
+        <activity android:name=".Calificar"></activity>
     </application>
 
 </manifest>
